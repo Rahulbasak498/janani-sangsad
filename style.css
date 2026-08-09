@@ -344,30 +344,3 @@ footer .credit{color:rgba(252,243,225,.5); font-size:.78rem; margin-top:18px;}
   border-radius:8px;
   display:inline-block;
 }
-.nav-links a {
-  display: inline-block;
-  padding: 10px 18px;
-  text-decoration: none;
-  color: #fff;
-  transition: all 0.2s ease;
-}
-
-/* Mouse নিলে button-এর উপর স্থির/active effect থাকবে */
-.nav-links a:hover {
-  background: #ff9800;
-  color: #fff;
-  border-radius: 6px;
-  transform: translateY(-2px);
-}
-
-/* Click করার সময় */
-.nav-links a:active {
-  transform: translateY(0);
-}
-
-/* যে section বর্তমানে active */
-.nav-links a.active {
-  background: #ff9800;
-  color: #fff;
-  border-radius: 6px;
-}
