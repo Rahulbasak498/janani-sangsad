@@ -333,3 +333,14 @@ footer .credit{color:rgba(252,243,225,.5); font-size:.78rem; margin-top:18px;}
 @media (prefers-reduced-motion: reduce){
   *{animation:none !important; transition:none !important;}
 }
+.tl-date{
+  color:#440A11;
+  font-size:.95rem;
+  font-weight:700;
+  line-height:1.6;
+  margin-bottom:12px;
+  background:#F4E4C1;
+  padding:6px 10px;
+  border-radius:8px;
+  display:inline-block;
+}
