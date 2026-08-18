@@ -1,364 +1,1642 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>জননী সংসদ দুর্গা পূজা কমিটি</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;500;600;700;800&family=Hind+Siliguri:wght@300;400;500;600;700&family=Baloo+Da+2:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>জননী সংসদ দুর্গোৎসব সর্বজনীন পূজা কমিটি</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;500;600;700;800&family=Hind+Siliguri:wght@300;400;500;600;700&family=Baloo+Da+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<!-- NAV -->
+<!-- =========================================================
+     NAVIGATION
+========================================================= -->
+
 <nav class="nav" id="nav">
   <div class="container">
 
     <div class="brand">
+
       <div class="brand-mark">🕉️</div>
 
       <div class="brand-name">
         জননী সংসদ দুর্গোৎসব
         <small>সর্বজনীন পূজা কমিটি · প্রতিষ্ঠা ১৯৭৪</small>
       </div>
+
     </div>
 
     <div class="nav-links" id="navLinks">
+
       <a href="#about">আমাদের সম্পর্কে</a>
+
       <a href="#schedule">সময়সূচি</a>
+
       <a href="#events">অনুষ্ঠান</a>
+
       <a href="#gallery">গ্যালারি</a>
-      <a href="#members">সদস্যবৃন্দ</a>
+
+      <a href="#members">কমিটির সদস্যবৃন্দ</a>
+
+      <!-- NEW -->
+      <a href="#advisors">উপদেষ্টা সদস্যবৃন্দ</a>
+
       <a href="#donation">অনুদান</a>
+
+      <a href="#notice">নোটিশ</a>
+
+      <a href="#location">লোকেশন</a>
+
       <a href="#contact">যোগাযোগ</a>
+
     </div>
 
   </div>
 </nav>
-<!-- HERO -->
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
 <header class="hero">
+
   <div class="hero-glow"></div>
-  <svg class="hero-motif" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
-    <circle cx="120" cy="120" r="90" fill="none" stroke="#EFCB74" stroke-width="1.5"/>
-    <circle cx="1080" cy="680" r="130" fill="none" stroke="#EFCB74" stroke-width="1.5"/>
-    <circle cx="1050" cy="100" r="50" fill="none" stroke="#EFCB74" stroke-width="1.5"/>
+
+  <svg
+    class="hero-motif"
+    viewBox="0 0 1200 800"
+    preserveAspectRatio="xMidYMid slice"
+  >
+
+    <circle
+      cx="120"
+      cy="120"
+      r="90"
+      fill="none"
+      stroke="#EFCB74"
+      stroke-width="1.5"
+    />
+
+    <circle
+      cx="1080"
+      cy="680"
+      r="130"
+      fill="none"
+      stroke="#EFCB74"
+      stroke-width="1.5"
+    />
+
+    <circle
+      cx="1050"
+      cy="100"
+      r="50"
+      fill="none"
+      stroke="#EFCB74"
+      stroke-width="1.5"
+    />
+
   </svg>
+
+
   <div class="hero-content">
+
     <div class="hero-om">🪔</div>
-    <h1>মা আসছেন <span>ঘরে ঘরে</span></h1>
-    <div class="committee-name">শ্রী শ্রী জননী সংসদ দুর্গোৎসব সর্বজনীন পূজা কমিটি</div>
- 
-    <div class="countdown" id="countdown">
-      <div class="box"><div class="num" id="cd-days">07</div><div class="lbl">দিন</div></div>
-      <div class="box"><div class="num" id="cd-hours">00</div><div class="lbl">ঘণ্টা</div></div>
-      <div class="box"><div class="num" id="cd-mins">00</div><div class="lbl">মিনিট</div></div>
-      <div class="box"><div class="num" id="cd-secs">00</div><div class="lbl">সেকেন্ড</div></div>
+
+    <h1>
+      মা আসছেন <span>ঘরে ঘরে</span>
+    </h1>
+
+    <div class="committee-name">
+      শ্রী শ্রী জননী সংসদ দুর্গোৎসব সর্বজনীন পূজা কমিটি
     </div>
+
+
+    <!-- COUNTDOWN -->
+
+    <div class="countdown" id="countdown">
+
+      <div class="box">
+        <div class="num" id="cd-days">07</div>
+        <div class="lbl">দিন</div>
+      </div>
+
+      <div class="box">
+        <div class="num" id="cd-hours">00</div>
+        <div class="lbl">ঘণ্টা</div>
+      </div>
+
+      <div class="box">
+        <div class="num" id="cd-mins">00</div>
+        <div class="lbl">মিনিট</div>
+      </div>
+
+      <div class="box">
+        <div class="num" id="cd-secs">00</div>
+        <div class="lbl">সেকেন্ড</div>
+      </div>
+
+    </div>
+
 
     <div class="hero-ctas">
-      <a href="#about" class="btn btn-primary">আমাদের সম্পর্কে</a>
-      <a href="#schedule" class="btn btn-outline">পূজার সময়সূচি</a>
+
+      <a href="#about" class="btn btn-primary">
+        আমাদের সম্পর্কে
+      </a>
+
+      <a href="#schedule" class="btn btn-outline">
+        পূজার সময়সূচি
+      </a>
+
     </div>
+
   </div>
-  <div class="scroll-cue">⌄</div>
+
+
+  <div class="scroll-cue">
+  </div>
+
 </header>
 
-<!-- NOTICE TICKER -->
+
+<!-- =========================================================
+     NOTICE TICKER
+========================================================= -->
+
 <div class="ticker-wrap">
+
   <div class="ticker-track">
-    <span>🔔 ষষ্ঠীর সন্ধ্যা আরতি শুরু বিকেল ৫টায়</span>
-    <span>🔔 সাংস্কৃতিক অনুষ্ঠানে অংশগ্রহণের জন্য রেজিস্ট্রেশন চলছে</span>
-    <span>🔔 ভোগ বিতরণ প্রতিদিন দুপুর ১২টা থেকে ২টা</span>
-    <span>🔔 অনুদান জমা দেওয়ার শেষ তারিখ ১৫ অক্টোবর</span>
-    <span>🔔 ষষ্ঠীর সন্ধ্যা আরতি শুরু বিকেল ৫টায়</span>
-    <span>🔔 সাংস্কৃতিক অনুষ্ঠানে অংশগ্রহণের জন্য রেজিস্ট্রেশন চলছে</span>
-    <span>🔔 ভোগ বিতরণ প্রতিদিন দুপুর ১২টা থেকে ২টা</span>
-    <span>🔔 অনুদান জমা দেওয়ার শেষ তারিখ ১৫ অক্টোবর</span>
+
+    <span>
+      🔔 ষষ্ঠীর সন্ধ্যা আরতি শুরু বিকেল ৫টায়
+    </span>
+
+    <span>
+      🔔 সাংস্কৃতিক অনুষ্ঠানে অংশগ্রহণের জন্য রেজিস্ট্রেশন চলছে
+    </span>
+
+    <span>
+      🔔 ভোগ বিতরণ প্রতিদিন দুপুর ১২টা থেকে ২টা
+    </span>
+
+    <span>
+      🔔 অনুদান জমা দেওয়ার শেষ তারিখ ১৫ অক্টোবর
+    </span>
+
+    <span>
+      🔔 ষষ্ঠীর সন্ধ্যা আরতি শুরু বিকেল ৫টায়
+    </span>
+
+    <span>
+      🔔 সাংস্কৃতিক অনুষ্ঠানে অংশগ্রহণের জন্য রেজিস্ট্রেশন চলছে
+    </span>
+
+    <span>
+      🔔 ভোগ বিতরণ প্রতিদিন দুপুর ১২টা থেকে ২টা
+    </span>
+
+    <span>
+      🔔 অনুদান জমা দেওয়ার শেষ তারিখ ১৫ অক্টোবর
+    </span>
+
   </div>
+
 </div>
 
-<!-- ABOUT -->
+
+<!-- =========================================================
+     ABOUT
+========================================================= -->
+
 <section class="about" id="about">
+
   <div class="container">
-    <div class="eyebrow">আমাদের কথা</div>
-    <h2 class="section-title">আমাদের পূজা কমিটি</h2>
-    <p class="section-sub">পাঁচ দশক ধরে ভক্তি, ঐতিহ্য আর প্রতিবেশীর সম্মিলনের এক উৎসব-যাত্রা।</p>
-    <div class="about-grid">
-      <div class="about-visual"><div class="glyph">🛕</div></div>
-      <div class="about-text">
-        <h3 style="margin-bottom:14px;">১৯৭৪ সাল থেকে ভক্তি ও ঐক্যের প্রতীক</h3>
-        <p>১৯৭৪ সালে কয়েকজনের উদ্যোগে 
-        <strong>“সমাজ কল্যাণ যুব সংঘ”</strong>-এর পথচলা শুরু হয়।
-        উদ্দেশ্য ছিল একটাই—এলাকার সবাইকে সঙ্গে নিয়ে ধর্মীয় ও সাংস্কৃতিক
-        চেতনায় উৎসব উদযাপন করা। সেই ভাবনা থেকেই ১৯৭৪ সাল থেকে আজ পর্যন্ত
-        নিয়মিতভাবে <strong>সরস্বতী পূজার</strong> আয়োজন হয়ে আসছে।
+
+    <div class="eyebrow">
+      আমাদের কথা
+    </div>
+
+    <h2 class="section-title">
+      আমাদের পূজা কমিটি
+    </h2>
+
+    <p class="section-sub">
+      পাঁচ দশক ধরে ভক্তি, ঐতিহ্য আর প্রতিবেশীর সম্মিলনের এক উৎসব-যাত্রা।
     </p>
-        <p>দীর্ঘ পাঁচ দশকের এই পথচলায় পূজা আজ শুধু একটি ধর্মীয় আয়োজন নয়;
-        এটি আমাদের <strong>ঐতিহ্য, সংস্কৃতি, সম্প্রীতি ও মিলনের প্রতীক</strong>।
-        প্রজন্মের পর প্রজন্ম ধরে সকলের অংশগ্রহণে এই আয়োজন আমাদের
-        শিকড়ের সঙ্গে সম্পর্ক আরও গভীর করে চলেছে।</p>
+
+
+    <div class="about-grid">
+
+      <div class="about-visual">
+
+        <div class="glyph">
+          🛕
+        </div>
+
+      </div>
+
+
+      <div class="about-text">
+
+        <h3 style="margin-bottom:14px;">
+          ১৯৭৪ সাল থেকে ভক্তি ও ঐক্যের প্রতীক
+        </h3>
+
+        <p>
+          ১৯৭৪ সালে কয়েকজনের উদ্যোগে
+          <strong>“সমাজ কল্যাণ যুব সংঘ”</strong>-এর পথচলা শুরু হয়।
+          উদ্দেশ্য ছিল একটাই—এলাকার সবাইকে সঙ্গে নিয়ে ধর্মীয় ও সাংস্কৃতিক
+          চেতনায় উৎসব উদযাপন করা।
+        </p>
+
+        <p>
+          সেই ভাবনা থেকেই ১৯৭৪ সাল থেকে আজ পর্যন্ত নিয়মিতভাবে
+          <strong>সরস্বতী পূজার</strong> আয়োজন হয়ে আসছে।
+        </p>
+
+        <p>
+          দীর্ঘ পাঁচ দশকের এই পথচলায় পূজা আজ শুধু একটি ধর্মীয় আয়োজন নয়;
+          এটি আমাদের
+          <strong>ঐতিহ্য, সংস্কৃতি, সম্প্রীতি ও মিলনের প্রতীক</strong>।
+        </p>
+
+        <p>
+          প্রজন্মের পর প্রজন্ম ধরে সকলের অংশগ্রহণে এই আয়োজন আমাদের
+          শিকড়ের সঙ্গে সম্পর্ক আরও গভীর করে চলেছে।
+        </p>
+
+
         <div class="about-stats">
-          <div><div class="n">৫০+</div><div class="l">বছরের ঐতিহ্য</div></div>
-          <div><div class="n">১৫০+</div><div class="l">পরিবারের অংশগ্রহণ</div></div>
-          <div><div class="n">৩৬+</div><div class="l">সক্রিয় সদস্য</div></div>
+
+          <div>
+            <div class="n">৫০+</div>
+            <div class="l">বছরের ঐতিহ্য</div>
+          </div>
+
+          <div>
+            <div class="n">১৫০+</div>
+            <div class="l">পরিবারের অংশগ্রহণ</div>
+          </div>
+
+          <div>
+            <div class="n">৩৬+</div>
+            <div class="l">সক্রিয় সদস্য</div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ALPONA DIVIDER -->
+
+<div class="alpona-divider">
+
+  <svg viewBox="0 0 1000 46">
+
+    <path
+      d="M0 23 Q 50 3, 100 23 T 200 23 T 300 23 T 400 23 T 500 23 T 600 23 T 700 23 T 800 23 T 900 23 T 1000 23"
+      fill="none"
+      stroke="#C8992F"
+      stroke-width="2"
+    />
+
+    <g fill="#E15A24">
+
+      <circle cx="100" cy="23" r="5"/>
+      <circle cx="300" cy="23" r="5"/>
+      <circle cx="500" cy="23" r="5"/>
+      <circle cx="700" cy="23" r="5"/>
+      <circle cx="900" cy="23" r="5"/>
+
+    </g>
+
+  </svg>
+
+</div>
+
+
+<!-- =========================================================
+     SCHEDULE
+========================================================= -->
+
+<section class="schedule" id="schedule">
+
+  <div class="container">
+
+    <div class="eyebrow">
+      পঞ্জিকা অনুযায়ী
+    </div>
+
+    <h2 class="section-title">
+      পূজার সময়সূচি
+    </h2>
+
+    <p class="section-sub">
+      ষষ্ঠী থেকে দশমী — প্রতিদিনের পূজা, আরতি ও অনুষ্ঠানের বিস্তারিত সময়সূচি।
+    </p>
+
+
+    <div class="timeline">
+
+
+      <!-- ষষ্ঠী -->
+
+      <div class="tl-card">
+
+        <div class="tl-day">
+          ষষ্ঠী
+        </div>
+
+        <div class="tl-date">
+          ১৭ অক্টোবর ২০২৬, শনিবার
+        </div>
+
+        <h3>
+          কালপরম্ভ ও বোধন
+        </h3>
+
+        <ul>
+
+          <li>
+            ভোর ৬:০০টা — কালপরম্ভ
+          </li>
+
+          <li>
+            সকাল ৯:০০টা — পূজা ও পুষ্পাঞ্জলি
+          </li>
+
+          <li>
+            সন্ধ্যা ৬:০০টা — সন্ধ্যা আরতি
+          </li>
+
+        </ul>
+
+      </div>
+
+
+      <!-- সপ্তমী -->
+
+      <div class="tl-card">
+
+        <div class="tl-day">
+          সপ্তমী
+        </div>
+
+        <div class="tl-date">
+          ১৮ অক্টোবর ২০২৬, রবিবার
+        </div>
+
+        <h3>
+          নবপত্রিকা
+        </h3>
+
+        <ul>
+
+          <li>
+            ভোর ৬:০০টা — নবপত্রিকা স্নান
+          </li>
+
+          <li>
+            সকাল ৯:০০টা — পুষ্পাঞ্জলি
+          </li>
+
+          <li>
+            দুপুর ১২:০০টা — ভোগ আরতি
+          </li>
+
+        </ul>
+
+      </div>
+
+
+      <!-- অষ্টমী -->
+
+      <div class="tl-card">
+
+        <div class="tl-day">
+          অষ্টমী
+        </div>
+
+        <div class="tl-date">
+          ১৯ অক্টোবর ২০২৬, সোমবার
+        </div>
+
+        <h3>
+          মহাষ্টমী
+        </h3>
+
+        <ul>
+
+          <li>
+            সকাল ৯:০০টা — কুমারী পূজা
+          </li>
+
+          <li>
+            সন্ধ্যা ৬:০০টা — সন্ধি পূজা
+          </li>
+
+          <li>
+            রাত ৮:০০টা — সাংস্কৃতিক সন্ধ্যা
+          </li>
+
+        </ul>
+
+      </div>
+
+
+      <!-- নবমী -->
+
+      <div class="tl-card">
+
+        <div class="tl-day">
+          নবমী
+        </div>
+
+        <div class="tl-date">
+          ২০ অক্টোবর ২০২৬, মঙ্গলবার
+        </div>
+
+        <h3>
+          মহানবমী
+        </h3>
+
+        <ul>
+
+          <li>
+            সকাল ৯:০০টা — নবমী হোম
+          </li>
+
+          <li>
+            দুপুর ১:০০টা — মহাভোগ
+          </li>
+
+          <li>
+            রাত ৯:০০টা — ধুনুচি নাচ
+          </li>
+
+        </ul>
+
+      </div>
+
+
+      <!-- দশমী -->
+
+      <div class="tl-card">
+
+        <div class="tl-day">
+          দশমী
+        </div>
+
+        <div class="tl-date">
+          ২১ অক্টোবর ২০২৬, বুধবার
+        </div>
+
+        <h3>
+          বিসর্জন
+        </h3>
+
+        <ul>
+
+          <li>
+            সকাল ৯:০০টা — দর্পণ বিসর্জন
+          </li>
+
+          <li>
+            দুপুর ১২:০০টা — সিঁদুর খেলা
+          </li>
+
+          <li>
+            বিকেল ৪:০০টা — প্রতিমা বিসর্জন
+          </li>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     EVENTS
+========================================================= -->
+
+<section class="events" id="events">
+
+  <div class="container">
+
+    <div class="eyebrow">
+      উৎসবের আয়োজন
+    </div>
+
+    <h2 class="section-title">
+      অনুষ্ঠান
+    </h2>
+
+    <p class="section-sub">
+      পূজার পাঁচ দিনে যা যা থাকছে আপনার জন্য।
+    </p>
+
+
+    <div class="events-grid">
+
+
+      <div class="ev-card">
+
+        <div class="ev-icon">
+          🪔
+        </div>
+
+        <h3>
+          সন্ধ্যা আরতি
+        </h3>
+
+        <p>
+          প্রতিদিন গোধূলি লগ্নে ঢাক-কাঁসরের সাথে দেবীর আরতি।
+        </p>
+
+      </div>
+
+
+      <div class="ev-card">
+
+        <div class="ev-icon">
+          💃
+        </div>
+
+        <h3>
+          ধুনুচি নাচ
+        </h3>
+
+        <p>
+          নবমীর রাতে ঐতিহ্যবাহী ধুনুচি নাচের প্রতিযোগিতা ও প্রদর্শনী।
+        </p>
+
+      </div>
+
+
+      <div class="ev-card">
+
+        <div class="ev-icon">
+          🎭
+        </div>
+
+        <h3>
+          সাংস্কৃতিক অনুষ্ঠান
+        </h3>
+
+        <p>
+          স্থানীয় শিল্পীদের গান, নাচ ও নাটকের সন্ধ্যা।
+        </p>
+
+      </div>
+
+
+      <div class="ev-card">
+
+        <div class="ev-icon">
+          🍚
+        </div>
+
+        <h3>
+          প্রসাদ / ভোগ
+        </h3>
+
+        <p>
+          প্রতিদিন দুপুরে সকলের জন্য মহাপ্রসাদ বিতরণ।
+        </p>
+
+      </div>
+
+
+      <div class="ev-card">
+
+        <div class="ev-icon">
+          🔴
+        </div>
+
+        <h3>
+          সিঁদুর খেলা
+        </h3>
+
+        <p>
+          দশমীর সকালে বিবাহিত নারীদের ঐতিহ্যবাহী সিঁদুর খেলা।
+        </p>
+
+      </div>
+
+
+      <div class="ev-card">
+
+        <div class="ev-icon">
+          🛶
+        </div>
+
+        <h3>
+          বিসর্জন শোভাযাত্রা
+        </h3>
+
+        <p>
+          ঢাক-ঢোল সহকারে প্রতিমা বিসর্জনের বর্ণাঢ্য শোভাযাত্রা।
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     GALLERY
+========================================================= -->
+
+<section class="gallery" id="gallery">
+
+  <div class="container">
+
+    <div class="eyebrow">
+      স্মৃতির পাতা
+    </div>
+
+    <h2 class="section-title">
+      গ্যালারি
+    </h2>
+
+    <p class="section-sub">
+      গত বছরগুলোর পূজার কিছু বিশেষ মুহূর্ত।
+    </p>
+
+
+    <div class="masonry">
+
+      <div class="m-item">
+        <div class="ph m1">
+          প্রতিমা দর্শন
         </div>
       </div>
+
+      <div class="m-item">
+        <div class="ph m2">
+          সন্ধ্যা আরতি
+        </div>
+      </div>
+
+      <div class="m-item">
+        <div class="ph m3">
+          ধুনুচি নাচ
+        </div>
+      </div>
+
+      <div class="m-item">
+        <div class="ph m4">
+          মণ্ডপ সজ্জা
+        </div>
+      </div>
+
+      <div class="m-item">
+        <div class="ph m5">
+          সাংস্কৃতিক সন্ধ্যা
+        </div>
+      </div>
+
+      <div class="m-item">
+        <div class="ph m6">
+          ভোগ বিতরণ
+        </div>
+      </div>
+
+      <div class="m-item">
+        <div class="ph m7">
+          সিঁদুর খেলা
+        </div>
+      </div>
+
+      <div class="m-item">
+        <div class="ph m8">
+          বিসর্জন শোভাযাত্রা
+        </div>
+      </div>
+
     </div>
+
   </div>
+
 </section>
 
-<div class="alpona-divider"><svg viewBox="0 0 1000 46"><path d="M0 23 Q 50 3, 100 23 T 200 23 T 300 23 T 400 23 T 500 23 T 600 23 T 700 23 T 800 23 T 900 23 T 1000 23" fill="none" stroke="#C8992F" stroke-width="2"/><g fill="#E15A24">
-<circle cx="100" cy="23" r="5"/><circle cx="300" cy="23" r="5"/><circle cx="500" cy="23" r="5"/><circle cx="700" cy="23" r="5"/><circle cx="900" cy="23" r="5"/>
-</g></svg></div>
 
-<!-- SCHEDULE -->
-<section class="schedule" id="schedule">
-  <div class="container">
-    <div class="eyebrow">পঞ্জিকা অনুযায়ী</div>
-    <h2 class="section-title">পূজার সময়সূচি</h2>
-    <p class="section-sub">ষষ্ঠী থেকে দশমী — প্রতিদিনের পূজা, আরতি ও অনুষ্ঠানের বিস্তারিত সময়সূচি।</p>
-    <div class="timeline">
-<div class="tl-card">
-  <div class="tl-day">ষষ্ঠী</div>
-  <div class="tl-date">১৭ অক্টোবর ২০২৬, শনিবার</div>
-  <h3>কালপরম্ভ ও বোধন</h3>
-  <ul>
-    <li>ভোর ৬:০০টা — কালপরম্ভ</li>
-    <li>সকাল ৯:০০টা — পূজা ও পুষ্পাঞ্জলি</li>
-    <li>সন্ধ্যা ৬:০০টা — সন্ধ্যা আরতি</li>
-  </ul>
+<!-- ALPONA DIVIDER -->
+
+<div class="alpona-divider">
+
+  <svg viewBox="0 0 1000 46">
+
+    <path
+      d="M0 23 Q 50 3, 100 23 T 200 23 T 300 23 T 400 23 T 500 23 T 600 23 T 700 23 T 800 23 T 900 23 T 1000 23"
+      fill="none"
+      stroke="#C8992F"
+      stroke-width="2"
+    />
+
+    <g fill="#E15A24">
+
+      <circle cx="100" cy="23" r="5"/>
+      <circle cx="300" cy="23" r="5"/>
+      <circle cx="500" cy="23" r="5"/>
+      <circle cx="700" cy="23" r="5"/>
+      <circle cx="900" cy="23" r="5"/>
+
+    </g>
+
+  </svg>
+
 </div>
 
-<div class="tl-card">
-  <div class="tl-day">সপ্তমী</div>
-  <div class="tl-date">১৮ অক্টোবর ২০২৬, রবিবার</div>
-  <h3>নবপত্রিকা</h3>
-  <ul>
-    <li>ভোর ৬:০০টা — নবপত্রিকা স্নান</li>
-    <li>সকাল ৯:০০টা — পুষ্পাঞ্জলি</li>
-    <li>দুপুর ১২:০০টা — ভোগ আরতি</li>
-  </ul>
-</div>
 
-<div class="tl-card">
-  <div class="tl-day">অষ্টমী</div>
-  <div class="tl-date">১৯ অক্টোবর ২০২৬, সোমবার</div>
-  <h3>মহাষ্টমী</h3>
-  <ul>
-    <li>সকাল ৯:০০টা — কুমারী পূজা</li>
-    <li>সন্ধ্যা ৬:০০টা — সন্ধি পূজা</li>
-    <li>রাত ৮:০০টা — সাংস্কৃতিক সন্ধ্যা</li>
-  </ul>
-</div>
+<!-- =========================================================
+     COMMITTEE MEMBERS
+========================================================= -->
 
-<div class="tl-card">
-  <div class="tl-day">নবমী</div>
-  <div class="tl-date">২০ অক্টোবর ২০২৬, মঙ্গলবার</div>
-  <h3>মহানবমী</h3>
-  <ul>
-    <li>সকাল ৯:০০টা — নবমী হোম</li>
-    <li>দুপুর ১:০০টা — মহাভোগ</li>
-    <li>রাত ৯:০০টা — ধুনুচি নাচ</li>
-  </ul>
-</div>
-
-<div class="tl-card">
-  <div class="tl-day">দশমী</div>
-  <div class="tl-date">২১ অক্টোবর ২০২৬, বুধবার</div>
-  <h3>বিসর্জন</h3>
-  <ul>
-    <li>সকাল ৯:০০টা — দর্পণ বিসর্জন</li>
-    <li>দুপুর ১২:০০টা — সিঁদুর খেলা</li>
-    <li>বিকেল ৪:০০টা — প্রতিমা বিসর্জন</li>
-  </ul>
-</div>
-  </div>
-</section>
-
-<div class="alpona-divider"><svg viewBox="0 0 1000 46"><path d="M0 23 Q 50 43, 100 23 T 200 23 T 300 23 T 400 23 T 500 23 T 600 23 T 700 23 T 800 23 T 900 23 T 1000 23" fill="none" stroke="#C8992F" stroke-width="2"/><g fill="#650E18">
-<circle cx="150" cy="23" r="5"/><circle cx="350" cy="23" r="5"/><circle cx="550" cy="23" r="5"/><circle cx="750" cy="23" r="5"/><circle cx="950" cy="23" r="5"/>
-</g></svg></div>
-
-<!-- EVENTS -->
-<section class="events" id="events">
-  <div class="container">
-    <div class="eyebrow">উৎসবের আয়োজন</div>
-    <h2 class="section-title">অনুষ্ঠান</h2>
-    <p class="section-sub">পূজার পাঁচ দিনে যা যা থাকছে আপনার জন্য।</p>
-    <div class="events-grid">
-      <div class="ev-card"><div class="ev-icon">🪔</div><h3>সন্ধ্যা আরতি</h3><p>প্রতিদিন গোধূলি লগ্নে ঢাক-কাঁসরের সাথে দেবীর আরতি।</p></div>
-      <div class="ev-card"><div class="ev-icon">💃</div><h3>ধুনুচি নাচ</h3><p>নবমীর রাতে ঐতিহ্যবাহী ধুনুচি নাচের প্রতিযোগিতা ও প্রদর্শনী।</p></div>
-      <div class="ev-card"><div class="ev-icon">🎭</div><h3>সাংস্কৃতিক অনুষ্ঠান</h3><p>স্থানীয় শিল্পীদের গান, নাচ ও নাটকের সন্ধ্যা।</p></div>
-      <div class="ev-card"><div class="ev-icon">🍚</div><h3>প্রসাদ / ভোগ</h3><p>প্রতিদিন দুপুরে সকলের জন্য মহাপ্রসাদ বিতরণ।</p></div>
-      <div class="ev-card"><div class="ev-icon">🔴</div><h3>সিঁদুর খেলা</h3><p>দশমীর সকালে বিবাহিত নারীদের ঐতিহ্যবাহী সিঁদুর খেলা।</p></div>
-      <div class="ev-card"><div class="ev-icon">🛶</div><h3>বিসর্জন শোভাযাত্রা</h3><p>ঢাক-ঢোল সহকারে প্রতিমা বিসর্জনের বর্ণাঢ্য শোভাযাত্রা।</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- GALLERY -->
-<section class="gallery" id="gallery">
-  <div class="container">
-    <div class="eyebrow">স্মৃতির পাতা</div>
-    <h2 class="section-title">গ্যালারি</h2>
-    <p class="section-sub">গত বছরগুলোর পূজার কিছু বিশেষ মুহূর্ত।</p>
-    <div class="masonry">
-      <div class="m-item"><div class="ph m1">প্রতিমা দর্শন</div></div>
-      <div class="m-item"><div class="ph m2">সন্ধ্যা আরতি</div></div>
-      <div class="m-item"><div class="ph m3">ধুনুচি নাচ</div></div>
-      <div class="m-item"><div class="ph m4">মণ্ডপ সজ্জা</div></div>
-      <div class="m-item"><div class="ph m5">সাংস্কৃতিক সন্ধ্যা</div></div>
-      <div class="m-item"><div class="ph m6">ভোগ বিতরণ</div></div>
-      <div class="m-item"><div class="ph m7">সিঁদুর খেলা</div></div>
-      <div class="m-item"><div class="ph m8">বিসর্জন শোভাযাত্রা</div></div>
-    </div>
-  </div>
-</section>
-
-<div class="alpona-divider"><svg viewBox="0 0 1000 46"><path d="M0 23 Q 50 3, 100 23 T 200 23 T 300 23 T 400 23 T 500 23 T 600 23 T 700 23 T 800 23 T 900 23 T 1000 23" fill="none" stroke="#C8992F" stroke-width="2"/><g fill="#E15A24">
-<circle cx="100" cy="23" r="5"/><circle cx="300" cy="23" r="5"/><circle cx="500" cy="23" r="5"/><circle cx="700" cy="23" r="5"/><circle cx="900" cy="23" r="5"/>
-</g></svg></div>
-
-<!-- MEMBERS -->
 <section class="members" id="members">
+
   <div class="container">
-    <div class="eyebrow">যাঁরা এই পূজার পেছনে</div>
-    <h2 class="section-title">কমিটির সদস্যবৃন্দ</h2>
-    <p class="section-sub">যাঁদের নিরলস পরিশ্রমে প্রতি বছর এই উৎসব সার্থক হয়ে ওঠে।</p>
+
+    <div class="eyebrow">
+      যাঁরা এই পূজার পেছনে
+    </div>
+
+    <h2 class="section-title">
+      কমিটির সদস্যবৃন্দ
+    </h2>
+
+    <p class="section-sub">
+      যাঁদের নিরলস পরিশ্রমে প্রতি বছর এই উৎসব সার্থক হয়ে ওঠে।
+    </p>
+
+
     <div class="members-grid">
 
-<div class="mem-card"><div class="mem-photo">👤</div><h4>বিশ্বজিৎ দাশ বিষু</h4><div class="role">সভাপতি</div></div>
-<div class="mem-card"><div class="mem-photo">👤</div><h4>বিজয় কৃষ্ণ দাশ</h4><div class="role">সহ. সভাপতি</div></div>
-<div class="mem-card"><div class="mem-photo">👤</div><h4>সুমন বসাক</h4><div class="role">সহ. সভাপতি</div></div>
-<div class="mem-card"><div class="mem-photo">👤</div><h4>তুষার দেবরায়</h4><div class="role">সহ. সভাপতি</div></div>
 
-<div class="mem-card"><div class="mem-photo">👤</div><h4>পরিতোষ চন্দ্র দেব</h4><div class="role">সাধারণ সম্পাদক</div></div>
-<div class="mem-card"><div class="mem-photo">👤</div><h4>অপু বসাক</h4><div class="role">সহ. সাধারণ সম্পাদক</div></div>
-<div class="mem-card"><div class="mem-photo">👤</div><h4>পাপন বসাক</h4><div class="role">সহ. সাধারণ সম্পাদক</div></div>
-<div class="mem-card"><div class="mem-photo">👤</div><h4>শাওন চক্রবর্তী</h4><div class="role">কোষাধ্যক্ষ</div></div>
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>বিশ্বজিৎ দাশ বিষু</h4>
+        <div class="role">সভাপতি</div>
+      </div>
 
-<div class="mem-card"><div class="mem-photo">👤</div><h4>আশীষ দেব</h4><div class="role">সহ. কোষাধ্যক্ষ</div></div>
-<div class="mem-card"><div class="mem-photo">👤</div><h4>নয়ন মোদক</h4><div class="role">সহ. কোষাধ্যক্ষ</div></div>
-<div class="mem-card"><div class="mem-photo">👤</div><h4>নিলয় ধর</h4><div class="role">সাংগঠনিক সম্পাদক</div></div>
-<div class="mem-card"><div class="mem-photo">👤</div><h4>দুর্জয় বসাক</h4><div class="role">সহ. সাংগঠনিক সম্পাদক</div></div>
 
-<div class="mem-card"><div class="mem-photo">👤</div><h4>জয় দেব</h4><div class="role">সহ. সাংগঠনিক সম্পাদক</div></div>
-<div class="mem-card"><div class="mem-photo">👤</div><h4>রাতুল বসাক</h4><div class="role">দপ্তর সম্পাদক</div></div>
-<div class="mem-card"><div class="mem-photo">👤</div><h4>কাব্যজ্যোতি দেব</h4><div class="role">সহ. দপ্তর সম্পাদক</div></div>
-<div class="mem-card"><div class="mem-photo">👤</div><h4>প্রাণণ জ্যোতি দেব</h4><div class="role">সহ. দপ্তর সম্পাদক</div></div>
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>বিজয় কৃষ্ণ দাশ</h4>
+        <div class="role">সহ. সভাপতি</div>
+      </div>
 
-<div class="mem-card"><div class="mem-photo">👤</div><h4>প্রীতম বসাক</h4><div class="role">প্রচার সম্পাদক</div></div>
-<div class="mem-card"><div class="mem-photo">👤</div><h4>নয়ন মহাপাত্র</h4><div class="role">সহ. প্রচার সম্পাদক</div></div>
-<div class="mem-card"><div class="mem-photo">👤</div><h4>সীমান্ত বসাক</h4><div class="role">সহ. প্রচার সম্পাদক</div></div>
-<div class="mem-card"><div class="mem-photo">👤</div><h4>সুমিত বসাক</h4><div class="role">সাজসজ্জা সম্পাদক</div></div>
 
-<div class="mem-card"><div class="mem-photo">👤</div><h4>শুভ দাশ</h4><div class="role">সহ. সাজসজ্জা সম্পাদক</div></div>
-<div class="mem-card"><div class="mem-photo">👤</div><h4>প্রিয়াঙ্কা বসাক</h4><div class="role">সহ. সাজসজ্জা সম্পাদক</div></div>
-<div class="mem-card"><div class="mem-photo">👤</div><h4>বিশাল ভট্টাচার্য</h4><div class="role">ধর্ম বিষয়ক সম্পাদক</div></div>
-<div class="mem-card"><div class="mem-photo">👤</div><h4>রাহুল বসাক</h4><div class="role">সহ. ধর্ম বিষয়ক সম্পাদক</div></div>
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>সুমন বসাক</h4>
+        <div class="role">সহ. সভাপতি</div>
+      </div>
 
-<div class="mem-card"><div class="mem-photo">👤</div><h4>বিষ্ণু মোদক</h4><div class="role">সহ. ধর্ম বিষয়ক সম্পাদক</div></div>
-<div class="mem-card"><div class="mem-photo">👤</div><h4>সাম্য চক্রবর্তী স্বচ্ছ</h4><div class="role">সাংস্কৃতিক সম্পাদক</div></div>
-<div class="mem-card"><div class="mem-photo">👤</div><h4>জয় দাশ</h4><div class="role">সহ. সাংস্কৃতিক সম্পাদক</div></div>
-<div class="mem-card"><div class="mem-photo">👤</div><h4>তুষা বসাক</h4><div class="role">সহ. সাংস্কৃতিক সম্পাদক</div></div>
 
-<div class="mem-card"><div class="mem-photo">👤</div><h4>স্পর্শ বসাক লক্ষ্মণ</h4><div class="role">আপ্যায়ন সম্পাদক</div></div>
-<div class="mem-card"><div class="mem-photo">👤</div><h4>দিব্যজ্যোতি দেব</h4><div class="role">সহ. আপ্যায়ন সম্পাদক</div></div>
-<div class="mem-card"><div class="mem-photo">👤</div><h4>সম্পদন বসাক</h4><div class="role">সহ. আপ্যায়ন সম্পাদক</div></div>
-<div class="mem-card"><div class="mem-photo">👤</div><h4>সুজন বসাক</h4><div class="role">সহ. আপ্যায়ন সম্পাদক</div></div>
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>তুষার দেবরায়</h4>
+        <div class="role">সহ. সভাপতি</div>
+      </div>
 
-<div class="mem-card"><div class="mem-photo">👤</div><h4>অমিত বসাক</h4><div class="role">ক্রীড়া সম্পাদক</div></div>
-<div class="mem-card"><div class="mem-photo">👤</div><h4>জয় বসাক</h4><div class="role">সহ. ক্রীড়া সম্পাদক</div></div>
-<div class="mem-card"><div class="mem-photo">👤</div><h4>সজীব বসাক</h4><div class="role">সহ. ক্রীড়া সম্পাদক</div></div>
-<div class="mem-card"><div class="mem-photo">👤</div><h4>অর্বব দেব</h4><div class="role">সহ. ক্রীড়া সম্পাদক</div></div>
-</div>
+
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>পরিতোষ চন্দ্র দেব</h4>
+        <div class="role">সাধারণ সম্পাদক</div>
+      </div>
+
+
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>অপু বসাক</h4>
+        <div class="role">সহ. সাধারণ সম্পাদক</div>
+      </div>
+
+
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>পাপন বসাক</h4>
+        <div class="role">সহ. সাধারণ সম্পাদক</div>
+      </div>
+
+
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>শাওন চক্রবর্তী</h4>
+        <div class="role">কোষাধ্যক্ষ</div>
+      </div>
+
+
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>আশীষ দেব</h4>
+        <div class="role">সহ. কোষাধ্যক্ষ</div>
+      </div>
+
+
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>নয়ন মোদক</h4>
+        <div class="role">সহ. কোষাধ্যক্ষ</div>
+      </div>
+
+
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>নিলয় ধর</h4>
+        <div class="role">সাংগঠনিক সম্পাদক</div>
+      </div>
+
+
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>দুর্জয় বসাক</h4>
+        <div class="role">সহ. সাংগঠনিক সম্পাদক</div>
+      </div>
+
+
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>জয় দেব</h4>
+        <div class="role">সহ. সাংগঠনিক সম্পাদক</div>
+      </div>
+
+
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>রাতুল বসাক</h4>
+        <div class="role">দপ্তর সম্পাদক</div>
+      </div>
+
+
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>কাব্যজ্যোতি দেব</h4>
+        <div class="role">সহ. দপ্তর সম্পাদক</div>
+      </div>
+
+
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>প্রাণণ জ্যোতি দেব</h4>
+        <div class="role">সহ. দপ্তর সম্পাদক</div>
+      </div>
+
+
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>প্রীতম বসাক</h4>
+        <div class="role">প্রচার সম্পাদক</div>
+      </div>
+
+
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>নয়ন মহাপাত্র</h4>
+        <div class="role">সহ. প্রচার সম্পাদক</div>
+      </div>
+
+
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>সীমান্ত বসাক</h4>
+        <div class="role">সহ. প্রচার সম্পাদক</div>
+      </div>
+
+
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>সুমিত বসাক</h4>
+        <div class="role">সাজসজ্জা সম্পাদক</div>
+      </div>
+
+
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>শুভ দাশ</h4>
+        <div class="role">সহ. সাজসজ্জা সম্পাদক</div>
+      </div>
+
+
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>প্রিয়াঙ্কা বসাক</h4>
+        <div class="role">সহ. সাজসজ্জা সম্পাদক</div>
+      </div>
+
+
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>বিশাল ভট্টাচার্য</h4>
+        <div class="role">ধর্ম বিষয়ক সম্পাদক</div>
+      </div>
+
+
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>রাহুল বসাক</h4>
+        <div class="role">সহ. ধর্ম বিষয়ক সম্পাদক</div>
+      </div>
+
+
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>বিষ্ণু মোদক</h4>
+        <div class="role">সহ. ধর্ম বিষয়ক সম্পাদক</div>
+      </div>
+
+
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>সাম্য চক্রবর্তী স্বচ্ছ</h4>
+        <div class="role">সাংস্কৃতিক সম্পাদক</div>
+      </div>
+
+
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>জয় দাশ</h4>
+        <div class="role">সহ. সাংস্কৃতিক সম্পাদক</div>
+      </div>
+
+
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>তুষা বসাক</h4>
+        <div class="role">সহ. সাংস্কৃতিক সম্পাদক</div>
+      </div>
+
+
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>স্পর্শ বসাক লক্ষ্মণ</h4>
+        <div class="role">আপ্যায়ন সম্পাদক</div>
+      </div>
+
+
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>দিব্যজ্যোতি দেব</h4>
+        <div class="role">সহ. আপ্যায়ন সম্পাদক</div>
+      </div>
+
+
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>সম্পদন বসাক</h4>
+        <div class="role">সহ. আপ্যায়ন সম্পাদক</div>
+      </div>
+
+
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>সুজন বসাক</h4>
+        <div class="role">সহ. আপ্যায়ন সম্পাদক</div>
+      </div>
+
+
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>অমিত বসাক</h4>
+        <div class="role">ক্রীড়া সম্পাদক</div>
+      </div>
+
+
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>জয় বসাক</h4>
+        <div class="role">সহ. ক্রীড়া সম্পাদক</div>
+      </div>
+
+
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>সজীব বসাক</h4>
+        <div class="role">সহ. ক্রীড়া সম্পাদক</div>
+      </div>
+
+
+      <div class="mem-card">
+        <div class="mem-photo">👤</div>
+        <h4>অর্বব দেব</h4>
+        <div class="role">সহ. ক্রীড়া সম্পাদক</div>
+      </div>
+
+    </div>
+
+  </div>
+
 </section>
 
-<!-- DONATION -->
-<section class="donation" id="donation">
+
+<!-- =========================================================
+     NEW: ADVISORY MEMBERS
+========================================================= -->
+
+<section class="members advisors" id="advisors">
+
   <div class="container">
-    <div class="eyebrow" style="color:var(--gold-light);">সহযোগিতার আহ্বান</div>
-    <h2 class="section-title">পূজার কাজে সহযোগিতা করুন</h2>
-    <p class="section-sub">আপনার সামান্য অনুদানই এই উৎসবকে করে তোলে আরও প্রাণবন্ত ও সুন্দর।</p>
+
+    <div class="eyebrow">
+      অভিজ্ঞদের পরামর্শ ও দিকনির্দেশনা
+    </div>
+
+    <h2 class="section-title">
+      উপদেষ্টা সদস্যবৃন্দ
+    </h2>
+
+    <p class="section-sub">
+      যাঁদের অভিজ্ঞতা, পরামর্শ ও দিকনির্দেশনায়
+      জননী সংসদ দুর্গোৎসবের সকল কার্যক্রম আরও সুন্দরভাবে পরিচালিত হয়।
+    </p>
+
+
+    <div class="members-grid">
+
+
+      <!-- ADVISOR 01 -->
+
+      <div class="mem-card advisor-card">
+
+        <div class="mem-photo">
+          👤
+        </div>
+
+        <h4>
+          উপদেষ্টা সদস্যের নাম
+        </h4>
+
+        <div class="role">
+          প্রধান উপদেষ্টা
+        </div>
+
+      </div>
+
+
+      <!-- ADVISOR 02 -->
+
+      <div class="mem-card advisor-card">
+
+        <div class="mem-photo">
+          👤
+        </div>
+
+        <h4>
+          উপদেষ্টা সদস্যের নাম
+        </h4>
+
+        <div class="role">
+          উপদেষ্টা
+        </div>
+
+      </div>
+
+
+      <!-- ADVISOR 03 -->
+
+      <div class="mem-card advisor-card">
+
+        <div class="mem-photo">
+          👤
+        </div>
+
+        <h4>
+          উপদেষ্টা সদস্যের নাম
+        </h4>
+
+        <div class="role">
+          উপদেষ্টা
+        </div>
+
+      </div>
+
+
+      <!-- ADVISOR 04 -->
+
+      <div class="mem-card advisor-card">
+
+        <div class="mem-photo">
+          👤
+        </div>
+
+        <h4>
+          উপদেষ্টা সদস্যের নাম
+        </h4>
+
+        <div class="role">
+          উপদেষ্টা
+        </div>
+
+      </div>
+
+
+      <!-- ADVISOR 05 -->
+
+      <div class="mem-card advisor-card">
+
+        <div class="mem-photo">
+          👤
+        </div>
+
+        <h4>
+          উপদেষ্টা সদস্যের নাম
+        </h4>
+
+        <div class="role">
+          উপদেষ্টা
+        </div>
+
+      </div>
+
+
+      <!-- ADVISOR 06 -->
+
+      <div class="mem-card advisor-card">
+
+        <div class="mem-photo">
+          👤
+        </div>
+
+        <h4>
+          উপদেষ্টা সদস্যের নাম
+        </h4>
+
+        <div class="role">
+          উপদেষ্টা
+        </div>
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ALPONA DIVIDER -->
+
+<div class="alpona-divider">
+
+  <svg viewBox="0 0 1000 46">
+
+    <path
+      d="M0 23 Q 50 43, 100 23 T 200 23 T 300 23 T 400 23 T 500 23 T 600 23 T 700 23 T 800 23 T 900 23 T 1000 23"
+      fill="none"
+      stroke="#C8992F"
+      stroke-width="2"
+    />
+
+    <g fill="#650E18">
+
+      <circle cx="150" cy="23" r="5"/>
+      <circle cx="350" cy="23" r="5"/>
+      <circle cx="550" cy="23" r="5"/>
+      <circle cx="750" cy="23" r="5"/>
+      <circle cx="950" cy="23" r="5"/>
+
+    </g>
+
+  </svg>
+
+</div>
+
+
+<!-- =========================================================
+     DONATION
+========================================================= -->
+
+<section class="donation" id="donation">
+
+  <div class="container">
+
+    <div
+      class="eyebrow"
+      style="color:var(--gold-light);"
+    >
+      সহযোগিতার আহ্বান
+    </div>
+
+    <h2 class="section-title">
+      পূজার কাজে সহযোগিতা করুন
+    </h2>
+
+    <p class="section-sub">
+      আপনার সামান্য অনুদানই এই উৎসবকে করে তোলে আরও প্রাণবন্ত ও সুন্দর।
+    </p>
+
+
     <div class="donate-card">
-      <div class="qr-box"><br><img src="/image/QR.jpg" alt=""></div>
+
+
+      <div class="qr-box">
+
+        <img
+          src="/image/QR.jpg"
+          alt="অনুদানের QR Code"
+        >
+
+      </div>
+
 
       <div class="donate-info">
-        <p>📱 <strong>Bkash / Nagad:</strong> 98XXXXXXXX</p>
-        <p>🏦 <strong>ব্যাংক অ্যাকাউন্ট:</strong> দুর্গা পূজা কমিটি<br>A/C: XXXX-XXXX-XXXX</p>
-        <p>💰 <strong>নগদ অনুদান:</strong> কমিটি অফিসে সরাসরি জমা দিতে পারেন</p>
-        <a href="#" class="btn btn-dark" style="margin-top:8px;">রসিদ ডাউনলোড করুন</a>
+
+        <p>
+          📱
+          <strong>Bkash / Nagad:</strong>
+          98XXXXXXXX
+        </p>
+
+        <p>
+          🏦
+          <strong>ব্যাংক অ্যাকাউন্ট:</strong>
+          দুর্গা পূজা কমিটি
+          <br>
+          A/C: XXXX-XXXX-XXXX
+        </p>
+
+        <p>
+          💰
+          <strong>নগদ অনুদান:</strong>
+          কমিটি অফিসে সরাসরি জমা দিতে পারেন
+        </p>
+
+        <a
+          href="#"
+          class="btn btn-dark"
+          style="margin-top:8px;"
+        >
+          রসিদ ডাউনলোড করুন
+        </a>
+
       </div>
+
     </div>
+
   </div>
+
 </section>
 
-<!-- NOTICE -->
+
+<!-- =========================================================
+     NOTICE
+========================================================= -->
+
 <section class="notice" id="notice">
+
   <div class="container">
-    <div class="eyebrow">গুরুত্বপূর্ণ তথ্য</div>
-    <h2 class="section-title">নোটিশ</h2>
-    <p class="section-sub">সর্বশেষ ঘোষণা ও আপডেট।</p>
+
+    <div class="eyebrow">
+      গুরুত্বপূর্ণ তথ্য
+    </div>
+
+    <h2 class="section-title">
+      নোটিশ
+    </h2>
+
+    <p class="section-sub">
+      সর্বশেষ ঘোষণা ও আপডেট।
+    </p>
+
+
     <div class="notice-list">
-      <div class="notice-item"><div class="n-icon">📌</div><div><h4>সাংস্কৃতিক অনুষ্ঠানে অংশগ্রহণ</h4><p>যাঁরা গান, নাচ বা আবৃত্তিতে অংশ নিতে চান, দয়া করে কমিটি অফিসে নাম নথিভুক্ত করুন।</p></div><div class="n-date">২ দিন আগে</div></div>
-      <div class="notice-item"><div class="n-icon">🚧</div><div><h4>যান চলাচল নিয়ন্ত্রণ</h4><p>অষ্টমী ও নবমীর সন্ধ্যায় মণ্ডপ সংলগ্ন রাস্তায় সাধারণ যান চলাচল বন্ধ থাকবে।</p></div><div class="n-date">৪ দিন আগে</div></div>
-      <div class="notice-item"><div class="n-icon">🎟️</div><div><h4>স্টল বরাদ্দ</h4><p>খাবার ও অন্যান্য স্টলের জন্য আগ্রহীরা যোগাযোগ করুন সাধারণ সম্পাদকের সাথে।</p></div><div class="n-date">৬ দিন আগে</div></div>
-    </div>
-  </div>
-</section>
 
-<!-- LOCATION -->
-<section class="location" id="location">
-  <div class="container">
-    <div class="eyebrow">আমাদের খুঁজে নিন</div>
-    <h2 class="section-title">লোকেশন</h2>
-    <p class="section-sub">মণ্ডপের ঠিকানা ও দিকনির্দেশ।</p>
-    <div class="loc-grid">
-      <div class="map-box"><div class="map-pin">📍
-        
-      </div></div>
-      <div class="loc-info">
-        <h3>পূজা মণ্ডপের ঠিকানা</h3>
-        <p>📍 গঙ্গানগর, লস্করপুর, শায়েস্তাগঞ্জ, হবিগঞ্জ</p>
-        <p>🕒 প্রতিদিন সকাল ৬টা থেকে রাত ১১টা পর্যন্ত খোলা</p>
-        <p>🚗 নিকটস্থ বাস স্ট্যান্ড থেকে ৫ মিনিটের হাঁটা পথ</p>
-        <a 
-  href="https://www.google.com/maps/place/Jononi+Songsad/@24.2724148,91.4780508,18.5z/data=!4m6!3m5!1s0x37515c53ed2cf823:0xeb4bb9e4c20313d4!8m2!3d24.2726439!4d91.4785656!16s%2Fg%2F1pv0k7wbr"
-  target="_blank"
-  href="#" class="btn btn-primary" style="margin-top:14px;">দিকনির্দেশ দেখুন</a>  
+
+      <div class="notice-item">
+
+        <div class="n-icon">
+          📌
+        </div>
+
+        <div>
+
+          <h4>
+            সাংস্কৃতিক অনুষ্ঠানে অংশগ্রহণ
+          </h4>
+
+          <p>
+            যাঁরা গান, নাচ বা আবৃত্তিতে অংশ নিতে চান,
+            দয়া করে কমিটি অফিসে নাম নথিভুক্ত করুন।
+          </p>
+
+        </div>
+
+        <div class="n-date">
+          ২ দিন আগে
+        </div>
+
       </div>
+
+
+      <div class="notice-item">
+
+        <div class="n-icon">
+          🚧
+        </div>
+
+        <div>
+
+          <h4>
+            যান চলাচল নিয়ন্ত্রণ
+          </h4>
+
+          <p>
+            অষ্টমী ও নবমীর সন্ধ্যায় মণ্ডপ সংলগ্ন রাস্তায়
+            সাধারণ যান চলাচল বন্ধ থাকবে।
+          </p>
+
+        </div>
+
+        <div class="n-date">
+          ৪ দিন আগে
+        </div>
+
+      </div>
+
+
+      <div class="notice-item">
+
+        <div class="n-icon">
+          🎟️
+        </div>
+
+        <div>
+
+          <h4>
+            স্টল বরাদ্দ
+          </h4>
+
+          <p>
+            খাবার ও অন্যান্য স্টলের জন্য আগ্রহীরা
+            যোগাযোগ করুন সাধারণ সম্পাদকের সাথে।
+          </p>
+
+        </div>
+
+        <div class="n-date">
+          ৬ দিন আগে
+        </div>
+
+      </div>
+
+
     </div>
+
   </div>
+
 </section>
 
-<!-- CONTACT -->
+
+<!-- =========================================================
+     LOCATION
+========================================================= -->
+
+<section class="location" id="location">
+
+  <div class="container">
+
+    <div class="eyebrow">
+      আমাদের খুঁজে নিন
+    </div>
+
+    <h2 class="section-title">
+      লোকেশন
+    </h2>
+
+    <p class="section-sub">
+      মণ্ডপের ঠিকানা ও দিকনির্দেশ।
+    </p>
+
+
+    <div class="loc-grid">
+
+
+      <div class="map-box">
+
+        <div class="map-pin">
+          📍
+        </div>
+
+      </div>
+
+
+      <div class="loc-info">
+
+        <h3>
+          পূজা মণ্ডপের ঠিকানা
+        </h3>
+
+        <p>
+          📍 গঙ্গানগর, লস্করপুর, শায়েস্তাগঞ্জ, হবিগঞ্জ
+        </p>
+
+        <p>
+          🕒 প্রতিদিন সকাল ৬টা থেকে রাত ১১টা পর্যন্ত খোলা
+        </p>
+
+        <p>
+          🚗 নিকটস্থ বাস স্ট্যান্ড থেকে ৫ মিনিটের হাঁটা পথ
+        </p>
+
+
+        <a
+          href="https://www.google.com/maps/place/Jononi+Songsad/@24.2724148,91.4780508,18.5z/data=!4m6!3m5!1s0x37515c53ed2cf823:0xeb4bb9e4c20313d4!8m2!3d24.2726439!4d91.4785656!16s%2Fg%2F1pv0k7wbr"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-primary"
+          style="margin-top:14px;"
+        >
+          দিকনির্দেশ দেখুন
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     CONTACT
+========================================================= -->
+
 <section class="contact" id="contact">
+
   <div class="container">
-    <div class="eyebrow">যোগাযোগ করুন</div>
-    <h2 class="section-title">যোগাযোগ</h2>
-    <p class="section-sub">যেকোনো প্রশ্ন বা সহযোগিতার জন্য আমাদের সাথে যোগাযোগ করুন।</p>
-    <div class="contact-grid">
-      <div class="contact-card"><div class="c-icon">📞</div><h4>ফোন</h4><p>+880 1765-359794</p></div>
-      <div class="contact-card"><div class="c-icon">📘</div><h4>ফেসবুক</h4><a href="#">fb.com/durgapujacommittee</a></div>
-      <div class="contact-card"><div class="c-icon">✉️</div><h4>ইমেইল</h4><p>info@pujacommittee.org</p></div>
+
+    <div class="eyebrow">
+      যোগাযোগ করুন
     </div>
+
+    <h2 class="section-title">
+      যোগাযোগ
+    </h2>
+
+    <p class="section-sub">
+      যেকোনো প্রশ্ন বা সহযোগিতার জন্য আমাদের সাথে যোগাযোগ করুন।
+    </p>
+
+
+    <div class="contact-grid">
+
+
+      <div class="contact-card">
+
+        <div class="c-icon">
+          📞
+        </div>
+
+        <h4>
+          ফোন
+        </h4>
+
+        <p>
+          +880 1765-359794
+        </p>
+
+      </div>
+
+
+      <div class="contact-card">
+
+        <div class="c-icon">
+          📘
+        </div>
+
+        <h4>
+          ফেসবুক
+        </h4>
+
+        <a href="#">
+          fb.com/durgapujacommittee
+        </a>
+
+      </div>
+
+
+      <div class="contact-card">
+
+        <div class="c-icon">
+          ✉️
+        </div>
+
+        <h4>
+          ইমেইল
+        </h4>
+
+        <p>
+          info@pujacommittee.org
+        </p>
+
+      </div>
+
+
+    </div>
+
   </div>
+
 </section>
 
-<!-- FOOTER -->
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
 <footer>
+
   <div class="container">
-    <div class="brand" style="justify-content:center;">
-      <div class="brand-mark">🕉️</div>
-      <div class="brand-name">জননী সংসদ দুর্গোৎসব <small>সর্বজনীন পূজা কমিটি</small></div>
+
+
+    <div
+      class="brand"
+      style="justify-content:center;"
+    >
+
+      <div class="brand-mark">
+        🕉️
+      </div>
+
+      <div class="brand-name">
+
+        জননী সংসদ দুর্গোৎসব
+
+        <small>
+          সর্বজনীন পূজা কমিটি
+        </small>
+
+      </div>
+
     </div>
+
+
     <div class="footer-social">
-      <a href="#">📘</a><a href="#">📸</a><a href="#">▶️</a><a href="#">📞</a>
+
+      <a href="#">
+        📘
+      </a>
+
+      <a href="#">
+        📸
+      </a>
+
+      <a href="#">
+        ▶️
+      </a>
+
+      <a href="#">
+        📞
+      </a>
+
     </div>
-    <div class="credit">© ২০২৬ শ্রী শ্রী জননী সংসদ দুর্গোৎসব সর্বজনীন পূজা কমিটি — সকল স্বত্ব সংরক্ষিত।</div>
+
+
+    <div class="credit">
+
+      © ২০২৬ শ্রী শ্রী জননী সংসদ দুর্গোৎসব
+      সর্বজনীন পূজা কমিটি — সকল স্বত্ব সংরক্ষিত।
+
+    </div>
+
   </div>
+
 </footer>
 
+
+<!-- =========================================================
+     SCRIPT
+========================================================= -->
+
 <script src="script.js"></script>
+
 </body>
 </html>
