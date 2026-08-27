@@ -900,20 +900,17 @@ section {
 }
 
 .about-text h3 {
-  font-size: clamp(1.3rem, 2vw, 1.7rem);
-
+  font-family: 'Noto Serif Bengaligi', sans-serif !important;
+  margin-bottom:14px;
   line-height: 1.5;
-
   margin-bottom: 14px;
 }
 
 .about-text p {
   color: var(--ink-soft);
-
   line-height: 1.95;
-
   margin-bottom: 16px;
-
+  font-family: 'Noto Serif Bengaligi', sans-serif !important;
   font-size: 1.02rem;
 }
 
