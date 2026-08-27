@@ -4,7 +4,7 @@ window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 40);
 });
 
-const burger = document.getElementById('burger');
+const burger = document.getElementById('navBurger');
 const navLinks = document.getElementById('navLinks');
 
 if (burger && navLinks) {
