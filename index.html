@@ -594,7 +594,7 @@
     </p>
 
 
-    <div class="timeline">
+    <div class="timeline" id="timeline">
 
 
       <!-- ষষ্ঠী -->
@@ -947,7 +947,7 @@
     </p>
 
 
-    <div class="masonry">
+    <div class="masonry" id="masonryGrid">
 
 
       <div class="m-item">
@@ -1088,7 +1088,7 @@
     </p>
 
 
-    <div class="members-grid">
+    <div class="members-grid" id="membersGrid">
 
 
       <div class="mem-card">
@@ -1381,7 +1381,7 @@
     </p>
 
 
-    <div class="members-grid">
+    <div class="members-grid" id="advisorsGrid">
 
 
       <!-- =====================================================
@@ -1695,7 +1695,7 @@
     </p>
 
 
-    <div class="members-grid">
+    <div class="members-grid" id="generalMembersGrid">
 
       <!-- সাধারণ সদস্যদের তথ্য এখানে যোগ করা যাবে -->
 
@@ -1897,7 +1897,7 @@
     </p>
 
 
-    <div class="notice-list">
+    <div class="notice-list" id="noticeList">
 
 
       <div class="notice-item">
@@ -2229,6 +2229,8 @@
 
       Developed by Rahul Basak Santo
 
+      &nbsp;·&nbsp; <a href="admin.html" style="opacity:.55;">Admin</a>
+
     </div>
 
 
@@ -2241,6 +2243,13 @@
 <!-- =========================================================
      SCRIPT
 ========================================================= -->
+
+<!-- FIREBASE (data source for notices/schedule/members/gallery) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="render.js"></script>
 
 <script src="script.js"></script>
 
