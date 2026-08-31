@@ -101,11 +101,32 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 
 // ---------------- LIST (live) ----------------
 function attachListListener(type) {
-  db.collection(type).orderBy('order').onSnapshot(snap => {
-    renderList(type, snap.docs);
+  // NOTE: intentionally NOT using .orderBy('order') here.
+  // Firestore's orderBy() silently EXCLUDES any document that is missing
+  // the field being sorted on. If older/manually-added documents don't
+  // have an 'order' field, they'd vanish from this list even though they
+  // exist in the database. Instead we fetch everything and sort client-side.
+  db.collection(type).onSnapshot(snap => {
+    const sorted = snap.docs.slice().sort((a, b) => {
+      const oa = Number(a.data().order);
+      const ob = Number(b.data().order);
+      return (isNaN(oa) ? 0 : oa) - (isNaN(ob) ? 0 : ob);
+    });
+    renderList(type, sorted);
   }, err => {
     console.warn(type, 'listener error', err);
+    showListError(type, err);
   });
+}
+
+function showListError(type, err) {
+  const wrap = document.getElementById('list-' + type);
+  if (!wrap) return;
+  wrap.innerHTML = `
+    <div class="empty-note" style="color:var(--danger);">
+      ডেটা লোড করতে সমস্যা হয়েছে: ${escapeHtml(err.message || err.code || 'অজানা এরর')}
+      <br><span style="font-size:12px;">Firestore Rules publish করা আছে কিনা, বা ইন্টারনেট কানেকশন চেক করুন।</span>
+    </div>`;
 }
 
 function renderList(type, docs) {

@@ -113,38 +113,49 @@ function escapeAttr(str) {
 }
 
 // ---------- fetch all ----------
+// Sorts docs by their 'order' field client-side. Docs missing 'order'
+// are treated as 0 instead of being dropped — Firestore's orderBy()
+// would otherwise silently exclude any document without that field.
+function sortByOrder(docs) {
+  return docs.slice().sort((a, b) => {
+    const oa = Number(a.data().order);
+    const ob = Number(b.data().order);
+    return (isNaN(oa) ? 0 : oa) - (isNaN(ob) ? 0 : ob);
+  });
+}
+
 async function loadPublicData() {
   try {
-    const noticesSnap = await db.collection('notices').orderBy('order').get();
-    renderNotices(noticesSnap.docs);
+    const noticesSnap = await db.collection('notices').get();
+    renderNotices(sortByOrder(noticesSnap.docs));
   } catch (e) { console.warn('notices fetch failed', e); }
 
   try {
-    const scheduleSnap = await db.collection('schedule').orderBy('order').get();
-    renderSchedule(scheduleSnap.docs);
+    const scheduleSnap = await db.collection('schedule').get();
+    renderSchedule(sortByOrder(scheduleSnap.docs));
   } catch (e) { console.warn('schedule fetch failed', e); }
 
   try {
     const membersSnap = await db.collection('members')
-      .where('group', '==', 'committee').orderBy('order').get();
-    renderMembers('membersGrid', membersSnap.docs);
+      .where('group', '==', 'committee').get();
+    renderMembers('membersGrid', sortByOrder(membersSnap.docs));
   } catch (e) { console.warn('members(committee) fetch failed', e); }
 
   try {
     const advisorsSnap = await db.collection('members')
-      .where('group', '==', 'advisor').orderBy('order').get();
-    renderMembers('advisorsGrid', advisorsSnap.docs);
+      .where('group', '==', 'advisor').get();
+    renderMembers('advisorsGrid', sortByOrder(advisorsSnap.docs));
   } catch (e) { console.warn('members(advisor) fetch failed', e); }
 
   try {
     const generalSnap = await db.collection('members')
-      .where('group', '==', 'general').orderBy('order').get();
-    renderMembers('generalMembersGrid', generalSnap.docs);
+      .where('group', '==', 'general').get();
+    renderMembers('generalMembersGrid', sortByOrder(generalSnap.docs));
   } catch (e) { console.warn('members(general) fetch failed', e); }
 
   try {
-    const gallerySnap = await db.collection('gallery').orderBy('order').get();
-    renderGallery(gallerySnap.docs);
+    const gallerySnap = await db.collection('gallery').get();
+    renderGallery(sortByOrder(gallerySnap.docs));
   } catch (e) { console.warn('gallery fetch failed', e); }
 }
 
