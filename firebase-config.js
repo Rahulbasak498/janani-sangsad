@@ -1,12 +1,6 @@
 // =========================================================
 // FIREBASE CONFIG
 // =========================================================
-// Firebase Console (console.firebase.google.com) -> আপনার প্রজেক্ট
-// -> ⚙️ Project settings -> General -> "Your apps" -> Web app (</>)
-// থেকে এই তথ্যগুলো কপি করে নিচে বসান।
-//
-// SETUP-GUIDE.md ফাইলে ধাপে ধাপে নির্দেশনা দেওয়া আছে।
-// =========================================================
 
 const firebaseConfig = {
   apiKey: "AIzaSyDVKceCHZvh7AnxLYfn40Vb5zYZjmKnWts",
@@ -18,4 +12,8 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
+
+// Firebase services
+const db = firebase.firestore();
+const auth = firebase.auth();
