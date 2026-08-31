@@ -71,14 +71,22 @@ document.getElementById('loginBtn').addEventListener('click', () => {
   const email = document.getElementById('loginEmail').value.trim();
   const pass = document.getElementById('loginPassword').value;
   const errBox = document.getElementById('loginError');
+
   errBox.style.display = 'none';
 
-  auth.signInWithEmailAndPassword(email, pass).catch(err => {
-    errBox.textContent = 'লগইন ব্যর্থ: ইমেইল বা পাসওয়ার্ড সঠিক নয়।';
-    errBox.style.display = 'block';
-  });
-});
+  auth.signInWithEmailAndPassword(email, pass)
+    .then(() => {
+      console.log("LOGIN SUCCESS");
+    })
+    .catch(err => {
+      console.error("FIREBASE LOGIN ERROR:", err);
 
+      errBox.textContent =
+        'লগইন ব্যর্থ: ' + err.code + ' — ' + err.message;
+
+      errBox.style.display = 'block';
+    });
+});
 document.getElementById('logoutBtn').addEventListener('click', () => auth.signOut());
 
 // ---------------- TABS ----------------
