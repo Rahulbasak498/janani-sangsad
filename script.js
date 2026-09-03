@@ -15,9 +15,29 @@ if (burger && navLinks) {
   navLinks.querySelectorAll('a').forEach(a => {
     a.addEventListener('click', () => {
       navLinks.classList.remove('open');
+      document.querySelectorAll('.nav-dropdown.open').forEach(dd => dd.classList.remove('open'));
     });
   });
 }
+
+// ---------- সদস্য DROPDOWN ----------
+document.querySelectorAll('.nav-dropdown-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const dropdown = btn.closest('.nav-dropdown');
+    const wasOpen = dropdown.classList.contains('open');
+
+    document.querySelectorAll('.nav-dropdown.open').forEach(dd => dd.classList.remove('open'));
+
+    if (!wasOpen) dropdown.classList.add('open');
+  });
+});
+
+document.addEventListener('click', (e) => {
+  document.querySelectorAll('.nav-dropdown.open').forEach(dd => {
+    if (!dd.contains(e.target)) dd.classList.remove('open');
+  });
+});
 
 const musicBtn = document.getElementById('musicBtn');
 

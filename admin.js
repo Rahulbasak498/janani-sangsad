@@ -26,16 +26,37 @@ const SCHEMAS = {
     ],
     card: s => ({ thumb: '🗓️', title: `${s.day || ''} — ${s.title || ''}`, sub: s.date })
   },
-  members: {
-    label: 'সদস্য',
+  committee: {
+    label: 'কার্যকরী সদস্যবৃন্দ',
+    collection: 'members',
+    filter: { field: 'group', value: 'committee' },
     fields: [
       { key: 'name', label: 'নাম', type: 'text', required: true },
       { key: 'role', label: 'পদবি', type: 'text' },
-      { key: 'group', label: 'গ্রুপ', type: 'select', default: 'committee', options: [
-        ['committee', 'কার্যকরী সদস্যবৃন্দ'],
-        ['advisor', 'উপদেষ্টা'],
-        ['general', 'সাধারণ সদস্যবৃন্দ']
-      ]},
+      { key: 'photoUrl', label: 'ছবির URL (ঐচ্ছিক, না দিলে 👤 দেখাবে)', type: 'text' },
+      { key: 'order', label: 'ক্রম', type: 'number', default: 0 }
+    ],
+    card: m => ({ thumb: m.photoUrl ? { img: m.photoUrl } : '👤', title: m.name, sub: m.role })
+  },
+  advisors: {
+    label: 'উপদেষ্টা',
+    collection: 'members',
+    filter: { field: 'group', value: 'advisor' },
+    fields: [
+      { key: 'name', label: 'নাম', type: 'text', required: true },
+      { key: 'role', label: 'পদবি', type: 'text' },
+      { key: 'photoUrl', label: 'ছবির URL (ঐচ্ছিক, না দিলে 👤 দেখাবে)', type: 'text' },
+      { key: 'order', label: 'ক্রম', type: 'number', default: 0 }
+    ],
+    card: m => ({ thumb: m.photoUrl ? { img: m.photoUrl } : '👤', title: m.name, sub: m.role })
+  },
+  generalMembers: {
+    label: 'সাধারণ সদস্যবৃন্দ',
+    collection: 'members',
+    filter: { field: 'group', value: 'general' },
+    fields: [
+      { key: 'name', label: 'নাম', type: 'text', required: true },
+      { key: 'role', label: 'পদবি', type: 'text' },
       { key: 'photoUrl', label: 'ছবির URL (ঐচ্ছিক, না দিলে 👤 দেখাবে)', type: 'text' },
       { key: 'order', label: 'ক্রম', type: 'number', default: 0 }
     ],
@@ -49,6 +70,18 @@ const SCHEMAS = {
       { key: 'order', label: 'ক্রম', type: 'number', default: 0 }
     ],
     card: g => ({ thumb: g.imageUrl ? { img: g.imageUrl } : '🖼️', title: g.caption, sub: g.imageUrl })
+  },
+  affiliates: {
+    label: 'অঙ্গসংগঠন',
+    fields: [
+      { key: 'icon',    label: 'আইকন (ইমোজি, লোগো URL না দিলে এটা দেখাবে)', type: 'text', placeholder: '🏛️' },
+      { key: 'name',    label: 'সংগঠনের নাম', type: 'text', required: true },
+      { key: 'desc',    label: 'সংক্ষিপ্ত বিবরণ', type: 'textarea' },
+      { key: 'logoUrl', label: 'লোগো/ছবির URL (ঐচ্ছিক)', type: 'text' },
+      { key: 'link',    label: 'ওয়েবসাইট/ফেসবুক লিংক (ঐচ্ছিক)', type: 'text' },
+      { key: 'order',   label: 'ক্রম', type: 'number', default: 0 }
+    ],
+    card: a => ({ thumb: a.logoUrl ? { img: a.logoUrl } : (a.icon || '🏛️'), title: a.name, sub: a.desc })
   }
 };
 
@@ -100,14 +133,28 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 });
 
 // ---------------- LIST (live) ----------------
+
+// Some tabs (e.g. committee/advisors/generalMembers) share one Firestore
+// collection ('members') but each only shows/edits docs matching a filter
+// (e.g. group == 'committee'). This resolves the right collection ref.
+function collRef(type) {
+  const schema = SCHEMAS[type];
+  return db.collection((schema && schema.collection) || type);
+}
+
 function attachListListener(type) {
+  const schema = SCHEMAS[type];
   // NOTE: intentionally NOT using .orderBy('order') here.
   // Firestore's orderBy() silently EXCLUDES any document that is missing
   // the field being sorted on. If older/manually-added documents don't
   // have an 'order' field, they'd vanish from this list even though they
   // exist in the database. Instead we fetch everything and sort client-side.
-  db.collection(type).onSnapshot(snap => {
-    const sorted = snap.docs.slice().sort((a, b) => {
+  collRef(type).onSnapshot(snap => {
+    let docs = snap.docs;
+    if (schema.filter) {
+      docs = docs.filter(d => d.data()[schema.filter.field] === schema.filter.value);
+    }
+    const sorted = docs.slice().sort((a, b) => {
       const oa = Number(a.data().order);
       const ob = Number(b.data().order);
       return (isNaN(oa) ? 0 : oa) - (isNaN(ob) ? 0 : ob);
@@ -229,7 +276,7 @@ function openForm(type, id) {
   };
 
   if (id) {
-    db.collection(type).doc(id).get().then(doc => buildFields(doc.data()));
+    collRef(type).doc(id).get().then(doc => buildFields(doc.data()));
   } else {
     buildFields(null);
   }
@@ -263,12 +310,19 @@ document.getElementById('itemForm').addEventListener('submit', async (e) => {
     payload[key] = val;
   });
 
+  // Tabs backed by a shared collection (e.g. committee/advisors/generalMembers
+  // all live in 'members') carry a fixed field value that isn't shown as a
+  // form input — set it here so saved docs land in the right group.
+  if (schema.filter) {
+    payload[schema.filter.field] = schema.filter.value;
+  }
+
   try {
     if (id) {
-      await db.collection(type).doc(id).update(payload);
+      await collRef(type).doc(id).update(payload);
       showToast('আপডেট করা হয়েছে ✅');
     } else {
-      await db.collection(type).add(payload);
+      await collRef(type).add(payload);
       showToast('যোগ করা হয়েছে ✅');
     }
     closeForm();
@@ -282,7 +336,7 @@ document.getElementById('itemForm').addEventListener('submit', async (e) => {
 async function deleteItem(type, id) {
   if (!confirm('আপনি কি নিশ্চিত এটি মুছে ফেলতে চান?')) return;
   try {
-    await db.collection(type).doc(id).delete();
+    await collRef(type).doc(id).delete();
     showToast('মুছে ফেলা হয়েছে 🗑️');
   } catch (err) {
     alert('মুছতে ব্যর্থ: ' + err.message);

@@ -107,16 +107,25 @@
         গ্যালারি
       </a>
 
-      <a href="#members">
-        কার্যকরী সদস্যবৃন্দ
-      </a>
+      <div class="nav-dropdown" id="membersDropdown">
+        <button class="nav-dropdown-btn" type="button">
+          সদস্য <span class="caret">▾</span>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="#members">
+            কার্যকরী সদস্যবৃন্দ
+          </a>
+          <a href="#advisors">
+            উপদেষ্টা
+          </a>
+          <a href="#general-members">
+            সাধারণ সদস্যবৃন্দ
+          </a>
+        </div>
+      </div>
 
-      <a href="#advisors">
-        উপদেষ্টা
-      </a>
-
-      <a href="#general-members">
-        সাধারণ সদস্যবৃন্দ
+      <a href="#affiliates">
+        অঙ্গসংগঠন
       </a>
 
       <a href="#donation">
@@ -950,74 +959,53 @@
     <div class="masonry" id="masonryGrid">
 
 
+ 
+
       <div class="m-item">
 
-        <div class="ph m1">
-          প্রতিমা দর্শন
-        </div>
+        <img class="m2" src="/image/সন্ধ্যা আরতি.jpg" alt="সন্ধ্যা আরতি" style="width:100%;object-fit:cover;display:block;">
 
       </div>
 
 
       <div class="m-item">
 
-        <div class="ph m2">
-          সন্ধ্যা আরতি
-        </div>
+        <img class="m3" src="/image/ধুনুচি নাচ.jpg" alt="ধুনুচি নাচ" style="width:100%;object-fit:cover;display:block;">
 
       </div>
 
 
       <div class="m-item">
 
-        <div class="ph m3">
-          ধুনুচি নাচ
-        </div>
+        <img class="m4" src="/image/মণ্ডপ সজ্জা.jpg" alt="মণ্ডপ সজ্জা" style="width:100%;object-fit:cover;display:block;">
 
       </div>
 
 
       <div class="m-item">
 
-        <div class="ph m4">
-          মণ্ডপ সজ্জা
-        </div>
+        <img class="m5" src="/image/সাংস্কৃতিক সন্ধ্যা.jpg" alt="সাংস্কৃতিক সন্ধ্যা" style="width:100%;object-fit:cover;display:block;">
 
       </div>
 
 
       <div class="m-item">
 
-        <div class="ph m5">
-          সাংস্কৃতিক সন্ধ্যা
-        </div>
+        <img class="m6" src="/image/ভোগ বিতরণ.jpg" alt="ভোগ বিতরণ" style="width:100%;object-fit:cover;display:block;">
 
       </div>
 
 
       <div class="m-item">
 
-        <div class="ph m6">
-          ভোগ বিতরণ
-        </div>
+        <img class="m7" src="/image/সিঁদুর খেলা.jpg" alt="সিঁদুর খেলা" style="width:100%;object-fit:cover;display:block;">
 
       </div>
 
 
       <div class="m-item">
 
-        <div class="ph m7">
-          সিঁদুর খেলা
-        </div>
-
-      </div>
-
-
-      <div class="m-item">
-
-        <div class="ph m8">
-          বিসর্জন শোভাযাত্রা
-        </div>
+        <img class="m8" src="/image/বিসর্জন শোভাযাত্রা.jpg" alt="বিসর্জন শোভাযাত্রা" style="width:100%;object-fit:cover;display:block;">
 
       </div>
 
@@ -1716,6 +1704,95 @@
   <svg viewBox="0 0 1000 46">
 
     <path
+      d="M0 23 Q 50 3, 100 23 T 200 23 T 300 23 T 400 23 T 500 23 T 600 23 T 700 23 T 800 23 T 900 23 T 1000 23"
+      fill="none"
+      stroke="#C8992F"
+      stroke-width="2"
+    />
+
+    <g fill="#E15A24">
+      <circle cx="100" cy="23" r="5"/>
+      <circle cx="300" cy="23" r="5"/>
+      <circle cx="500" cy="23" r="5"/>
+      <circle cx="700" cy="23" r="5"/>
+      <circle cx="900" cy="23" r="5"/>
+    </g>
+
+  </svg>
+
+</div>
+
+
+
+<!-- =========================================================
+     AFFILIATES / অঙ্গসংগঠন
+     (admin.html থেকে যোগ/এডিট/মুছা যাবে — 'affiliates' কালেকশন)
+========================================================= -->
+
+<section
+  class="affiliates"
+  id="affiliates"
+>
+
+  <div class="container">
+
+
+    <div class="eyebrow">
+      আমাদের সহযোগী সংগঠন
+    </div>
+
+
+    <h2 class="section-title">
+      অঙ্গসংগঠন
+    </h2>
+
+
+    <p class="section-sub">
+      জননী সংসদের সাথে যুক্ত ও সহযোগী বিভিন্ন সংগঠন।
+    </p>
+
+
+    <div class="affiliates-grid" id="affiliatesGrid">
+
+
+      <div class="aff-card">
+        <div class="aff-icon">🏛️</div>
+        <h3>অঙ্গসংগঠনের নাম</h3>
+        <p>এখানে সংক্ষিপ্ত বিবরণ থাকবে। Admin panel থেকে এই তথ্য বদলে দিন।</p>
+      </div>
+
+
+      <div class="aff-card">
+        <div class="aff-icon">🏛️</div>
+        <h3>অঙ্গসংগঠনের নাম</h3>
+        <p>এখানে সংক্ষিপ্ত বিবরণ থাকবে। Admin panel থেকে এই তথ্য বদলে দিন।</p>
+      </div>
+
+
+      <div class="aff-card">
+        <div class="aff-icon">🏛️</div>
+        <h3>অঙ্গসংগঠনের নাম</h3>
+        <p>এখানে সংক্ষিপ্ত বিবরণ থাকবে। Admin panel থেকে এই তথ্য বদলে দিন।</p>
+      </div>
+
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     ALPONA DIVIDER
+========================================================= -->
+
+<div class="alpona-divider">
+
+  <svg viewBox="0 0 1000 46">
+
+    <path
       d="M0 23 Q 50 43, 100 23 T 200 23 T 300 23 T 400 23 T 500 23 T 600 23 T 700 23 T 800 23 T 900 23 T 1000 23"
       fill="none"
       stroke="#C8992F"
@@ -1816,7 +1893,7 @@
             Bkash / Nagad:
           </strong>
 
-          98XXXXXXXX
+          01710000000
 
         </p>
 
@@ -1833,7 +1910,7 @@
 
           <br>
 
-          A/C: XXXX-XXXX-XXXX
+          A/C: 0000-0000-0000
 
         </p>
 

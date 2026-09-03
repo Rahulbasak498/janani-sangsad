@@ -102,6 +102,35 @@ function renderGallery(docs) {
   });
 }
 
+// ---------- AFFILIATES (অঙ্গসংগঠন) ----------
+function renderAffiliates(docs) {
+  const wrap = document.getElementById('affiliatesGrid');
+  if (!wrap || docs.length === 0) return;
+
+  wrap.innerHTML = '';
+
+  docs.forEach(d => {
+    const a = d.data();
+    const iconHtml = a.logoUrl
+      ? `<img src="${escapeAttr(a.logoUrl)}" alt="${escapeAttr(a.name || '')}">`
+      : (a.icon || '🏛️');
+
+    const linkHtml = a.link
+      ? `<a class="aff-link" href="${escapeAttr(a.link)}" target="_blank" rel="noopener noreferrer">ওয়েবসাইট দেখুন →</a>`
+      : '';
+
+    const card = document.createElement('div');
+    card.className = 'aff-card';
+    card.innerHTML = `
+      <div class="aff-icon">${iconHtml}</div>
+      <h3>${escapeHtml(a.name || '')}</h3>
+      <p>${escapeHtml(a.desc || '')}</p>
+      ${linkHtml}
+    `;
+    wrap.appendChild(card);
+  });
+}
+
 // ---------- helpers ----------
 function escapeHtml(str) {
   const d = document.createElement('div');
@@ -157,6 +186,11 @@ async function loadPublicData() {
     const gallerySnap = await db.collection('gallery').get();
     renderGallery(sortByOrder(gallerySnap.docs));
   } catch (e) { console.warn('gallery fetch failed', e); }
+
+  try {
+    const affiliatesSnap = await db.collection('affiliates').get();
+    renderAffiliates(sortByOrder(affiliatesSnap.docs));
+  } catch (e) { console.warn('affiliates fetch failed', e); }
 }
 
 document.addEventListener('DOMContentLoaded', loadPublicData);

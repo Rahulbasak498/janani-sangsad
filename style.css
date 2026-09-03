@@ -381,6 +381,104 @@ section {
 
 
 /* =========================================================
+   NAV DROPDOWN (সদস্য)
+========================================================= */
+
+.nav-dropdown {
+  position: relative;
+}
+
+.nav-dropdown-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  background: transparent;
+  border: none;
+
+  color: var(--cream);
+
+  font-family: inherit;
+  font-size: .88rem;
+  font-weight: 500;
+
+  opacity: .9;
+
+  padding: 5px 0;
+
+  cursor: pointer;
+
+  transition:
+    opacity .25s ease,
+    color .25s ease;
+}
+
+.nav-dropdown-btn:hover,
+.nav-dropdown.open .nav-dropdown-btn {
+  opacity: 1;
+  color: var(--gold-light);
+}
+
+.nav-dropdown .caret {
+  font-size: .68rem;
+  transition: transform .25s ease;
+}
+
+.nav-dropdown.open .caret {
+  transform: rotate(180deg);
+}
+
+.nav-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+
+  transform: translateX(-50%) translateY(6px);
+
+  background: var(--maroon-deep);
+
+  border-radius: 12px;
+
+  padding: 8px;
+
+  min-width: 200px;
+
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .3);
+
+  z-index: 1200;
+}
+
+.nav-dropdown.open .nav-dropdown-menu {
+  display: flex;
+}
+
+.nav-dropdown-menu a {
+  padding: 10px 12px;
+
+  border-radius: 8px;
+
+  font-size: .85rem;
+
+  white-space: nowrap;
+
+  opacity: 1;
+}
+
+.nav-dropdown-menu a::after {
+  display: none;
+}
+
+.nav-dropdown-menu a:hover {
+  background: rgba(255, 255, 255, .08);
+  color: var(--gold-light);
+}
+
+
+/* =========================================================
    MOBILE BURGER
 ========================================================= */
 
@@ -1360,6 +1458,112 @@ section {
 
 
 /* =========================================================
+   AFFILIATES / অঙ্গসংগঠন
+========================================================= */
+
+.affiliates {
+  background: var(--cream-deep);
+}
+
+.affiliates-grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 26px;
+}
+
+.aff-card {
+  background: var(--cream);
+
+  border-radius: var(--radius);
+
+  padding: 32px 26px;
+
+  text-align: center;
+
+  box-shadow: var(--shadow);
+
+  border: 1px solid rgba(200, 153, 47, .25);
+
+  transition:
+    transform .3s ease,
+    box-shadow .3s ease;
+}
+
+.aff-card:hover {
+  transform: translateY(-6px);
+
+  box-shadow:
+    0 20px 45px -18px rgba(101, 14, 24, .45);
+}
+
+.aff-icon {
+  width: 64px;
+  height: 64px;
+
+  border-radius: 50%;
+
+  margin: 0 auto 18px;
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--gold),
+      var(--maroon)
+    );
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 1.6rem;
+
+  color: #fff;
+}
+
+.aff-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.aff-card h3 {
+  font-size: 1.1rem;
+
+  line-height: 1.5;
+
+  margin-bottom: 8px;
+}
+
+.aff-card p {
+  color: var(--ink-soft);
+
+  font-size: .9rem;
+
+  line-height: 1.8;
+}
+
+.aff-card a.aff-link {
+  display: inline-block;
+
+  margin-top: 12px;
+
+  font-size: .85rem;
+  font-weight: 600;
+
+  color: var(--vermilion);
+}
+
+.aff-card a.aff-link:hover {
+  color: var(--maroon);
+  text-decoration: underline;
+}
+
+
+/* =========================================================
    ADVISORS
 ========================================================= */
 
@@ -1870,6 +2074,10 @@ footer .credit {
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .affiliates-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   .members-grid {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -1957,6 +2165,44 @@ footer .credit {
     opacity: 1;
 
     padding: 5px 0;
+  }
+
+
+  /* NAV DROPDOWN — mobile */
+
+  .nav-dropdown {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nav-dropdown-btn {
+    color: var(--cream);
+    font-size: 1rem;
+  }
+
+  .nav-dropdown-menu {
+    position: static;
+
+    transform: none;
+
+    background: transparent;
+
+    box-shadow: none;
+
+    padding: 6px 0 0;
+
+    margin-top: 4px;
+
+    align-items: center;
+  }
+
+  .nav-dropdown-menu a {
+    color: var(--gold-light);
+
+    font-size: .92rem;
+
+    padding: 8px 0;
   }
 
 }
@@ -2159,6 +2405,19 @@ footer .credit {
   }
 
   .ev-card {
+    padding: 27px 22px;
+  }
+
+
+  /* AFFILIATES */
+
+  .affiliates-grid {
+    grid-template-columns: 1fr;
+
+    gap: 18px;
+  }
+
+  .aff-card {
     padding: 27px 22px;
   }
 
