@@ -91,7 +91,7 @@ let currentEdit = null; // { type, id } or null for "new"
 auth.onAuthStateChanged(user => {
   if (user) {
     document.getElementById('loginWrap').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
+    document.getElementById('app').style.display = 'flex';
     document.getElementById('userEmail').textContent = user.email;
     Object.keys(SCHEMAS).forEach(attachListListener);
   } else {

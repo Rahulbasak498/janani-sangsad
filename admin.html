@@ -39,85 +39,93 @@
 <!-- ===================== APP ===================== -->
 <div id="app">
 
-  <div class="topbar">
-    <div class="brand">🕉️ জননী সংসদ — Admin</div>
-    <div>
+  <div class="sidebar">
+    <div class="sidebar-brand">
+      🕉️ জননী সংসদ
+      <span>Admin Panel</span>
+    </div>
+
+    <nav class="tabs">
+      <button class="tab-btn active" data-tab="notices"><span class="tab-icon">📢</span>নোটিশ</button>
+      <button class="tab-btn" data-tab="schedule"><span class="tab-icon">🗓️</span>সময়সূচি</button>
+      <button class="tab-btn" data-tab="committee"><span class="tab-icon">🧑‍🤝‍🧑</span>কার্যকরী সদস্যবৃন্দ</button>
+      <button class="tab-btn" data-tab="advisors"><span class="tab-icon">🎓</span>উপদেষ্টা</button>
+      <button class="tab-btn" data-tab="generalMembers"><span class="tab-icon">👥</span>সাধারণ সদস্যবৃন্দ</button>
+      <button class="tab-btn" data-tab="gallery"><span class="tab-icon">🖼️</span>গ্যালারি</button>
+      <button class="tab-btn" data-tab="affiliates"><span class="tab-icon">🏛️</span>অঙ্গসংগঠন</button>
+    </nav>
+
+    <div class="sidebar-foot">
       <span class="user-email" id="userEmail"></span>
-      <button class="btn btn-outline btn-sm" id="logoutBtn" style="border-color:var(--gold-light);color:var(--gold-light);">লগ-আউট</button>
+      <button class="btn btn-outline btn-sm" id="logoutBtn">লগ-আউট</button>
     </div>
   </div>
 
-  <div class="tabs">
-    <button class="tab-btn active" data-tab="notices">নোটিশ</button>
-    <button class="tab-btn" data-tab="schedule">সময়সূচি</button>
-    <button class="tab-btn" data-tab="committee">কার্যকরী সদস্যবৃন্দ</button>
-    <button class="tab-btn" data-tab="advisors">উপদেষ্টা</button>
-    <button class="tab-btn" data-tab="generalMembers">সাধারণ সদস্যবৃন্দ</button>
-    <button class="tab-btn" data-tab="gallery">গ্যালারি</button>
-    <button class="tab-btn" data-tab="affiliates">অঙ্গসংগঠন</button>
-  </div>
+  <div class="main">
 
-  <!-- ---------- NOTICES ---------- -->
-  <div class="panel active" id="panel-notices">
-    <div class="panel-head">
-      <h2>নোটিশ</h2>
-      <button class="btn btn-gold btn-sm" onclick="openForm('notices')">+ নতুন নোটিশ</button>
+    <!-- ---------- NOTICES ---------- -->
+    <div class="panel active" id="panel-notices">
+      <div class="panel-head">
+        <h2>নোটিশ</h2>
+        <button class="btn btn-gold btn-sm" onclick="openForm('notices')">+ নতুন নোটিশ</button>
+      </div>
+      <div id="list-notices"></div>
     </div>
-    <div id="list-notices"></div>
-  </div>
 
-  <!-- ---------- SCHEDULE ---------- -->
-  <div class="panel" id="panel-schedule">
-    <div class="panel-head">
-      <h2>সময়সূচি</h2>
-      <button class="btn btn-gold btn-sm" onclick="openForm('schedule')">+ নতুন দিন যোগ করুন</button>
+    <!-- ---------- SCHEDULE ---------- -->
+    <div class="panel" id="panel-schedule">
+      <div class="panel-head">
+        <h2>সময়সূচি</h2>
+        <button class="btn btn-gold btn-sm" onclick="openForm('schedule')">+ নতুন দিন যোগ করুন</button>
+      </div>
+      <div id="list-schedule"></div>
     </div>
-    <div id="list-schedule"></div>
-  </div>
 
-  <!-- ---------- কার্যকরী সদস্যবৃন্দ ---------- -->
-  <div class="panel" id="panel-committee">
-    <div class="panel-head">
-      <h2>কার্যকরী সদস্যবৃন্দ</h2>
-      <button class="btn btn-gold btn-sm" onclick="openForm('committee')">+ নতুন সদস্য</button>
+    <!-- ---------- কার্যকরী সদস্যবৃন্দ ---------- -->
+    <div class="panel" id="panel-committee">
+      <div class="panel-head">
+        <h2>কার্যকরী সদস্যবৃন্দ</h2>
+        <button class="btn btn-gold btn-sm" onclick="openForm('committee')">+ নতুন সদস্য</button>
+      </div>
+      <div id="list-committee"></div>
     </div>
-    <div id="list-committee"></div>
-  </div>
 
-  <!-- ---------- উপদেষ্টা ---------- -->
-  <div class="panel" id="panel-advisors">
-    <div class="panel-head">
-      <h2>উপদেষ্টা</h2>
-      <button class="btn btn-gold btn-sm" onclick="openForm('advisors')">+ নতুন উপদেষ্টা</button>
+    <!-- ---------- উপদেষ্টা ---------- -->
+    <div class="panel" id="panel-advisors">
+      <div class="panel-head">
+        <h2>উপদেষ্টা</h2>
+        <button class="btn btn-gold btn-sm" onclick="openForm('advisors')">+ নতুন উপদেষ্টা</button>
+      </div>
+      <div id="list-advisors"></div>
     </div>
-    <div id="list-advisors"></div>
-  </div>
 
-  <!-- ---------- সাধারণ সদস্যবৃন্দ ---------- -->
-  <div class="panel" id="panel-generalMembers">
-    <div class="panel-head">
-      <h2>সাধারণ সদস্যবৃন্দ</h2>
-      <button class="btn btn-gold btn-sm" onclick="openForm('generalMembers')">+ নতুন সদস্য</button>
+    <!-- ---------- সাধারণ সদস্যবৃন্দ ---------- -->
+    <div class="panel" id="panel-generalMembers">
+      <div class="panel-head">
+        <h2>সাধারণ সদস্যবৃন্দ</h2>
+        <button class="btn btn-gold btn-sm" onclick="openForm('generalMembers')">+ নতুন সদস্য</button>
+      </div>
+      <div id="list-generalMembers"></div>
     </div>
-    <div id="list-generalMembers"></div>
-  </div>
 
-  <!-- ---------- GALLERY ---------- -->
-  <div class="panel" id="panel-gallery">
-    <div class="panel-head">
-      <h2>গ্যালারি</h2>
-      <button class="btn btn-gold btn-sm" onclick="openForm('gallery')">+ নতুন ছবি</button>
+    <!-- ---------- GALLERY ---------- -->
+    <div class="panel" id="panel-gallery">
+      <div class="panel-head">
+        <h2>গ্যালারি</h2>
+        <button class="btn btn-gold btn-sm" onclick="openForm('gallery')">+ নতুন ছবি</button>
+      </div>
+      <div id="list-gallery"></div>
     </div>
-    <div id="list-gallery"></div>
-  </div>
 
-  <!-- ---------- AFFILIATES ---------- -->
-  <div class="panel" id="panel-affiliates">
-    <div class="panel-head">
-      <h2>অঙ্গসংগঠন</h2>
-      <button class="btn btn-gold btn-sm" onclick="openForm('affiliates')">+ নতুন সংগঠন</button>
+    <!-- ---------- AFFILIATES ---------- -->
+    <div class="panel" id="panel-affiliates">
+      <div class="panel-head">
+        <h2>অঙ্গসংগঠন</h2>
+        <button class="btn btn-gold btn-sm" onclick="openForm('affiliates')">+ নতুন সংগঠন</button>
+      </div>
+      <div id="list-affiliates"></div>
     </div>
-    <div id="list-affiliates"></div>
+
   </div>
 
 </div>
