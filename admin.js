@@ -207,12 +207,16 @@ async function seedDefaultSettings() {
 
 async function seedDefaultGallery() {
   try {
-    const snap = await db.collection('gallery').limit(1).get();
-    if (!snap.empty) return;
+    await Promise.all(DEFAULT_GALLERY.map(async item => {
+      const existing = await db.collection('gallery')
+        .where('caption', '==', item.caption)
+        .limit(1)
+        .get();
 
-    await Promise.all(
-      DEFAULT_GALLERY.map(item => db.collection('gallery').add(item))
-    );
+      if (existing.empty) {
+        await db.collection('gallery').add(item);
+      }
+    }));
   } catch (err) {
     console.warn('Default gallery seed skipped:', err);
   }
@@ -346,9 +350,21 @@ function renderList(type, docs) {
   visibleDocs.forEach(doc => {
     const data = doc.data();
     const c = schema.card(data);
-    const thumbHtml = (c.thumb && typeof c.thumb === 'object' && c.thumb.img)
-      ? `<img src="${escapeAttr(c.thumb.img)}" alt="" onerror="this.style.opacity='.25';">`
-      : (c.thumb || '📄');
+    let thumbHtml;
+    if (type === 'gallery') {
+      const defaultImage = DEFAULT_GALLERY.find(item => item.caption === data.caption)?.imageUrl;
+      const imageUrl = (c.thumb && typeof c.thumb === 'object' && c.thumb.img) || defaultImage;
+      const fallback = defaultImage && imageUrl !== defaultImage
+        ? ` onerror="this.onerror=null;this.src='${escapeAttr(defaultImage)}';"`
+        : '';
+      thumbHtml = imageUrl
+        ? `<img src="${escapeAttr(imageUrl)}" alt="${escapeAttr(data.caption || '')}"${fallback}>`
+        : '🖼️';
+    } else {
+      thumbHtml = (c.thumb && typeof c.thumb === 'object' && c.thumb.img)
+        ? `<img src="${escapeAttr(c.thumb.img)}" alt="" onerror="this.style.opacity='.25';">`
+        : (c.thumb || '📄');
+    }
 
     const el = document.createElement('div');
     el.className = 'item-card';

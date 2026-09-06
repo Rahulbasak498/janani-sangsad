@@ -219,7 +219,7 @@ function renderGallery(docs) {
   wrap.innerHTML = '';
 
 
-  docs.forEach(d => {
+  docs.forEach((d, index) => {
 
     const g = d.data();
 
