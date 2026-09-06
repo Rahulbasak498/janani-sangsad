@@ -209,7 +209,6 @@ function renderGallery(docs) {
   // Firebase gallery EMPTY হলে
   // HTML-এর existing/static images রেখে দাও
   if (docs.length === 0) {
-    console.log('Gallery: Firestore empty. Static images kept.');
     return;
   }
 

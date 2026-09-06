@@ -503,8 +503,30 @@ function openForm(type, id) {
     formEl.appendChild(actions);
   };
 
-  if (id) {
-    collRef(type).doc(id).get().then(doc => buildFields(doc.data()));
+  if (type === 'settings' && !id) {
+    collRef(type).limit(1).get().then(snapshot => {
+      if (snapshot.empty) {
+        buildFields(null);
+        return;
+      }
+
+      const settingsDoc = snapshot.docs[0];
+      currentEdit.id = settingsDoc.id;
+      document.getElementById('modalTitle').textContent = 'এডিট করুন — ' + schema.label;
+      buildFields(settingsDoc.data());
+    }).catch(error => {
+      const formError = document.getElementById('formError');
+      formError.textContent = 'সাইট সেটিংস লোড করা যায়নি: ' + (error.message || 'অজানা এরর');
+      formError.style.display = 'block';
+    });
+  } else if (id) {
+    collRef(type).doc(id).get()
+      .then(doc => buildFields(doc.data()))
+      .catch(error => {
+        const formError = document.getElementById('formError');
+        formError.textContent = 'ডেটা লোড করা যায়নি: ' + (error.message || 'অজানা এরর');
+        formError.style.display = 'block';
+      });
   } else {
     buildFields(null);
   }
