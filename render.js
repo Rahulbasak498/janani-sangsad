@@ -107,7 +107,7 @@ function renderSchedule(docs) {
 
   wrap.innerHTML = '';
 
-  docs.forEach((d, index) => {
+  docs.forEach(d => {
     const s = d.data();
 
     const items = (s.items || [])

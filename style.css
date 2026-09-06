@@ -19,8 +19,6 @@
   --ink: #3D1B10;
   --ink-soft: #6B4530;
 
-  --white: #ffffff;
-
   --shadow:
     0 18px 40px -18px rgba(138, 27, 43, .22);
 
@@ -28,6 +26,11 @@
     0 10px 30px rgba(92, 16, 25, .08);
 
   --radius: 22px;
+}
+
+body,
+body * {
+  font-family: 'Tiro Bangla', serif !important;
 }
 
 
@@ -879,17 +882,6 @@ section {
   padding: 0 24px;
 
   margin-top: 340px;
-}
-
-@keyframes floaty {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-8px);
-  }
 }
 
 .hero h1 {
@@ -2050,15 +2042,6 @@ section {
   box-shadow: var(--shadow-soft);
 }
 
-.map-pin {
-  font-size: 2.4rem;
-
-  color: var(--vermilion);
-
-  filter:
-    drop-shadow(0 6px 10px rgba(0, 0, 0, .25));
-}
-
 .loc-info {
   background: var(--cream);
 
@@ -2315,7 +2298,7 @@ footer .credit {
    MOBILE NAVIGATION
 ========================================================= */
 
-@media (max-width: 800px) {
+@media (max-width: 960px) {
 
   .nav {
     padding: 12px 0;
@@ -2342,12 +2325,15 @@ footer .credit {
 
     flex-direction: column;
 
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 
-    gap: 25px;
+    gap: 20px;
 
     padding: 80px 30px 30px;
+
+    overflow-y: auto;
+    overscroll-behavior: contain;
 
     transform: translateX(100%);
 
@@ -2573,7 +2559,7 @@ footer .credit {
   /* SCHEDULE */
 
   .timeline {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
 
     gap: 14px;
   }

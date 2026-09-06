@@ -233,7 +233,6 @@ document.getElementById('loginForm').addEventListener('submit', event => {
 
   auth.signInWithEmailAndPassword(email, pass)
     .then(() => {
-      console.log("LOGIN SUCCESS");
     })
     .catch(err => {
       console.error("FIREBASE LOGIN ERROR:", err);
