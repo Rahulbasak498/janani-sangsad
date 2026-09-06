@@ -69,7 +69,10 @@ function applySiteSettings(settings) {
 
   setText('heroTitleMain', settings.heroTitleMain);
   setText('heroTitleSub', settings.heroTitleSub);
-  setText('committeeName', settings.committeeName);
+  const committeeName = String(settings.committeeName || '')
+    .replace(/শ্রী\s*শ্রী\s*/g, '')
+    .trim();
+  setText('committeeName', committeeName);
   setAttr('heroDeity', 'src', settings.heroImageUrl);
   setText('bkashNagad', settings.bkashNagad);
   setText('bankName', settings.bankName);
