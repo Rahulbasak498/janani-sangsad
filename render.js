@@ -10,11 +10,14 @@ function renderNotices(docs) {
 
   wrap.innerHTML = '';
 
-  docs.forEach(d => {
+  docs
+    .slice()
+    .sort((a, b) => Number(b.data().pinned === true || b.data().pinned === 'true') - Number(a.data().pinned === true || a.data().pinned === 'true'))
+    .forEach(d => {
     const n = d.data();
 
     const item = document.createElement('div');
-    item.className = 'notice-item';
+    item.className = `notice-item${n.pinned === true || n.pinned === 'true' ? ' is-pinned' : ''}`;
 
     item.innerHTML = `
       <div class="n-icon">${n.icon || '📌'}</div>
@@ -34,6 +37,68 @@ function renderNotices(docs) {
 }
 
 
+// ---------- TICKER ----------
+function renderTicker(docs) {
+  const wrap = document.getElementById('tickerTrack');
+
+  if (!wrap || docs.length === 0) return;
+
+  const items = docs
+    .filter(d => d.data().active !== false && d.data().active !== 'false')
+    .map(d => `<span>${escapeHtml(d.data().message || '')}</span>`)
+    .join('');
+
+  if (!items) return;
+
+  // Repeat the messages so the existing marquee animation remains seamless.
+  wrap.innerHTML = items + items;
+}
+
+
+// ---------- SITE SETTINGS ----------
+function applySiteSettings(settings) {
+  const setText = (id, value) => {
+    const element = document.getElementById(id);
+    if (element && value !== undefined && value !== '') element.textContent = value;
+  };
+
+  const setAttr = (id, attr, value) => {
+    const element = document.getElementById(id);
+    if (element && value) element.setAttribute(attr, value);
+  };
+
+  setText('heroTitleMain', settings.heroTitleMain);
+  setText('heroTitleSub', settings.heroTitleSub);
+  setText('committeeName', settings.committeeName);
+  setAttr('heroDeity', 'src', settings.heroImageUrl);
+  setText('bkashNagad', settings.bkashNagad);
+  setText('bankName', settings.bankName);
+  setText('bankAccount', settings.bankAccount);
+  setText('cashNote', settings.cashNote);
+  setAttr('donationQr', 'src', settings.donationQrUrl);
+  setAttr('receiptUrl', 'href', settings.receiptUrl);
+  setText('locationTitle', settings.locationTitle);
+  setText('locationAddress', settings.locationAddress);
+  setText('locationHours', settings.locationHours);
+  setText('locationDirection', settings.locationDirection);
+  setAttr('mapEmbed', 'src', settings.mapEmbedUrl);
+  setAttr('mapLink', 'href', settings.mapLink);
+  setText('contactPhone', settings.contactPhone);
+  setText('facebookLabel', settings.facebookLabel);
+  setAttr('facebookLink', 'href', settings.facebookUrl);
+  setText('contactEmail', settings.contactEmail);
+
+  window.dispatchEvent(new CustomEvent('siteSettingsLoaded', { detail: settings }));
+}
+
+function setDataStatus(message, visible) {
+  const status = document.getElementById('dataStatus');
+  if (!status) return;
+  status.textContent = message;
+  status.classList.toggle('visible', visible);
+}
+
+
 // ---------- SCHEDULE ----------
 function renderSchedule(docs) {
   const wrap = document.getElementById('timeline');
@@ -42,7 +107,7 @@ function renderSchedule(docs) {
 
   wrap.innerHTML = '';
 
-  docs.forEach(d => {
+  docs.forEach((d, index) => {
     const s = d.data();
 
     const items = (s.items || [])
@@ -160,7 +225,7 @@ function renderGallery(docs) {
 
     const item = document.createElement('div');
 
-    item.className = 'm-item';
+    item.className = `m-item m${(index % 7) + 2}`;
 
 
     if (g.imageUrl) {
@@ -169,6 +234,7 @@ function renderGallery(docs) {
         <img
           src="${escapeAttr(g.imageUrl)}"
           alt="${escapeAttr(g.caption || 'Gallery Image')}"
+          loading="lazy"
           style="
             width:100%;
             height:100%;
@@ -313,117 +379,63 @@ function sortByOrder(docs) {
 
 async function loadPublicData() {
 
+  // ---------- SITE SETTINGS ----------
+  db.collection('siteSettings').limit(1).onSnapshot(
+    snap => {
+      if (!snap.empty) applySiteSettings(snap.docs[0].data());
+      setDataStatus('', false);
+    },
+    e => {
+      console.warn('Site settings listener failed. Static content kept:', e);
+      setDataStatus('লাইভ ডেটা লোড হয়নি, static content দেখানো হচ্ছে।', true);
+    }
+  );
+
 
   // ---------- NOTICES ----------
   try {
-
-    const noticesSnap =
-      await db.collection('notices').get();
-
-    renderNotices(
-      sortByOrder(noticesSnap.docs)
+    db.collection('notices').onSnapshot(
+      snap => renderNotices(sortByOrder(snap.docs)),
+      e => console.warn('Notices listener failed:', e)
     );
-
   } catch (e) {
-
-    console.warn(
-      'Notices fetch failed:',
-      e
-    );
-
+    console.warn('Notices listener setup failed:', e);
   }
 
 
   // ---------- SCHEDULE ----------
-  try {
-
-    const scheduleSnap =
-      await db.collection('schedule').get();
-
-    renderSchedule(
-      sortByOrder(scheduleSnap.docs)
-    );
-
-  } catch (e) {
-
-    console.warn(
-      'Schedule fetch failed:',
-      e
-    );
-
-  }
+  db.collection('schedule').onSnapshot(
+    snap => renderSchedule(sortByOrder(snap.docs)),
+    e => console.warn('Schedule listener failed:', e)
+  );
 
 
   // ---------- COMMITTEE MEMBERS ----------
-  try {
-
-    const membersSnap =
-      await db
-        .collection('members')
-        .where('group', '==', 'committee')
-        .get();
-
-    renderMembers(
-      'membersGrid',
-      sortByOrder(membersSnap.docs)
-    );
-
-  } catch (e) {
-
-    console.warn(
-      'Committee members fetch failed:',
-      e
-    );
-
-  }
+  db.collection('members').where('group', '==', 'committee').onSnapshot(
+    snap => renderMembers('membersGrid', sortByOrder(snap.docs)),
+    e => console.warn('Committee members listener failed:', e)
+  );
 
 
   // ---------- ADVISORS ----------
-  try {
+  db.collection('members').where('group', '==', 'advisor').onSnapshot(
+    snap => renderMembers('advisorsGrid', sortByOrder(snap.docs)),
+    e => console.warn('Advisor listener failed:', e)
+  );
 
-    const advisorsSnap =
-      await db
-        .collection('members')
-        .where('group', '==', 'advisor')
-        .get();
 
-    renderMembers(
-      'advisorsGrid',
-      sortByOrder(advisorsSnap.docs)
-    );
-
-  } catch (e) {
-
-    console.warn(
-      'Advisor fetch failed:',
-      e
-    );
-
-  }
+  // ---------- TICKER ----------
+  db.collection('ticker').onSnapshot(
+    snap => renderTicker(sortByOrder(snap.docs)),
+    e => console.warn('Ticker listener failed. Static ticker kept:', e)
+  );
 
 
   // ---------- GENERAL MEMBERS ----------
-  try {
-
-    const generalSnap =
-      await db
-        .collection('members')
-        .where('group', '==', 'general')
-        .get();
-
-    renderMembers(
-      'generalMembersGrid',
-      sortByOrder(generalSnap.docs)
-    );
-
-  } catch (e) {
-
-    console.warn(
-      'General members fetch failed:',
-      e
-    );
-
-  }
+  db.collection('members').where('group', '==', 'general').onSnapshot(
+    snap => renderMembers('generalMembersGrid', sortByOrder(snap.docs)),
+    e => console.warn('General members listener failed:', e)
+  );
 
 
   // =======================================================
@@ -437,43 +449,17 @@ async function loadPublicData() {
   //
   // =======================================================
 
-  try {
-
-    const gallerySnap =
-      await db.collection('gallery').get();
-
-    renderGallery(
-      sortByOrder(gallerySnap.docs)
-    );
-
-  } catch (e) {
-
-    console.warn(
-      'Gallery fetch failed. Static images kept:',
-      e
-    );
-
-  }
+  db.collection('gallery').onSnapshot(
+    snap => renderGallery(sortByOrder(snap.docs)),
+    e => console.warn('Gallery listener failed. Static images kept:', e)
+  );
 
 
   // ---------- AFFILIATES ----------
-  try {
-
-    const affiliatesSnap =
-      await db.collection('affiliates').get();
-
-    renderAffiliates(
-      sortByOrder(affiliatesSnap.docs)
-    );
-
-  } catch (e) {
-
-    console.warn(
-      'Affiliates fetch failed:',
-      e
-    );
-
-  }
+  db.collection('affiliates').onSnapshot(
+    snap => renderAffiliates(sortByOrder(snap.docs)),
+    e => console.warn('Affiliates listener failed:', e)
+  );
 
 }
 

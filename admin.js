@@ -10,6 +10,7 @@ const SCHEMAS = {
       { key: 'title', label: 'শিরোনাম', type: 'text', required: true },
       { key: 'desc',  label: 'বিবরণ', type: 'textarea' },
       { key: 'date',  label: 'তারিখ (যেমন: ২ দিন আগে)', type: 'text' },
+      { key: 'pinned', label: 'গুরুত্বপূর্ণ notice হিসেবে ওপরে দেখাবেন?', type: 'select', options: [['false', 'না'], ['true', 'হ্যাঁ']], default: 'false' },
       { key: 'order', label: 'ক্রম (ছোট সংখ্যা আগে দেখাবে)', type: 'number', default: 0 }
     ],
     card: n => ({ thumb: n.icon || '📌', title: n.title, sub: n.desc })
@@ -66,7 +67,8 @@ const SCHEMAS = {
     label: 'গ্যালারি',
     fields: [
       { key: 'caption', label: 'ক্যাপশন', type: 'text' },
-      { key: 'imageUrl', label: 'ছবির URL', type: 'text', required: true },
+      { key: 'imageUrl', label: 'ছবির URL (upload না করলে)', type: 'text' },
+      { key: 'imageFile', label: 'সরাসরি ছবি upload (ঐচ্ছিক)', type: 'file', accept: 'image/*' },
       { key: 'order', label: 'ক্রম', type: 'number', default: 0 }
     ],
     card: g => ({ thumb: g.imageUrl ? { img: g.imageUrl } : '🖼️', title: g.caption, sub: g.imageUrl })
@@ -82,10 +84,87 @@ const SCHEMAS = {
       { key: 'order',   label: 'ক্রম', type: 'number', default: 0 }
     ],
     card: a => ({ thumb: a.logoUrl ? { img: a.logoUrl } : (a.icon || '🏛️'), title: a.name, sub: a.desc })
+  },
+  ticker: {
+    label: 'টিকার বার্তা',
+    fields: [
+      { key: 'message', label: 'টিকার বার্তা', type: 'textarea', required: true,
+        placeholder: '🔔 নতুন টিকার বার্তা লিখুন' },
+      { key: 'active', label: 'ওয়েবসাইটে দেখাবেন?', type: 'select', options: [['true', 'হ্যাঁ'], ['false', 'না']], default: 'true' },
+      { key: 'order', label: 'ক্রম (ছোট সংখ্যা আগে দেখাবে)', type: 'number', default: 0 }
+    ],
+    card: t => ({ thumb: '📣', title: t.message, sub: `ক্রম: ${t.order ?? 0}` })
+  },
+  settings: {
+    label: 'সাইট সেটিংস',
+    collection: 'siteSettings',
+    fields: [
+      { key: 'heroTitleMain', label: 'Hero প্রধান শিরোনাম', type: 'text', default: 'মা আসছেন' },
+      { key: 'heroTitleSub', label: 'Hero দ্বিতীয় লাইন', type: 'text', default: 'ঘরে ঘরে' },
+      { key: 'committeeName', label: 'কমিটির নাম', type: 'text', default: 'শ্রী শ্রী জননী সংসদ' },
+      { key: 'heroImageUrl', label: 'Hero image URL', type: 'text', default: 'image/maa-durga.png' },
+      { key: 'pujaDate', label: 'পূজার তারিখ ও সময় (ISO format)', type: 'text', default: '2026-10-16T06:00:00+06:00' },
+      { key: 'donationQrUrl', label: 'অনুদানের QR image URL', type: 'text', default: 'image/QR.jpg' },
+      { key: 'bkashNagad', label: 'বিকাশ / নগদ নম্বর', type: 'text', default: '01710000000' },
+      { key: 'bankName', label: 'ব্যাংক অ্যাকাউন্টের নাম', type: 'text', default: 'জননী সংসদ' },
+      { key: 'bankAccount', label: 'ব্যাংক অ্যাকাউন্ট নম্বর', type: 'text', default: 'A/C: 0000-0000-0000' },
+      { key: 'cashNote', label: 'নগদ অনুদানের বিবরণ', type: 'textarea', default: 'কমিটি অফিসে সরাসরি জমা দিতে পারেন' },
+      { key: 'receiptUrl', label: 'রসিদ download URL (ঐচ্ছিক)', type: 'text' },
+      { key: 'locationTitle', label: 'লোকেশন শিরোনাম', type: 'text', default: 'পূজা মণ্ডপের ঠিকানা' },
+      { key: 'locationAddress', label: 'ঠিকানা', type: 'text', default: 'গঙ্গানগর, লস্করপুর, শায়েস্তাগঞ্জ, হবিগঞ্জ' },
+      { key: 'locationHours', label: 'খোলার সময়', type: 'text', default: 'প্রতিদিন সকাল ৬টা থেকে রাত ১১টা পর্যন্ত খোলা' },
+      { key: 'locationDirection', label: 'দিকনির্দেশের বিবরণ', type: 'text', default: 'নিকটস্থ বাস স্ট্যান্ড থেকে ৫ মিনিটের হাঁটা পথ' },
+      { key: 'mapEmbedUrl', label: 'Google Map embed URL', type: 'text' },
+      { key: 'mapLink', label: 'Google Map direction URL', type: 'text' },
+      { key: 'contactPhone', label: 'ফোন নম্বর', type: 'text', default: '+880 1710000000' },
+      { key: 'facebookUrl', label: 'Facebook URL', type: 'text' },
+      { key: 'facebookLabel', label: 'Facebook display text', type: 'text', default: 'fb.com/durgapujacommittee' },
+      { key: 'contactEmail', label: 'ইমেইল', type: 'text', default: 'info@pujacommittee.org' }
+    ],
+    card: s => ({ thumb: '⚙️', title: s.committeeName || 'সাইট সেটিংস', sub: 'Hero, donation, location ও contact' })
   }
 };
 
+const DEFAULT_TICKERS = [
+  { message: '🔔 ষষ্ঠীর সন্ধ্যা আরতি শুরু বিকেল ৫টায়', active: 'true', order: 1 },
+  { message: '🔔 সাংস্কৃতিক অনুষ্ঠানে অংশগ্রহণের জন্য রেজিস্ট্রেশন চলছে', active: 'true', order: 2 },
+  { message: '🔔 ভোগ বিতরণ প্রতিদিন দুপুর ১২টা থেকে ২টা', active: 'true', order: 3 },
+  { message: '🔔 অনুদান জমা দেওয়ার শেষ তারিখ ১৫ অক্টোবর', active: 'true', order: 4 }
+];
+
+const DEFAULT_SETTINGS = {
+  heroTitleMain: 'মা আসছেন',
+  heroTitleSub: 'ঘরে ঘরে',
+  committeeName: 'শ্রী শ্রী জননী সংসদ',
+  heroImageUrl: 'image/maa-durga.png',
+  pujaDate: '2026-10-16T06:00:00+06:00',
+  donationQrUrl: 'image/QR.jpg',
+  bkashNagad: '01710000000',
+  bankName: 'জননী সংসদ',
+  bankAccount: 'A/C: 0000-0000-0000',
+  cashNote: 'কমিটি অফিসে সরাসরি জমা দিতে পারেন',
+  locationTitle: 'পূজা মণ্ডপের ঠিকানা',
+  locationAddress: 'গঙ্গানগর, লস্করপুর, শায়েস্তাগঞ্জ, হবিগঞ্জ',
+  locationHours: 'প্রতিদিন সকাল ৬টা থেকে রাত ১১টা পর্যন্ত খোলা',
+  locationDirection: 'নিকটস্থ বাস স্ট্যান্ড থেকে ৫ মিনিটের হাঁটা পথ',
+  contactPhone: '+880 1710000000',
+  facebookLabel: 'fb.com/durgapujacommittee',
+  contactEmail: 'info@pujacommittee.org'
+};
+
+const DEFAULT_GALLERY = [
+  { caption: 'সন্ধ্যা আরতি', imageUrl: 'image/সন্ধ্যা আরতি.jpg', order: 1 },
+  { caption: 'ধুনুচি নাচ', imageUrl: 'image/ধুনুচি নাচ.jpg', order: 2 },
+  { caption: 'মণ্ডপ সজ্জা', imageUrl: 'image/মণ্ডপ সজ্জা.jpg', order: 3 },
+  { caption: 'সাংস্কৃতিক সন্ধ্যা', imageUrl: 'image/সাংস্কৃতিক সন্ধ্যা.jpg', order: 4 },
+  { caption: 'ভোগ বিতরণ', imageUrl: 'image/ভোগ বিতরণ.jpg', order: 5 },
+  { caption: 'সিঁদুর খেলা', imageUrl: 'image/সিঁদুর খেলা.jpg', order: 6 },
+  { caption: 'বিসর্জন শোভাযাত্রা', imageUrl: 'image/বিসর্জন শোভাযাত্রা.jpg', order: 7 }
+];
+
 let currentEdit = null; // { type, id } or null for "new"
+let activeListType = 'notices';
+let draggedGalleryId = null;
 
 // ---------------- AUTH ----------------
 auth.onAuthStateChanged(user => {
@@ -94,13 +173,54 @@ auth.onAuthStateChanged(user => {
     document.getElementById('app').style.display = 'flex';
     document.getElementById('userEmail').textContent = user.email;
     Object.keys(SCHEMAS).forEach(attachListListener);
+    seedDefaultTickers();
+    seedDefaultSettings();
+    seedDefaultGallery();
   } else {
     document.getElementById('loginWrap').style.display = 'flex';
     document.getElementById('app').style.display = 'none';
   }
 });
 
-document.getElementById('loginBtn').addEventListener('click', () => {
+async function seedDefaultTickers() {
+  try {
+    const snap = await db.collection('ticker').limit(1).get();
+    if (!snap.empty) return;
+
+    await Promise.all(
+      DEFAULT_TICKERS.map(item => db.collection('ticker').add(item))
+    );
+  } catch (err) {
+    console.warn('Default ticker seed skipped:', err);
+  }
+}
+
+async function seedDefaultSettings() {
+  try {
+    const snap = await db.collection('siteSettings').limit(1).get();
+    if (!snap.empty) return;
+    await db.collection('siteSettings').add(DEFAULT_SETTINGS);
+  } catch (err) {
+    console.warn('Default site settings seed skipped:', err);
+  }
+}
+
+async function seedDefaultGallery() {
+  try {
+    const snap = await db.collection('gallery').limit(1).get();
+    if (!snap.empty) return;
+
+    await Promise.all(
+      DEFAULT_GALLERY.map(item => db.collection('gallery').add(item))
+    );
+  } catch (err) {
+    console.warn('Default gallery seed skipped:', err);
+  }
+}
+
+document.getElementById('loginForm').addEventListener('submit', event => {
+  event.preventDefault();
+
   const email = document.getElementById('loginEmail').value.trim();
   const pass = document.getElementById('loginPassword').value;
   const errBox = document.getElementById('loginError');
@@ -128,7 +248,18 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
     btn.classList.add('active');
+    activeListType = btn.dataset.tab;
+    document.getElementById('adminSearch').value = '';
     document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+document.getElementById('adminSearch').addEventListener('input', event => {
+  const query = event.target.value.trim().toLowerCase();
+  const wrap = document.getElementById('list-' + activeListType);
+  if (!wrap) return;
+  wrap.querySelectorAll('.item-card').forEach(card => {
+    card.hidden = query && !card.textContent.toLowerCase().includes(query);
   });
 });
 
@@ -144,6 +275,8 @@ function collRef(type) {
 
 function attachListListener(type) {
   const schema = SCHEMAS[type];
+  const wrap = document.getElementById('list-' + type);
+  if (wrap) wrap.innerHTML = '<div class="loading-note">ডেটা লোড হচ্ছে...</div>';
   // NOTE: intentionally NOT using .orderBy('order') here.
   // Firestore's orderBy() silently EXCLUDES any document that is missing
   // the field being sorted on. If older/manually-added documents don't
@@ -169,6 +302,12 @@ function attachListListener(type) {
 function showListError(type, err) {
   const wrap = document.getElementById('list-' + type);
   if (!wrap) return;
+
+  if (type === 'gallery') {
+    renderList('gallery', []);
+    return;
+  }
+
   wrap.innerHTML = `
     <div class="empty-note" style="color:var(--danger);">
       ডেটা লোড করতে সমস্যা হয়েছে: ${escapeHtml(err.message || err.code || 'অজানা এরর')}
@@ -179,22 +318,82 @@ function showListError(type, err) {
 function renderList(type, docs) {
   const schema = SCHEMAS[type];
   const wrap = document.getElementById('list-' + type);
+  const usingLocalGallery = type === 'gallery' && docs.length === 0;
+
+  if (usingLocalGallery) {
+    docs = DEFAULT_GALLERY.map((data, index) => ({
+      id: 'local-' + index,
+      local: true,
+      data: () => data
+    }));
+  }
+
+  const query = activeListType === type
+    ? document.getElementById('adminSearch').value.trim().toLowerCase()
+    : '';
+  const visibleDocs = docs.filter(doc => {
+    if (!query) return true;
+    const card = schema.card(doc.data());
+    return `${card.title || ''} ${card.sub || ''}`.toLowerCase().includes(query);
+  });
   wrap.innerHTML = '';
 
-  if (docs.length === 0) {
-    wrap.innerHTML = `<div class="empty-note">এখনও কিছু যোগ করা হয়নি — "+ নতুন" বাটনে ক্লিক করুন।</div>`;
+  if (visibleDocs.length === 0) {
+    wrap.innerHTML = `<div class="empty-note">${query ? 'এই খোঁজে কিছু পাওয়া যায়নি।' : 'এখনও কিছু যোগ করা হয়নি — "+ নতুন" বাটনে ক্লিক করুন।'}</div>`;
     return;
   }
 
-  docs.forEach(doc => {
+  visibleDocs.forEach(doc => {
     const data = doc.data();
     const c = schema.card(data);
     const thumbHtml = (c.thumb && typeof c.thumb === 'object' && c.thumb.img)
-      ? `<img src="${c.thumb.img}" alt="">`
+      ? `<img src="${escapeAttr(c.thumb.img)}" alt="" onerror="this.style.opacity='.25';">`
       : (c.thumb || '📄');
 
     const el = document.createElement('div');
     el.className = 'item-card';
+    const actionsHtml = doc.local
+      ? `<button class="btn btn-gold btn-sm" onclick="importDefaultGalleryItem(${DEFAULT_GALLERY.indexOf(data)})">Admin-এ যোগ করুন</button>`
+      : `
+        <button class="btn btn-outline btn-sm" onclick="openForm('${type}', '${doc.id}')">এডিট</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteItem('${type}', '${doc.id}')">মুছুন</button>
+      `;
+    if (type === 'gallery') {
+      el.classList.add('sortable-item');
+      el.draggable = true;
+      el.dataset.docId = doc.id;
+      el.addEventListener('dragstart', () => {
+        draggedGalleryId = doc.id;
+        el.classList.add('dragging');
+      });
+      el.addEventListener('dragend', () => {
+        draggedGalleryId = null;
+        el.classList.remove('dragging');
+      });
+      el.addEventListener('dragover', event => event.preventDefault());
+      el.addEventListener('drop', async event => {
+        event.preventDefault();
+        if (!draggedGalleryId || draggedGalleryId === doc.id) return;
+
+        const cards = [...wrap.querySelectorAll('.sortable-item')];
+        const fromIndex = cards.findIndex(card => card.dataset.docId === draggedGalleryId);
+        const toIndex = cards.findIndex(card => card.dataset.docId === doc.id);
+        const reordered = cards.slice();
+        const [moved] = reordered.splice(fromIndex, 1);
+        reordered.splice(toIndex, 0, moved);
+
+        try {
+          await Promise.all(
+            reordered.map((card, index) =>
+              db.collection('gallery').doc(card.dataset.docId).update({ order: index + 1 })
+            )
+          );
+          showToast('Gallery order আপডেট হয়েছে ✅');
+        } catch (error) {
+          showToast('Gallery order update ব্যর্থ');
+        }
+      });
+    }
     el.innerHTML = `
       <div class="thumb">${thumbHtml}</div>
       <div class="info">
@@ -202,12 +401,23 @@ function renderList(type, docs) {
         <p>${escapeHtml(c.sub || '')}</p>
       </div>
       <div class="actions">
-        <button class="btn btn-outline btn-sm" onclick="openForm('${type}', '${doc.id}')">এডিট</button>
-        <button class="btn btn-danger btn-sm" onclick="deleteItem('${type}', '${doc.id}')">মুছুন</button>
+        ${actionsHtml}
       </div>
     `;
     wrap.appendChild(el);
   });
+}
+
+async function importDefaultGalleryItem(index) {
+  const item = DEFAULT_GALLERY[index];
+  if (!item) return;
+
+  try {
+    await db.collection('gallery').add(item);
+    showToast('Gallery ছবিটি Admin-এ যোগ হয়েছে ✅');
+  } catch (error) {
+    showToast('ছবি যোগ করা যায়নি');
+  }
 }
 
 // ---------------- FORM ----------------
@@ -253,8 +463,11 @@ function openForm(type, id) {
         input = document.createElement('input');
         input.type = f.type;
         input.placeholder = f.placeholder || '';
-        input.value = existingVal !== undefined ? existingVal
-          : (f.default !== undefined ? f.default : '');
+        if (f.type !== 'file') {
+          input.value = existingVal !== undefined ? existingVal
+            : (f.default !== undefined ? f.default : '');
+        }
+        if (f.accept) input.accept = f.accept;
       }
 
       input.dataset.key = f.key;
@@ -297,9 +510,14 @@ document.getElementById('itemForm').addEventListener('submit', async (e) => {
   errBox.style.display = 'none';
 
   const payload = {};
+  let uploadFile = null;
   const inputs = e.target.querySelectorAll('[data-key]');
   inputs.forEach(input => {
     const key = input.dataset.key;
+    if (input.dataset.type === 'file') {
+      uploadFile = input.files[0] || null;
+      return;
+    }
     let val = input.value;
 
     if (input.dataset.type === 'number') {
@@ -310,6 +528,23 @@ document.getElementById('itemForm').addEventListener('submit', async (e) => {
     payload[key] = val;
   });
 
+  try {
+    if (type === 'gallery' && uploadFile) {
+      if (uploadFile.size > 5 * 1024 * 1024) {
+        throw new Error('ছবির size 5MB-এর কম হতে হবে।');
+      }
+      const safeName = uploadFile.name.replace(/[^a-zA-Z0-9._-]/g, '-');
+      const uploadRef = storage.ref().child(`gallery/${Date.now()}-${safeName}`);
+      const snapshot = await uploadRef.put(uploadFile);
+      payload.imageUrl = await snapshot.ref.getDownloadURL();
+    }
+
+    if (type === 'gallery' && !payload.imageUrl) {
+      errBox.textContent = 'একটি ছবির URL অথবা upload করা ছবি দিন।';
+      errBox.style.display = 'block';
+      return;
+    }
+
   // Tabs backed by a shared collection (e.g. committee/advisors/generalMembers
   // all live in 'members') carry a fixed field value that isn't shown as a
   // form input — set it here so saved docs land in the right group.
@@ -317,7 +552,6 @@ document.getElementById('itemForm').addEventListener('submit', async (e) => {
     payload[schema.filter.field] = schema.filter.value;
   }
 
-  try {
     if (id) {
       await collRef(type).doc(id).update(payload);
       showToast('আপডেট করা হয়েছে ✅');

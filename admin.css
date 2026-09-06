@@ -69,18 +69,32 @@ body {
 .login-wrap::before { top: -220px; left: -220px; }
 .login-wrap::after { bottom: -260px; right: -260px; }
 
+.admin-deity {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+}
+
+.login-deity {
+  width: min(520px, 52vw);
+  right: calc(50% - 510px);
+  bottom: -34px;
+  opacity: .72;
+  filter: drop-shadow(0 18px 35px rgba(68, 10, 17, .42));
+}
+
 .login-box {
   position: relative;
   z-index: 2;
-  background: rgba(252, 243, 225, .08);
+  background: rgba(252, 243, 225, .12);
   backdrop-filter: blur(22px) saturate(140%);
   -webkit-backdrop-filter: blur(22px) saturate(140%);
-  border: 1px solid rgba(239, 203, 116, .28);
+  border: 1px solid rgba(239, 203, 116, .38);
   border-radius: var(--radius-lg);
   padding: 40px 34px;
   width: 100%;
   max-width: 380px;
-  box-shadow: var(--shadow-deep);
+  box-shadow: 0 24px 60px -22px rgba(35, 4, 10, .75), 0 0 0 1px rgba(255, 255, 255, .04) inset;
   text-align: center;
 }
 
@@ -291,6 +305,35 @@ textarea { resize: vertical; min-height: 80px; }
   gap: 10px;
 }
 
+.admin-search-wrap {
+  padding: 0 18px 16px;
+}
+
+.admin-search-wrap label {
+  display: block;
+  margin-bottom: 5px;
+  color: rgba(252, 243, 225, .62);
+  font-size: 11px;
+}
+
+.admin-search-wrap input {
+  padding: 8px 10px;
+  border-color: rgba(239, 203, 116, .25);
+  background: rgba(68, 10, 17, .28);
+  color: var(--cream);
+}
+
+.admin-search-wrap input::placeholder {
+  color: rgba(252, 243, 225, .42);
+}
+
+.loading-note {
+  padding: 36px 10px;
+  color: var(--gold);
+  text-align: center;
+  font-size: 14px;
+}
+
 .user-email {
   font-size: 12.5px;
   color: rgba(252, 243, 225, .65);
@@ -309,9 +352,17 @@ textarea { resize: vertical; min-height: 80px; }
   overflow-y: auto;
   position: relative;
   background:
-    radial-gradient(circle at 100% 0%, rgba(200, 153, 47, .07), transparent 40%),
-    radial-gradient(circle at 0% 100%, rgba(225, 90, 36, .05), transparent 45%),
-    var(--cream);
+    radial-gradient(circle at 100% 0%, rgba(239, 203, 116, .16), transparent 38%),
+    linear-gradient(145deg, #310a13 0%, #531722 48%, #7b2431 100%);
+}
+
+.dashboard-deity {
+  width: min(520px, 46vw);
+  right: 24px;
+  top: 68px;
+  opacity: .1;
+  z-index: 0;
+  filter: saturate(.8) drop-shadow(0 16px 28px rgba(101, 14, 24, .16));
 }
 
 .main::-webkit-scrollbar, .tabs::-webkit-scrollbar { width: 8px; height: 8px; }
@@ -352,12 +403,16 @@ textarea { resize: vertical; min-height: 80px; }
 
 .panel-head h2 {
   font-family: 'Noto Serif Bengali', serif;
-  color: var(--maroon);
+  color: var(--gold-light);
   margin: 0;
   font-size: 22px;
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.panel-head {
+  border-bottom-color: rgba(239, 203, 116, .22);
 }
 
 .panel-head h2::before {
@@ -372,6 +427,8 @@ textarea { resize: vertical; min-height: 80px; }
 #panel-generalMembers .panel-head h2::before { content: '👥'; }
 #panel-gallery .panel-head h2::before { content: '🖼️'; }
 #panel-affiliates .panel-head h2::before { content: '🏛️'; }
+#panel-ticker .panel-head h2::before { content: '📣'; }
+#panel-settings .panel-head h2::before { content: '⚙️'; }
 
 /* =========================================================
    LIST
@@ -405,6 +462,16 @@ textarea { resize: vertical; min-height: 80px; }
   transform: translateY(-2px);
   box-shadow: 0 16px 32px -16px rgba(101, 14, 24, .35);
   border-left-color: var(--vermilion-soft);
+}
+
+.sortable-item {
+  cursor: grab;
+}
+
+.sortable-item:active,
+.sortable-item.dragging {
+  cursor: grabbing;
+  opacity: .62;
 }
 
 .item-card .thumb {
@@ -542,6 +609,22 @@ textarea { resize: vertical; min-height: 80px; }
   .tabs { flex-direction: row; overflow-x: auto; padding: 0 12px 12px; flex: 1 1 100%; order: 3; }
   .tab-btn { flex-shrink: 0; border-left: none; border-bottom: 3px solid transparent; }
   .tab-btn.active { border-bottom-color: var(--vermilion-soft); }
+  .item-card .actions { flex-wrap: wrap; justify-content: flex-end; }
   .sidebar-foot { flex-direction: row; align-items: center; border-top: none; padding: 8px 16px 14px; order: 2; }
+  .admin-search-wrap { flex: 1 1 100%; order: 4; padding: 0 16px 12px; }
   .panel { padding: 22px 18px 50px; }
+
+  .login-deity {
+    width: 340px;
+    right: -72px;
+    bottom: -18px;
+    opacity: .4;
+  }
+
+  .dashboard-deity {
+    width: 320px;
+    right: -62px;
+    top: 90px;
+    opacity: .07;
+  }
 }

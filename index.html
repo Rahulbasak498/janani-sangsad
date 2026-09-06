@@ -13,6 +13,11 @@ content="width=device-width, initial-scale=1.0"
 >
 
   <title>জননী সংসদ</title>
+  <meta name="description" content="জননী সংসদ-এর পূজা, সময়সূচি, অনুষ্ঠান, নোটিশ ও যোগাযোগের তথ্য।">
+  <meta property="og:title" content="শ্রী শ্রী জননী সংসদ">
+  <meta property="og:description" content="ভক্তি, ঐতিহ্য ও সম্প্রীতির সঙ্গে আমাদের পূজার আয়োজন।">
+  <meta property="og:image" content="image/maa-durga.png">
+  <meta property="og:type" content="website">
 
   <!-- GOOGLE FONTS -->
 
@@ -37,6 +42,8 @@ content="width=device-width, initial-scale=1.0"
 </head>
 
 <body>
+
+<div class="data-status" id="dataStatus" role="status" aria-live="polite"></div>
 
 <!-- =========================================================
      NAVIGATION
@@ -106,7 +113,7 @@ content="width=device-width, initial-scale=1.0"
     গ্যালারি
   </a>
 
-  <div class="nav-dropdown" id="membersDropdown">
+  <div class="nav-dropdown">
     <button class="nav-dropdown-btn" type="button">
       সদস্য <span class="caret">▾</span>
     </button>
@@ -158,6 +165,13 @@ content="width=device-width, initial-scale=1.0"
 
   <div class="hero-glow"></div>
 
+  <img
+    class="hero-deity"
+    id="heroDeity"
+    src="image/maa-durga.png"
+    alt="মা দুর্গা"
+  >
+
 <svg
 class="hero-motif"
 viewBox="0 0 1200 800"
@@ -196,19 +210,43 @@ preserveAspectRatio="xMidYMid slice"
 
   </svg>
 
+  <!-- hanging string-lights garland -->
+  <svg class="hero-garland" viewBox="0 0 1200 60" preserveAspectRatio="none">
+    <path d="M0 6 Q 150 55, 300 10 T 600 10 T 900 10 T 1200 6" fill="none" stroke="rgba(243,217,138,.55)" stroke-width="1.5"/>
+    <g fill="#F3D98A">
+      <circle cx="60" cy="16"/><circle cx="180" cy="38"/><circle cx="300" cy="14"/>
+      <circle cx="420" cy="30"/><circle cx="540" cy="12"/><circle cx="660" cy="30"/>
+      <circle cx="780" cy="12"/><circle cx="900" cy="30"/><circle cx="1020" cy="14"/><circle cx="1140" cy="20"/>
+    </g>
+  </svg>
+
+  <!-- STATUS PILLS -->
+  <div class="hero-topbar">
+
+    <div class="pill pill-clock">
+      <span class="dot"></span>
+      <span id="heroClock">--:--</span>
+      <span class="pill-sep">·</span>
+      <span id="heroLocation">ঢাকা</span>
+    </div>
+
+    <div class="pill pill-center">
+      <span class="pill-strong" id="heroDaysLeft">০৭</span>
+      <span>দিন বাকি ষষ্ঠী পূজার</span>
+    </div>
+
+  </div>
+
   <div class="hero-content">
 
 
-<div class="hero-om">
-  🪔
-</div>
+<h1 class="hero-title-script">
 
+  <span id="heroTitleMain">
+    মা আসছেন
+  </span>
 
-<h1>
-
-  মা আসছেন
-
-  <span>
+  <span id="heroTitleSub">
     ঘরে ঘরে
   </span>
 
@@ -216,14 +254,14 @@ preserveAspectRatio="xMidYMid slice"
 
 
 <div class="committee-name">
-  শ্রী শ্রী জননী সংসদ
+  <span id="committeeName">শ্রী শ্রী জননী সংসদ</span>
 </div>
 
 
 <!-- COUNTDOWN -->
 
 <div
-  class="countdown"
+  class="countdown countdown-pill"
   id="countdown"
 >
 
@@ -243,6 +281,7 @@ preserveAspectRatio="xMidYMid slice"
 
   </div>
 
+  <div class="cd-sep">:</div>
 
   <div class="box">
 
@@ -259,6 +298,7 @@ preserveAspectRatio="xMidYMid slice"
 
   </div>
 
+  <div class="cd-sep">:</div>
 
   <div class="box">
 
@@ -275,6 +315,7 @@ preserveAspectRatio="xMidYMid slice"
 
   </div>
 
+  <div class="cd-sep">:</div>
 
   <div class="box">
 
@@ -299,17 +340,17 @@ preserveAspectRatio="xMidYMid slice"
 
   <a
     href="#about"
-    class="btn btn-primary"
+    class="btn btn-primary pill-cta"
   >
-    আমাদের সম্পর্কে
+    <span class="pc-icon">🛕</span> আমাদের সম্পর্কে
   </a>
 
 
   <a
     href="#schedule"
-    class="btn btn-outline"
+    class="btn btn-outline pill-cta"
   >
-    পূজার সময়সূচি
+    <span class="pc-icon">🗓️</span> পূজার সময়সূচি
   </a>
 
 </div>
@@ -317,7 +358,27 @@ preserveAspectRatio="xMidYMid slice"
 
   </div>
 
-  <div class="scroll-cue"></div>
+<script>
+  (function(){
+    var el = document.getElementById('heroClock');
+    var daysEl = document.getElementById('heroDaysLeft');
+    var cdDays = document.getElementById('cd-days');
+
+    function tick(){
+      if (el) {
+        var now = new Date();
+        var opts = { hour:'2-digit', minute:'2-digit', hour12:true, timeZone:'Asia/Dhaka' };
+        el.textContent = now.toLocaleTimeString('en-US', opts);
+      }
+      if (daysEl && cdDays) {
+        daysEl.textContent = cdDays.textContent;
+      }
+    }
+    tick();
+    setInterval(tick, 1000);
+  })();
+</script>
+
 
 </header>
 
@@ -327,7 +388,7 @@ preserveAspectRatio="xMidYMid slice"
 
 <div class="ticker-wrap">
 
-  <div class="ticker-track">
+  <div class="ticker-track" id="tickerTrack">
 
 
 <span>
@@ -1846,6 +1907,7 @@ preserveAspectRatio="xMidYMid slice"
   <div class="qr-box">
 
     <img
+      id="donationQr"
       src="image/QR.jpg"
       alt="অনুদানের QR Code"
     >
@@ -1864,7 +1926,7 @@ preserveAspectRatio="xMidYMid slice"
         Bkash / Nagad:
       </strong>
 
-      01710000000
+      <span id="bkashNagad">01710000000</span>
 
     </p>
 
@@ -1877,11 +1939,11 @@ preserveAspectRatio="xMidYMid slice"
         ব্যাংক অ্যাকাউন্ট:
       </strong>
 
-      জননী সংসদ
+      <span id="bankName">জননী সংসদ</span>
 
       <br>
 
-      A/C: 0000-0000-0000
+      <span id="bankAccount">A/C: 0000-0000-0000</span>
 
     </p>
 
@@ -1894,13 +1956,14 @@ preserveAspectRatio="xMidYMid slice"
         নগদ অনুদান:
       </strong>
 
-      কমিটি অফিসে সরাসরি জমা দিতে পারেন
+      <span id="cashNote">কমিটি অফিসে সরাসরি জমা দিতে পারেন</span>
 
     </p>
 
 
     <a
       href="#"
+      id="receiptUrl"
       class="btn btn-dark"
       style="margin-top:8px;"
     >
@@ -2070,6 +2133,7 @@ preserveAspectRatio="xMidYMid slice"
   <div class="map-box">
 
     <iframe
+      id="mapEmbed"
       src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1304.72335687424!2d91.4780508!3d24.2724148!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x37515c53ed2cf823%3A0xeb4bb9e4c20313d4!2sJononi%20Songsad!5e1!3m2!1sen!2sbd!4v1787825336975!5m2!1sen!2sbd"
       width="600"
       height="450"
@@ -2085,27 +2149,28 @@ preserveAspectRatio="xMidYMid slice"
   <div class="loc-info">
 
 
-    <h3>
+    <h3 id="locationTitle">
       পূজা মণ্ডপের ঠিকানা
     </h3>
 
 
     <p>
-      📍 গঙ্গানগর, লস্করপুর, শায়েস্তাগঞ্জ, হবিগঞ্জ
+      📍 <span id="locationAddress">গঙ্গানগর, লস্করপুর, শায়েস্তাগঞ্জ, হবিগঞ্জ</span>
     </p>
 
 
     <p>
-      🕒 প্রতিদিন সকাল ৬টা থেকে রাত ১১টা পর্যন্ত খোলা
+      🕒 <span id="locationHours">প্রতিদিন সকাল ৬টা থেকে রাত ১১টা পর্যন্ত খোলা</span>
     </p>
 
 
     <p>
-      🚗 নিকটস্থ বাস স্ট্যান্ড থেকে ৫ মিনিটের হাঁটা পথ
+      🚗 <span id="locationDirection">নিকটস্থ বাস স্ট্যান্ড থেকে ৫ মিনিটের হাঁটা পথ</span>
     </p>
 
 
     <a
+      id="mapLink"
       href="https://www.google.com/maps/place/Jononi+Songsad/@24.2724148,91.4780508,18.5z/data=!4m6!3m5!1s0x37515c53ed2cf823:0xeb4bb9e4c20313d4!8m2!3d24.2726439!4d91.4785656!16s%2Fg%2F1pv0k7wbr"
       target="_blank"
       rel="noopener noreferrer"
@@ -2166,7 +2231,7 @@ preserveAspectRatio="xMidYMid slice"
     </h4>
 
     <p>
-      +880 1710000000
+      <span id="contactPhone">+880 1710000000</span>
     </p>
 
   </div>
@@ -2182,8 +2247,8 @@ preserveAspectRatio="xMidYMid slice"
       ফেসবুক
     </h4>
 
-    <a href="#">
-      fb.com/durgapujacommittee
+    <a href="#" id="facebookLink">
+      <span id="facebookLabel">fb.com/durgapujacommittee</span>
     </a>
 
   </div>
@@ -2200,7 +2265,7 @@ preserveAspectRatio="xMidYMid slice"
     </h4>
 
     <p>
-      info@pujacommittee.org
+      <span id="contactEmail">info@pujacommittee.org</span>
     </p>
 
   </div>
@@ -2280,6 +2345,13 @@ preserveAspectRatio="xMidYMid slice"
   </div>
 
 </footer>
+
+<div class="gallery-lightbox" id="galleryLightbox" aria-hidden="true">
+  <button type="button" class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="আগের ছবি">‹</button>
+  <button type="button" class="lightbox-close" id="lightboxClose" aria-label="ছবি বন্ধ করুন">×</button>
+  <img id="lightboxImage" alt="">
+  <button type="button" class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="পরের ছবি">›</button>
+</div>
 
 <!-- =========================================================
      SCRIPT

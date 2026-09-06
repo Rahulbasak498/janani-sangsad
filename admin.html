@@ -15,6 +15,7 @@
 
 <!-- ===================== LOGIN ===================== -->
 <div class="login-wrap" id="loginWrap">
+  <img class="admin-deity login-deity" src="image/maa-durga.png" alt="" aria-hidden="true">
   <div class="login-box">
     <div class="emoji">🕉️</div>
     <h1>Admin Panel</h1>
@@ -22,16 +23,18 @@
 
     <div class="error-msg" id="loginError"></div>
 
-    <div class="field">
-      <label>ইমেইল</label>
-      <input type="email" id="loginEmail" placeholder="admin@example.com">
-    </div>
-    <div class="field">
-      <label>পাসওয়ার্ড</label>
-      <input type="password" id="loginPassword" placeholder="••••••••">
-    </div>
+    <form id="loginForm">
+      <div class="field">
+        <label for="loginEmail">ইমেইল</label>
+        <input type="email" id="loginEmail" placeholder="admin@example.com" autocomplete="username" required>
+      </div>
+      <div class="field">
+        <label for="loginPassword">পাসওয়ার্ড</label>
+        <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" required>
+      </div>
 
-    <button class="btn btn-primary" id="loginBtn">লগইন করুন</button>
+      <button class="btn btn-primary" id="loginBtn" type="submit">লগইন করুন</button>
+    </form>
     <p class="hint" style="margin-top:14px;"></p>
   </div>
 </div>
@@ -53,7 +56,14 @@
       <button class="tab-btn" data-tab="generalMembers"><span class="tab-icon">👥</span>সাধারণ সদস্যবৃন্দ</button>
       <button class="tab-btn" data-tab="gallery"><span class="tab-icon">🖼️</span>গ্যালারি</button>
       <button class="tab-btn" data-tab="affiliates"><span class="tab-icon">🏛️</span>অঙ্গসংগঠন</button>
+      <button class="tab-btn" data-tab="ticker"><span class="tab-icon">📣</span>টিকার বার্তা</button>
+      <button class="tab-btn" data-tab="settings"><span class="tab-icon">⚙️</span>সাইট সেটিংস</button>
     </nav>
+
+    <div class="admin-search-wrap">
+      <label for="adminSearch">এই তালিকায় খুঁজুন</label>
+      <input id="adminSearch" type="search" placeholder="নাম বা বার্তা লিখুন">
+    </div>
 
     <div class="sidebar-foot">
       <span class="user-email" id="userEmail"></span>
@@ -62,6 +72,7 @@
   </div>
 
   <div class="main">
+    <img class="admin-deity dashboard-deity" src="image/maa-durga.png" alt="" aria-hidden="true">
 
     <!-- ---------- NOTICES ---------- -->
     <div class="panel active" id="panel-notices">
@@ -126,6 +137,24 @@
       <div id="list-affiliates"></div>
     </div>
 
+    <!-- ---------- TICKER ---------- -->
+    <div class="panel" id="panel-ticker">
+      <div class="panel-head">
+        <h2>টিকার বার্তা</h2>
+        <button class="btn btn-gold btn-sm" onclick="openForm('ticker')">+ নতুন বার্তা</button>
+      </div>
+      <div id="list-ticker"></div>
+    </div>
+
+    <!-- ---------- SITE SETTINGS ---------- -->
+    <div class="panel" id="panel-settings">
+      <div class="panel-head">
+        <h2>সাইট সেটিংস</h2>
+        <button class="btn btn-gold btn-sm" onclick="openForm('settings')">সেটিংস এডিট করুন</button>
+      </div>
+      <div id="list-settings"></div>
+    </div>
+
   </div>
 
 </div>
@@ -145,6 +174,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
 <script src="firebase-config.js"></script>
 <script src="admin.js"></script>
 
