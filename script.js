@@ -4,17 +4,41 @@ async function updateHeroLocation() {
   const locationElement = document.getElementById('heroLocation');
   if (!locationElement) return;
 
-  try {
-    const response = await fetch('https://ipwho.is/');
+  if (!navigator.geolocation) {
+    locationElement.textContent = 'লোকেশন পাওয়া যায়নি';
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(async ({ coords }) => {
+    try {
+      const params = new URLSearchParams({
+        format: 'jsonv2',
+        lat: coords.latitude.toString(),
+        lon: coords.longitude.toString(),
+        zoom: '14',
+        'accept-language': 'bn'
+      });
+      const response = await fetch(`https://nominatim.openstreetmap.org/reverse?${params}`);
     if (!response.ok) throw new Error('Location lookup failed');
 
-    const location = await response.json();
-    const city = location.city || location.region || location.country;
+      const location = await response.json();
+      const address = location.address || {};
+      const area = address.suburb || address.neighbourhood || address.city_district;
+      const city = address.city || address.town || address.municipality || address.state;
+      const label = [area, city].filter(Boolean).join(', ');
 
-    if (city) locationElement.textContent = city;
-  } catch (error) {
-    console.warn('Hero location unavailable. Using Dhaka fallback.', error);
-  }
+      locationElement.textContent = label || 'লোকেশন পাওয়া যায়নি';
+    } catch (error) {
+      locationElement.textContent = 'লোকেশন পাওয়া যায়নি';
+      console.warn('Hero location unavailable.', error);
+    }
+  }, () => {
+    locationElement.textContent = 'লোকেশন অনুমতি দিন';
+  }, {
+    enableHighAccuracy: true,
+    timeout: 10000,
+    maximumAge: 300000
+  });
 }
 
 updateHeroLocation();

@@ -101,7 +101,7 @@ const SCHEMAS = {
     fields: [
       { key: 'heroTitleMain', label: 'Hero প্রধান শিরোনাম', type: 'text', default: 'মা আসছেন' },
       { key: 'heroTitleSub', label: 'Hero দ্বিতীয় লাইন', type: 'text', default: 'ঘরে ঘরে' },
-      { key: 'committeeName', label: 'কমিটির নাম', type: 'text', default: 'শ্রী শ্রী জননী সংসদ' },
+      { key: 'committeeName', label: 'কমিটির নাম', type: 'text', default: 'জননী সংসদ' },
       { key: 'heroImageUrl', label: 'Hero image URL', type: 'text', default: 'image/maa-durga.png' },
       { key: 'pujaDate', label: 'পূজার তারিখ ও সময় (ISO format)', type: 'text', default: '2026-10-16T06:00:00+06:00' },
       { key: 'donationQrUrl', label: 'অনুদানের QR image URL', type: 'text', default: 'image/QR.jpg' },
@@ -135,7 +135,7 @@ const DEFAULT_TICKERS = [
 const DEFAULT_SETTINGS = {
   heroTitleMain: 'মা আসছেন',
   heroTitleSub: 'ঘরে ঘরে',
-  committeeName: 'শ্রী শ্রী জননী সংসদ',
+  committeeName: 'জননী সংসদ',
   heroImageUrl: 'image/maa-durga.png',
   pujaDate: '2026-10-16T06:00:00+06:00',
   donationQrUrl: 'image/QR.jpg',
