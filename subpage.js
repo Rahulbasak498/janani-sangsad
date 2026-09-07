@@ -45,6 +45,21 @@ async function loadSectionPage() {
       .filter(Boolean);
     if (!sections.length) throw new Error('Section unavailable');
     target.replaceChildren(...sections.map(section => document.importNode(section, true)));
+
+    if (pageSection.split(',').map(sectionId => sectionId.trim()).includes('gallery')) {
+      const lightbox = document.createElement('div');
+      lightbox.className = 'gallery-lightbox';
+      lightbox.id = 'galleryLightbox';
+      lightbox.setAttribute('aria-hidden', 'true');
+      lightbox.innerHTML = `
+        <button type="button" class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="আগের ছবি">‹</button>
+        <button type="button" class="lightbox-close" id="lightboxClose" aria-label="ছবি বন্ধ করুন">×</button>
+        <img id="lightboxImage" alt="">
+        <button type="button" class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="পরের ছবি">›</button>
+      `;
+      document.body.appendChild(lightbox);
+    }
+
     await loadScript('https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js');
     await loadScript('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js');
     await loadScript('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js');

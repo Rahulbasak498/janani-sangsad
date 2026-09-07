@@ -197,6 +197,7 @@ button {
 section {
   padding: 88px 0;
   position: relative;
+  scroll-margin-top: 76px;
 }
 
 .eyebrow {
@@ -231,6 +232,7 @@ section {
   font-weight: 800;
   line-height: 1.35;
   margin-bottom: 8px;
+  text-wrap: balance;
 }
 
 .section-sub {
@@ -240,6 +242,7 @@ section {
   margin: 0 auto 46px;
   font-size: 1rem;
   line-height: 1.9;
+  text-wrap: balance;
 }
 
 
@@ -1108,6 +1111,10 @@ section {
   min-height: 48px;
 }
 
+.btn:active {
+  transform: translateY(1px) scale(.98);
+}
+
 .btn-primary {
   background:
     linear-gradient(
@@ -1155,6 +1162,13 @@ section {
   background: #360810;
 
   transform: translateY(-2px);
+}
+
+.btn:focus-visible,
+.nav-dropdown-btn:focus-visible,
+.nav-burger:focus-visible {
+  outline: 3px solid var(--gold-light);
+  outline-offset: 4px;
 }
 
 
@@ -1978,6 +1992,7 @@ section {
   align-items: center;
 
   backdrop-filter: blur(6px);
+  box-shadow: 0 24px 60px -30px rgba(0, 0, 0, .7);
 }
 
 .qr-box {
@@ -2006,6 +2021,9 @@ section {
   padding: 10px;
 
   overflow: hidden;
+  position: relative;
+  border: 6px solid rgba(255, 255, 255, .92);
+  box-shadow: 0 0 0 1px rgba(243, 217, 138, .55), 0 14px 28px -16px rgba(0, 0, 0, .8);
 }
 
 .qr-box img {
@@ -2016,6 +2034,10 @@ section {
 }
 
 .donate-info p {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  column-gap: 8px;
+  align-items: baseline;
   color: rgba(252, 243, 225, .88);
 
   font-size: .92rem;
@@ -2023,10 +2045,61 @@ section {
   line-height: 1.8;
 
   margin-bottom: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(243, 217, 138, .18);
+}
+
+.donate-info p:last-of-type {
+  border-bottom: 0;
+  margin-bottom: 10px;
+}
+
+.donate-info p::first-letter {
+  font-size: 1.15rem;
+}
+
+.donate-row-icon {
+  grid-column: 1;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.donate-row-content {
+  grid-column: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  align-items: baseline;
+  min-width: 0;
+}
+
+.donate-row-content > span {
+  overflow-wrap: anywhere;
+}
+
+.donate-row-content > span:last-child:not([id="bankName"]) {
+  flex-basis: 100%;
 }
 
 .donate-info strong {
   color: var(--gold-light);
+  font-weight: 700;
+}
+
+.donate-info p span {
+  color: rgba(255, 249, 239, .92);
+}
+
+.donate-info #bankAccount {
+  color: rgba(255, 249, 239, .72);
+  font-size: .86rem;
+  flex-basis: 100%;
+}
+
+.donate-info .btn {
+  width: 100%;
+  margin-top: 14px !important;
 }
 
 
