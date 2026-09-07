@@ -222,6 +222,7 @@ section {
   height: 1px;
   background: var(--gold);
   flex-shrink: 0;
+  transform: translateY(0);
 }
 
 .section-title {
@@ -890,6 +891,27 @@ section {
   transform: translateY(-4px);
 }
 
+/* Keep each moving announcement easy to scan. */
+.ticker-wrap {
+  background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+  border-top: 1px solid rgba(92, 16, 25, .18);
+  border-bottom: 1px solid rgba(92, 16, 25, .18);
+  padding: 9px 0;
+  box-shadow: 0 8px 20px -16px rgba(92, 16, 25, .55);
+}
+
+.ticker-track {
+  gap: 28px;
+}
+
+.ticker-track span {
+  padding: 7px 16px;
+  border: 1px solid rgba(92, 16, 25, .16);
+  border-radius: 999px;
+  background: rgba(255, 249, 239, .28);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .3);
+}
+
 .hero-ctas .pill-cta {
   border-radius: 999px;
 
@@ -935,6 +957,7 @@ section {
 
     padding: 10px 14px;
   }
+
 }
 
 .hero-content {
@@ -1267,16 +1290,21 @@ section {
 
 .about-text h3 {
   font-family: 'Noto Serif Bengali', serif !important;
+  max-width: 520px;
+  padding-left: 16px;
+  border-left: 4px solid var(--vermilion);
+  font-size: clamp(1.25rem, 2.2vw, 1.6rem);
   line-height: 1.5;
-  margin-bottom: 14px;
+  margin-bottom: 22px;
 }
 
 .about-text p {
+  max-width: 620px;
   color: var(--ink-soft);
-  line-height: 1.95;
-  margin-bottom: 16px;
+  line-height: 1.9;
+  margin-bottom: 14px;
   font-family: 'Hind Siliguri', sans-serif !important;
-  font-size: 1.02rem;
+  font-size: 1rem;
 }
 
 .about-text strong {
@@ -1285,17 +1313,28 @@ section {
 }
 
 .about-stats {
-  display: flex;
-
-  gap: 28px;
-
-  margin-top: 26px;
-
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(138, 27, 43, .16);
 }
 
 .about-stats div {
   text-align: left;
+  min-width: 0;
+  padding: 0 16px;
+  border-right: 1px solid rgba(138, 27, 43, .13);
+}
+
+.about-stats div:first-child {
+  padding-left: 0;
+}
+
+.about-stats div:last-child {
+  padding-right: 0;
+  border-right: 0;
 }
 
 .about-stats .n {
@@ -1316,6 +1355,24 @@ section {
   color: var(--ink-soft);
 
   line-height: 1.5;
+}
+
+@media (max-width: 700px) {
+  .about-text h3 {
+    padding-left: 12px;
+  }
+
+  .about-stats div {
+    padding: 0 9px;
+  }
+
+  .about-stats .n {
+    font-size: 1.45rem;
+  }
+
+  .about-stats .l {
+    font-size: .72rem;
+  }
 }
 
 
@@ -2179,6 +2236,29 @@ section {
   background: var(--cream);
 }
 
+.contact .eyebrow {
+  margin-bottom: 10px;
+  position: relative;
+  top: 8px;
+  margin-bottom: 18px;
+}
+
+.location .eyebrow,
+.contact .eyebrow {
+  min-height: 24px;
+  margin-bottom: 10px;
+}
+
+.location .section-title,
+.contact .section-title {
+  margin-bottom: 8px;
+}
+
+.location .section-sub,
+.contact .section-sub {
+  margin-top: 0;
+}
+
 .contact-grid {
   display: grid;
 
@@ -2189,6 +2269,8 @@ section {
   max-width: 900px;
 
   margin: 0 auto;
+
+  align-items: stretch;
 }
 
 .contact-card {
@@ -2240,6 +2322,7 @@ section {
   line-height: 1.6;
 
   word-break: break-word;
+  margin: 0;
 }
 
 .contact-card a:hover {
@@ -2270,6 +2353,11 @@ footer {
   border: 1px solid rgba(212, 169, 59, .22);
   position: relative;
   overflow: hidden;
+  min-height: 190px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .contact-card::before {
@@ -3356,6 +3444,22 @@ body {
 
 .about-visual::before {
   background: var(--cream);
+}
+
+.about .section-sub {
+  max-width: 660px;
+  margin: 0 auto 48px;
+  line-height: 1.85;
+  text-align: center;
+}
+
+.about-grid {
+  align-items: center;
+  gap: clamp(36px, 6vw, 72px);
+}
+
+.about-text {
+  padding: 8px 0;
 }
 
 /* Shared feature polish */

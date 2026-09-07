@@ -163,7 +163,6 @@ const DEFAULT_GALLERY = [
 ];
 
 let currentEdit = null; // { type, id } or null for "new"
-let activeListType = 'notices';
 let draggedGalleryId = null;
 const dashboardCounts = {};
 
@@ -252,7 +251,6 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
     btn.classList.add('active');
-    activeListType = btn.dataset.tab;
     document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
   });
 });
