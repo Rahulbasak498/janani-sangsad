@@ -66,7 +66,7 @@ body {
   visibility: hidden;
   background: var(--maroon-deep);
   will-change: opacity;
-  transition: opacity .34s cubic-bezier(.22, 1, .36, 1);
+  transition: opacity .42s cubic-bezier(.16, 1, .3, 1);
 }
 
 .page-transition-layer::before {
@@ -80,7 +80,7 @@ body {
   filter: drop-shadow(0 0 18px rgba(243, 217, 138, .8));
   opacity: .34;
   transform: translate(-50%, -50%) scale(.94);
-  transition: opacity .34s cubic-bezier(.22, 1, .36, 1), transform .34s cubic-bezier(.22, 1, .36, 1);
+  transition: opacity .42s cubic-bezier(.16, 1, .3, 1), transform .42s cubic-bezier(.16, 1, .3, 1);
 }
 
 .page-transition-layer.is-leaving {
@@ -94,12 +94,12 @@ body {
 }
 
 body > *:not(.page-transition-layer) {
-  transition: opacity .34s cubic-bezier(.22, 1, .36, 1), transform .34s cubic-bezier(.22, 1, .36, 1);
+  transition: opacity .42s cubic-bezier(.16, 1, .3, 1), transform .42s cubic-bezier(.16, 1, .3, 1);
 }
 
 body.page-leaving > *:not(.page-transition-layer) {
   opacity: 0;
-  transform: translateY(-10px);
+  transform: translateY(-14px);
 }
 
 @media (prefers-reduced-motion: reduce) {

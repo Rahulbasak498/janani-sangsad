@@ -18,6 +18,6 @@
     layer.style.visibility = 'visible';
     layer.style.opacity = '.96';
     document.body.classList.add('page-leaving');
-    window.setTimeout(() => { window.location.href = url.href; }, 340);
+    window.setTimeout(() => { window.location.href = url.href; }, 420);
   });
 })();
