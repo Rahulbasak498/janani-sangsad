@@ -14,10 +14,26 @@ content="width=device-width, initial-scale=1.0"
 
   <title>জননী সংসদ</title>
   <meta name="description" content="জননী সংসদ-এর পূজা, সময়সূচি, অনুষ্ঠান, নোটিশ ও যোগাযোগের তথ্য।">
+  <meta name="theme-color" content="#650E18">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="canonical" href="./index.html">
+  <link rel="manifest" href="manifest.json">
   <meta property="og:title" content="জননী সংসদ">
   <meta property="og:description" content="ভক্তি, ঐতিহ্য ও সম্প্রীতির সঙ্গে আমাদের পূজার আয়োজন।">
   <meta property="og:image" content="image/maa-durga.png">
   <meta property="og:type" content="website">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "জননী সংসদ",
+    "foundingDate": "1974",
+    "url": "./index.html",
+    "image": "image/maa-durga.png"
+  }
+  </script>
 
   <!-- GOOGLE FONTS -->
 
@@ -57,7 +73,7 @@ content="width=device-width, initial-scale=1.0"
   <div class="container">
 
 
-<div class="brand">
+<a class="brand" href="index.html" aria-label="জননী সংসদ হোম পেজ">
 
   <div class="brand-mark">
     🕉️
@@ -73,7 +89,7 @@ content="width=device-width, initial-scale=1.0"
 
   </div>
 
-</div>
+</a>
 
 
 <!-- MOBILE MENU BUTTON -->
@@ -97,19 +113,19 @@ content="width=device-width, initial-scale=1.0"
   id="navLinks"
 >
 
-  <a href="#about">
+  <a href="about.html">
     আমাদের সম্পর্কে
   </a>
 
-  <a href="#schedule">
+  <a href="schedule.html">
     সময়সূচি
   </a>
 
-  <a href="#events">
+  <a href="events.html">
     অনুষ্ঠান
   </a>
 
-  <a href="#gallery">
+  <a href="gallery.html">
     গ্যালারি
   </a>
 
@@ -118,35 +134,31 @@ content="width=device-width, initial-scale=1.0"
       সদস্য <span class="caret">▾</span>
     </button>
     <div class="nav-dropdown-menu">
-      <a href="#members">
+      <a href="members.html">
         কার্যকরী সদস্যবৃন্দ
       </a>
-      <a href="#advisors">
+      <a href="advisors.html">
         উপদেষ্টা
       </a>
-      <a href="#general-members">
+      <a href="general-members.html">
         সাধারণ সদস্যবৃন্দ
       </a>
     </div>
   </div>
 
-  <a href="#affiliates">
+  <a href="affiliates.html">
     অঙ্গসংগঠন
   </a>
 
-  <a href="#donation">
+  <a href="donation.html">
     অনুদান
   </a>
 
-  <a href="#notice">
+  <a href="notice.html">
     নোটিশ
   </a>
 
-  <a href="#location">
-    লোকেশন
-  </a>
-
-  <a href="#contact">
+  <a href="contact.html">
     যোগাযোগ
   </a>
 
@@ -339,7 +351,7 @@ preserveAspectRatio="xMidYMid slice"
 <div class="hero-ctas">
 
   <a
-    href="#about"
+    href="about.html"
     class="btn btn-primary pill-cta"
   >
     <span class="pc-icon">🛕</span> আমাদের সম্পর্কে
@@ -347,7 +359,7 @@ preserveAspectRatio="xMidYMid slice"
 
 
   <a
-    href="#schedule"
+    href="schedule.html"
     class="btn btn-outline pill-cta"
   >
     <span class="pc-icon">🗓️</span> পূজার সময়সূচি
@@ -2365,7 +2377,11 @@ preserveAspectRatio="xMidYMid slice"
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+
 <script src="firebase-config.js"></script>
+
+<script src="page-transition.js"></script>
 
 <script src="render.js"></script>
 

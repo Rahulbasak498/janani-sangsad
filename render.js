@@ -160,6 +160,8 @@ function renderMembers(containerId, docs) {
         <img
           src="${escapeAttr(m.photoUrl)}"
           alt="${escapeAttr(m.name || '')}"
+          loading="lazy"
+          decoding="async"
           style="width:100%;height:100%;object-fit:cover;"
           onerror="this.style.display='none';"
         >
@@ -237,6 +239,7 @@ function renderGallery(docs) {
           src="${escapeAttr(g.imageUrl)}"
           alt="${escapeAttr(g.caption || 'Gallery Image')}"
           loading="lazy"
+          decoding="async"
           style="
             width:100%;
             height:100%;
@@ -470,7 +473,8 @@ async function loadPublicData() {
 // START
 // =========================================================
 
-document.addEventListener(
-  'DOMContentLoaded',
-  loadPublicData
-);
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', loadPublicData, { once: true });
+} else {
+  loadPublicData();
+}

@@ -57,6 +57,72 @@ body {
   line-height: 1.6;
 }
 
+.page-transition-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  background: var(--maroon-deep);
+  will-change: opacity;
+  transition: opacity .34s cubic-bezier(.22, 1, .36, 1);
+}
+
+.page-transition-layer::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(52vw, 280px);
+  aspect-ratio: 1;
+  background: url("image/maa-durga.png") center / contain no-repeat;
+  filter: drop-shadow(0 0 18px rgba(243, 217, 138, .8));
+  opacity: .34;
+  transform: translate(-50%, -50%) scale(.94);
+  transition: opacity .34s cubic-bezier(.22, 1, .36, 1), transform .34s cubic-bezier(.22, 1, .36, 1);
+}
+
+.page-transition-layer.is-leaving {
+  visibility: visible;
+  opacity: .96;
+}
+
+.page-transition-layer.is-leaving::before {
+  opacity: .7;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+body > *:not(.page-transition-layer) {
+  transition: opacity .34s cubic-bezier(.22, 1, .36, 1), transform .34s cubic-bezier(.22, 1, .36, 1);
+}
+
+body.page-leaving > *:not(.page-transition-layer) {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body > *:not(.page-transition-layer) {
+    transition: none;
+  }
+}
+
+/* Standalone section pages keep the shared navigation readable. */
+.subpage .nav {
+  background: var(--maroon-deep);
+  backdrop-filter: blur(12px);
+}
+
+.subpage-main {
+  min-height: 100vh;
+  padding-top: 76px;
+}
+
+.subpage-main > section {
+  min-height: calc(100vh - 76px);
+}
+
 .data-status {
   position: fixed;
   top: 14px;

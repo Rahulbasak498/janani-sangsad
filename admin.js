@@ -165,6 +165,7 @@ const DEFAULT_GALLERY = [
 let currentEdit = null; // { type, id } or null for "new"
 let activeListType = 'notices';
 let draggedGalleryId = null;
+const dashboardCounts = {};
 
 // ---------------- AUTH ----------------
 auth.onAuthStateChanged(user => {
@@ -252,17 +253,13 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
     btn.classList.add('active');
     activeListType = btn.dataset.tab;
-    document.getElementById('adminSearch').value = '';
     document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
   });
 });
 
-document.getElementById('adminSearch').addEventListener('input', event => {
-  const query = event.target.value.trim().toLowerCase();
-  const wrap = document.getElementById('list-' + activeListType);
-  if (!wrap) return;
-  wrap.querySelectorAll('.item-card').forEach(card => {
-    card.hidden = query && !card.textContent.toLowerCase().includes(query);
+document.querySelectorAll('[data-stat-tab]').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelector(`.tab-btn[data-tab="${card.dataset.statTab}"]`)?.click();
   });
 });
 
@@ -331,33 +328,34 @@ function renderList(type, docs) {
     }));
   }
 
-  const query = activeListType === type
-    ? document.getElementById('adminSearch').value.trim().toLowerCase()
-    : '';
-  const visibleDocs = docs.filter(doc => {
-    if (!query) return true;
-    const card = schema.card(doc.data());
-    return `${card.title || ''} ${card.sub || ''}`.toLowerCase().includes(query);
-  });
+  updateDashboardCount(type, docs.length);
+
+  const visibleDocs = docs;
   wrap.innerHTML = '';
 
   if (visibleDocs.length === 0) {
-    wrap.innerHTML = `<div class="empty-note">${query ? 'এই খোঁজে কিছু পাওয়া যায়নি।' : 'এখনও কিছু যোগ করা হয়নি — "+ নতুন" বাটনে ক্লিক করুন।'}</div>`;
+    wrap.innerHTML = '<div class="empty-note">এখনও কিছু যোগ করা হয়নি — "+ নতুন" বাটনে ক্লিক করুন।</div>';
     return;
   }
 
-  visibleDocs.forEach(doc => {
+  visibleDocs.forEach((doc, index) => {
     const data = doc.data();
     const c = schema.card(data);
     let thumbHtml;
     if (type === 'gallery') {
-      const defaultImage = DEFAULT_GALLERY.find(item => item.caption === data.caption)?.imageUrl;
-      const imageUrl = (c.thumb && typeof c.thumb === 'object' && c.thumb.img) || defaultImage;
-      const fallback = defaultImage && imageUrl !== defaultImage
+      const caption = String(data.caption || '').trim();
+      const fallbackItem = DEFAULT_GALLERY.find(item => item.caption.trim() === caption)
+        || DEFAULT_GALLERY[Number(data.order) - 1]
+        || DEFAULT_GALLERY[index % DEFAULT_GALLERY.length];
+      const defaultImage = fallbackItem?.imageUrl || '';
+      const storedImage = c.thumb && typeof c.thumb === 'object' ? c.thumb.img : '';
+      const imagePath = defaultImage || storedImage;
+      const imageUrl = imagePath ? new URL(imagePath, document.baseURI).href : '';
+      const fallback = storedImage && defaultImage && storedImage !== defaultImage
         ? ` onerror="this.onerror=null;this.src='${escapeAttr(defaultImage)}';"`
         : '';
       thumbHtml = imageUrl
-        ? `<img src="${escapeAttr(imageUrl)}" alt="${escapeAttr(data.caption || '')}"${fallback}>`
+        ? `<img src="${escapeAttr(imageUrl)}" alt="${escapeAttr(data.caption || '')}" loading="eager" style="display:block;width:100%;height:100%;object-fit:cover;"${fallback}>`
         : '🖼️';
     } else {
       thumbHtml = (c.thumb && typeof c.thumb === 'object' && c.thumb.img)
@@ -367,6 +365,7 @@ function renderList(type, docs) {
 
     const el = document.createElement('div');
     el.className = 'item-card';
+    if (type === 'gallery') el.classList.add('gallery-item');
     const actionsHtml = doc.local
       ? `<button class="btn btn-gold btn-sm" onclick="importDefaultGalleryItem(${DEFAULT_GALLERY.indexOf(data)})">Admin-এ যোগ করুন</button>`
       : `
@@ -621,9 +620,37 @@ function escapeHtml(str) {
   return d.innerHTML;
 }
 
+function escapeAttr(str) {
+  return String(str == null ? '' : str)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.style.display = 'block';
   setTimeout(() => { t.style.display = 'none'; }, 2200);
+}
+
+function updateDashboardCount(type, count) {
+  dashboardCounts[type] = count;
+
+  const memberCount = ['committee', 'advisors', 'generalMembers']
+    .reduce((total, memberType) => total + (dashboardCounts[memberType] || 0), 0);
+
+  const countMap = {
+    notices: dashboardCounts.notices,
+    schedule: dashboardCounts.schedule,
+    members: memberCount,
+    gallery: dashboardCounts.gallery
+  };
+
+  Object.entries(countMap).forEach(([key, value]) => {
+    const element = document.getElementById('stat-' + key);
+    if (element) element.textContent = value ?? 0;
+  });
 }

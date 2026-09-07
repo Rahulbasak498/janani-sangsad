@@ -1,5 +1,13 @@
 const nav = document.getElementById('nav');
 
+if ('serviceWorker' in navigator && ['http:', 'https:'].includes(window.location.protocol)) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(error => {
+      console.warn('Offline support unavailable.', error);
+    });
+  });
+}
+
 async function updateHeroLocation() {
   const locationElement = document.getElementById('heroLocation');
   if (!locationElement) return;

@@ -59,11 +59,6 @@
       <button class="tab-btn" data-tab="settings"><span class="tab-icon">⚙️</span>সাইট সেটিংস</button>
     </nav>
 
-    <div class="admin-search-wrap">
-      <label for="adminSearch">এই তালিকায় খুঁজুন</label>
-      <input id="adminSearch" type="search" placeholder="নাম বা বার্তা লিখুন">
-    </div>
-
     <div class="sidebar-foot">
       <span class="user-email" id="userEmail"></span>
       <button class="btn btn-outline btn-sm" id="logoutBtn">লগ-আউট</button>
@@ -72,6 +67,35 @@
 
   <div class="main">
     <img class="admin-deity dashboard-deity" src="image/maa-durga.png" alt="" aria-hidden="true">
+
+    <section class="dashboard-overview" aria-labelledby="dashboardTitle">
+      <div class="dashboard-welcome">
+        <div>
+          <span class="dashboard-kicker">জননী সংসদ প্রশাসন</span>
+          <h1 id="dashboardTitle">স্বাগতম, Admin</h1>
+          <p>আপনার সাইটের নোটিশ, সময়সূচি, সদস্য ও গ্যালারি এক জায়গা থেকে পরিচালনা করুন।</p>
+        </div>
+      </div>
+
+      <div class="dashboard-stats" aria-label="সাইটের সারাংশ">
+        <button class="stat-card stat-notices" type="button" data-stat-tab="notices">
+          <span class="stat-icon">📢</span>
+          <span class="stat-copy"><strong id="stat-notices">—</strong><small>নোটিশ</small></span>
+        </button>
+        <button class="stat-card stat-schedule" type="button" data-stat-tab="schedule">
+          <span class="stat-icon">🗓️</span>
+          <span class="stat-copy"><strong id="stat-schedule">—</strong><small>সময়সূচি</small></span>
+        </button>
+        <button class="stat-card stat-members" type="button" data-stat-tab="committee">
+          <span class="stat-icon">👥</span>
+          <span class="stat-copy"><strong id="stat-members">—</strong><small>সদস্য</small></span>
+        </button>
+        <button class="stat-card stat-gallery" type="button" data-stat-tab="gallery">
+          <span class="stat-icon">🖼️</span>
+          <span class="stat-copy"><strong id="stat-gallery">—</strong><small>গ্যালারি ছবি</small></span>
+        </button>
+      </div>
+    </section>
 
     <!-- ---------- NOTICES ---------- -->
     <div class="panel active" id="panel-notices">
@@ -175,7 +199,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
 <script src="firebase-config.js"></script>
-<script src="admin.js"></script>
+<script src="admin.js?v=4"></script>
 
 </body>
 </html>
