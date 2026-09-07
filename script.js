@@ -51,6 +51,20 @@ async function updateHeroLocation() {
 
 updateHeroLocation();
 
+async function requestNoticePermission() {
+  if (!('Notification' in window) || Notification.permission !== 'default') return;
+
+  try {
+    await Notification.requestPermission();
+  } catch (error) {
+    console.warn('Notification permission unavailable.', error);
+  }
+}
+
+window.addEventListener('load', () => {
+  window.setTimeout(requestNoticePermission, 900);
+});
+
 window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 40);
 });

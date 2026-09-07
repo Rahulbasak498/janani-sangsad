@@ -2,11 +2,34 @@
 // PUBLIC SITE — FIREBASE DATA RENDER
 // =========================================================
 
+let noticeSnapshotReady = false;
+const seenNoticeIds = new Set();
+
+function notifyAboutNewNotices(docs) {
+  const newDocs = docs.filter(doc => !seenNoticeIds.has(doc.id));
+  docs.forEach(doc => seenNoticeIds.add(doc.id));
+
+  if (!noticeSnapshotReady) {
+    noticeSnapshotReady = true;
+    return;
+  }
+
+  if (!newDocs.length || !('Notification' in window) || Notification.permission !== 'granted') return;
+
+  const latest = newDocs[0].data();
+  new Notification(latest.title || 'জননী সংসদে নতুন নোটিশ', {
+    body: latest.desc || 'ওয়েবসাইটে নতুন নোটিশ প্রকাশিত হয়েছে।',
+    icon: 'image/maa-durga.png'
+  });
+}
+
 // ---------- NOTICES ----------
 function renderNotices(docs) {
   const wrap = document.getElementById('noticeList');
 
   if (!wrap || docs.length === 0) return;
+
+  notifyAboutNewNotices(docs);
 
   wrap.innerHTML = '';
 
