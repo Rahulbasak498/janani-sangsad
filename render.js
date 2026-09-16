@@ -108,6 +108,10 @@ function applySiteSettings(settings) {
     .replace(/শ্রী\s*শ্রী\s*/g, '')
     .trim();
   setText('committeeName', committeeName);
+  setText('navBrandName', committeeName);
+  setText('footerBrandName', committeeName);
+  setText('footerCreditName', committeeName);
+  setText('navTagline', settings.foundingTagline);
   setAttr('heroDeity', 'src', settings.heroImageUrl);
   setText('bkashNagad', settings.bkashNagad);
   setText('bankName', settings.bankName);
@@ -124,7 +128,31 @@ function applySiteSettings(settings) {
   setText('contactPhone', settings.contactPhone);
   setText('facebookLabel', settings.facebookLabel);
   setAttr('facebookLink', 'href', settings.facebookUrl);
+  setAttr('footerFacebookLink', 'href', settings.facebookUrl);
+  setAttr('footerInstagramLink', 'href', settings.instagramUrl);
+  setAttr('footerYoutubeLink', 'href', settings.youtubeUrl);
   setText('contactEmail', settings.contactEmail);
+
+  if (settings.contactPhone) {
+    const phoneLink = document.getElementById('footerPhoneLink');
+    if (phoneLink) phoneLink.setAttribute('href', 'tel:' + String(settings.contactPhone).replace(/\s+/g, ''));
+  }
+
+  // ---- page title / meta (SEO) ----
+  if (settings.siteTitle) document.title = settings.siteTitle;
+
+  const setMeta = (selector, attr, value) => {
+    if (value === undefined) return;
+    const el = document.querySelector(selector);
+    if (el) el.setAttribute(attr, value);
+  };
+  setMeta('meta[name="description"]', 'content', settings.metaDescription);
+  setMeta('meta[property="og:title"]', 'content', settings.siteTitle);
+  setMeta('meta[property="og:description"]', 'content', settings.metaDescription);
+  if (settings.heroImageUrl) setMeta('meta[property="og:image"]', 'content', settings.heroImageUrl);
+
+  const footerYear = document.getElementById('footerYear');
+  if (footerYear) footerYear.textContent = new Date().getFullYear();
 
   window.dispatchEvent(new CustomEvent('siteSettingsLoaded', { detail: settings }));
 }
@@ -438,9 +466,32 @@ function renderAbout(about) {
 }
 
 
+// ---------- PAGE HEADINGS ----------
+function renderPageHeadings(data) {
+  const keys = ['about', 'schedule', 'events', 'gallery', 'committee', 'advisors',
+    'generalMembers', 'affiliates', 'donation', 'notice', 'location', 'contact'];
+
+  const setText = (id, value) => {
+    const element = document.getElementById(id);
+    if (element && value !== undefined) element.textContent = value;
+  };
+
+  keys.forEach(key => {
+    setText('ph-eyebrow-' + key, data['eyebrow_' + key]);
+    setText('ph-title-' + key, data['title_' + key]);
+    setText('ph-sub-' + key, data['sub_' + key]);
+  });
+}
+
+
 // =========================================================
 // HELPERS
 // =========================================================
+
+(function setFooterYearImmediately() {
+  const el = document.getElementById('footerYear');
+  if (el) el.textContent = new Date().getFullYear();
+})();
 
 function escapeHtml(str) {
 
@@ -580,6 +631,13 @@ async function loadPublicData() {
   db.collection('about').limit(1).onSnapshot(
     snap => renderAbout(snap.empty ? {} : snap.docs[0].data()),
     e => console.warn('About listener failed:', e)
+  );
+
+
+  // ---------- PAGE HEADINGS ----------
+  db.collection('pageHeadings').limit(1).onSnapshot(
+    snap => renderPageHeadings(snap.empty ? {} : snap.docs[0].data()),
+    e => console.warn('Page headings listener failed:', e)
   );
 
 }

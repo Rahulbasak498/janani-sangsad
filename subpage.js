@@ -3,7 +3,7 @@ const navigationMarkup = `
     <div class="container">
       <a class="brand" href="index.html">
         <div class="brand-mark">🕉️</div>
-        <div class="brand-name">জননী সংসদ<small>প্রতিষ্ঠা ১৯৭৪</small></div>
+        <div class="brand-name"><span id="navBrandName">জননী সংসদ</span><small><span id="navTagline">প্রতিষ্ঠা ১৯৭৪</span></small></div>
       </a>
       <button class="nav-burger" id="navBurger" aria-label="মেনু খুলুন" type="button"><span></span><span></span><span></span></button>
       <div class="nav-links" id="navLinks">

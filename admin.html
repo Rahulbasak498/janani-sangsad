@@ -52,6 +52,7 @@
       <button class="tab-btn" data-tab="schedule"><span class="tab-icon">🗓️</span>সময়সূচি</button>
       <button class="tab-btn" data-tab="events"><span class="tab-icon">🎉</span>অনুষ্ঠান</button>
       <button class="tab-btn" data-tab="about"><span class="tab-icon">📖</span>আমাদের সম্পর্কে</button>
+      <button class="tab-btn" data-tab="pageHeadings"><span class="tab-icon">🏷️</span>পেজের শিরোনাম</button>
       <button class="tab-btn" data-tab="committee"><span class="tab-icon">🧑‍🤝‍🧑</span>কার্যকরী সদস্যবৃন্দ</button>
       <button class="tab-btn" data-tab="advisors"><span class="tab-icon">🎓</span>উপদেষ্টা</button>
       <button class="tab-btn" data-tab="generalMembers"><span class="tab-icon">👥</span>সাধারণ সদস্যবৃন্দ</button>
@@ -139,6 +140,15 @@
       <div id="list-about"></div>
     </div>
 
+    <!-- ---------- PAGE HEADINGS ---------- -->
+    <div class="panel" id="panel-pageHeadings">
+      <div class="panel-head">
+        <h2>পেজের শিরোনাম</h2>
+        <button class="btn btn-gold btn-sm" onclick="openForm('pageHeadings')">এডিট করুন</button>
+      </div>
+      <div id="list-pageHeadings"></div>
+    </div>
+
     <!-- ---------- কার্যকরী সদস্যবৃন্দ ---------- -->
     <div class="panel" id="panel-committee">
       <div class="panel-head">
@@ -223,7 +233,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
 <script src="firebase-config.js"></script>
-<script src="admin.js?v=5"></script>
+<script src="admin.js?v=6"></script>
 
 </body>
 </html>

@@ -100,9 +100,13 @@ const SCHEMAS = {
     collection: 'siteSettings',
     singleton: true,
     fields: [
+      { key: 'siteTitle', label: 'সাইটের টাইটেল (ব্রাউজার ট্যাবে দেখায়)', type: 'text', default: 'জননী সংসদ' },
+      { key: 'metaDescription', label: 'সাইটের বিবরণ (SEO/শেয়ার করলে দেখাবে)', type: 'textarea',
+        default: 'জননী সংসদ-এর পূজা, সময়সূচি, অনুষ্ঠান, নোটিশ ও যোগাযোগের তথ্য।' },
       { key: 'heroTitleMain', label: 'Hero প্রধান শিরোনাম', type: 'text', default: 'মা আসছেন' },
       { key: 'heroTitleSub', label: 'Hero দ্বিতীয় লাইন', type: 'text', default: 'ঘরে ঘরে' },
       { key: 'committeeName', label: 'কমিটির নাম', type: 'text', default: 'জননী সংসদ' },
+      { key: 'foundingTagline', label: 'প্রতিষ্ঠার লেবেল (নেভিগেশনে ছোট করে দেখাবে)', type: 'text', default: 'প্রতিষ্ঠা ১৯৭৪' },
       { key: 'heroImageUrl', label: 'Hero image URL', type: 'text', default: 'image/maa-durga.png' },
       { key: 'pujaDate', label: 'পূজার তারিখ ও সময় (ISO format)', type: 'text', default: '2026-10-16T06:00:00+06:00' },
       { key: 'donationQrUrl', label: 'অনুদানের QR image URL', type: 'text', default: 'image/QR.jpg' },
@@ -112,14 +116,16 @@ const SCHEMAS = {
       { key: 'cashNote', label: 'নগদ অনুদানের বিবরণ', type: 'textarea', default: 'কমিটি অফিসে সরাসরি জমা দিতে পারেন' },
       { key: 'receiptUrl', label: 'রসিদ download URL (ঐচ্ছিক)', type: 'text' },
       { key: 'locationTitle', label: 'লোকেশন শিরোনাম', type: 'text', default: 'পূজা মণ্ডপের ঠিকানা' },
-      { key: 'locationAddress', label: 'ঠিকানা', type: 'text', default: 'গঙ্গানগর, লস্করপুর, শায়েস্তাগঞ্জ, হবিগঞ্জ' },
+      { key: 'locationAddress', label: 'ঠিকানা', type: 'text', default: 'গঙ্গানগর, লস্করপুর, শায়েস্তাগঞ্জ, হবিগঞ্জ' },
       { key: 'locationHours', label: 'খোলার সময়', type: 'text', default: 'প্রতিদিন সকাল ৬টা থেকে রাত ১১টা পর্যন্ত খোলা' },
       { key: 'locationDirection', label: 'দিকনির্দেশের বিবরণ', type: 'text', default: 'নিকটস্থ বাস স্ট্যান্ড থেকে ৫ মিনিটের হাঁটা পথ' },
       { key: 'mapEmbedUrl', label: 'Google Map embed URL', type: 'text' },
       { key: 'mapLink', label: 'Google Map direction URL', type: 'text' },
       { key: 'contactPhone', label: 'ফোন নম্বর', type: 'text', default: '+880 1710000000' },
-      { key: 'facebookUrl', label: 'Facebook URL', type: 'text' },
+      { key: 'facebookUrl', label: 'Facebook URL (contact ও footer আইকন দুটোতেই ব্যবহার হবে)', type: 'text' },
       { key: 'facebookLabel', label: 'Facebook display text', type: 'text', default: 'fb.com/durgapujacommittee' },
+      { key: 'instagramUrl', label: 'Instagram URL (footer আইকন)', type: 'text' },
+      { key: 'youtubeUrl', label: 'YouTube URL (footer আইকন)', type: 'text' },
       { key: 'contactEmail', label: 'ইমেইল', type: 'text', default: 'info@pujacommittee.org' }
     ],
     card: s => ({ thumb: '⚙️', title: s.committeeName || 'সাইট সেটিংস', sub: 'Hero, donation, location ও contact' })
@@ -150,13 +156,60 @@ const SCHEMAS = {
       { key: 'stat3Label', label: 'পরিসংখ্যান ৩ — লেবেল', type: 'text', default: 'সক্রিয় সদস্য' }
     ],
     card: a => ({ thumb: '📖', title: a.heading || 'আমাদের সম্পর্কে', sub: 'গল্প ও পরিসংখ্যান' })
+  },
+  pageHeadings: {
+    label: 'পেজের শিরোনাম',
+    collection: 'pageHeadings',
+    singleton: true,
+    fields: [
+      { key: 'eyebrow_about', label: 'আমাদের সম্পর্কে — উপরের ছোট লেবেল (eyebrow)', type: 'text' },
+      { key: 'title_about', label: 'আমাদের সম্পর্কে — শিরোনাম', type: 'text' },
+      { key: 'sub_about', label: 'আমাদের সম্পর্কে — সাবটাইটেল', type: 'textarea' },
+      { key: 'eyebrow_schedule', label: 'সময়সূচি — উপরের ছোট লেবেল (eyebrow)', type: 'text' },
+      { key: 'title_schedule', label: 'সময়সূচি — শিরোনাম', type: 'text' },
+      { key: 'sub_schedule', label: 'সময়সূচি — সাবটাইটেল', type: 'textarea' },
+      { key: 'eyebrow_events', label: 'অনুষ্ঠান — উপরের ছোট লেবেল (eyebrow)', type: 'text' },
+      { key: 'title_events', label: 'অনুষ্ঠান — শিরোনাম', type: 'text' },
+      { key: 'sub_events', label: 'অনুষ্ঠান — সাবটাইটেল', type: 'textarea' },
+      { key: 'eyebrow_gallery', label: 'গ্যালারি — উপরের ছোট লেবেল (eyebrow)', type: 'text' },
+      { key: 'title_gallery', label: 'গ্যালারি — শিরোনাম', type: 'text' },
+      { key: 'sub_gallery', label: 'গ্যালারি — সাবটাইটেল', type: 'textarea' },
+      { key: 'eyebrow_committee', label: 'কার্যকরী সদস্যবৃন্দ — উপরের ছোট লেবেল (eyebrow)', type: 'text' },
+      { key: 'title_committee', label: 'কার্যকরী সদস্যবৃন্দ — শিরোনাম', type: 'text' },
+      { key: 'sub_committee', label: 'কার্যকরী সদস্যবৃন্দ — সাবটাইটেল', type: 'textarea' },
+      { key: 'eyebrow_advisors', label: 'উপদেষ্টা — উপরের ছোট লেবেল (eyebrow)', type: 'text' },
+      { key: 'title_advisors', label: 'উপদেষ্টা — শিরোনাম', type: 'text' },
+      { key: 'sub_advisors', label: 'উপদেষ্টা — সাবটাইটেল', type: 'textarea' },
+      { key: 'eyebrow_generalMembers', label: 'সাধারণ সদস্যবৃন্দ — উপরের ছোট লেবেল (eyebrow)', type: 'text' },
+      { key: 'title_generalMembers', label: 'সাধারণ সদস্যবৃন্দ — শিরোনাম', type: 'text' },
+      { key: 'sub_generalMembers', label: 'সাধারণ সদস্যবৃন্দ — সাবটাইটেল', type: 'textarea' },
+      { key: 'eyebrow_affiliates', label: 'অঙ্গসংগঠন — উপরের ছোট লেবেল (eyebrow)', type: 'text' },
+      { key: 'title_affiliates', label: 'অঙ্গসংগঠন — শিরোনাম', type: 'text' },
+      { key: 'sub_affiliates', label: 'অঙ্গসংগঠন — সাবটাইটেল', type: 'textarea' },
+      { key: 'eyebrow_donation', label: 'অনুদান — উপরের ছোট লেবেল (eyebrow)', type: 'text' },
+      { key: 'title_donation', label: 'অনুদান — শিরোনাম', type: 'text' },
+      { key: 'sub_donation', label: 'অনুদান — সাবটাইটেল', type: 'textarea' },
+      { key: 'eyebrow_notice', label: 'নোটিশ — উপরের ছোট লেবেল (eyebrow)', type: 'text' },
+      { key: 'title_notice', label: 'নোটিশ — শিরোনাম', type: 'text' },
+      { key: 'sub_notice', label: 'নোটিশ — সাবটাইটেল', type: 'textarea' },
+      { key: 'eyebrow_location', label: 'লোকেশন — উপরের ছোট লেবেল (eyebrow)', type: 'text' },
+      { key: 'title_location', label: 'লোকেশন — শিরোনাম', type: 'text' },
+      { key: 'sub_location', label: 'লোকেশন — সাবটাইটেল', type: 'textarea' },
+      { key: 'eyebrow_contact', label: 'যোগাযোগ — উপরের ছোট লেবেল (eyebrow)', type: 'text' },
+      { key: 'title_contact', label: 'যোগাযোগ — শিরোনাম', type: 'text' },
+      { key: 'sub_contact', label: 'যোগাযোগ — সাবটাইটেল', type: 'textarea' },
+    ],
+    card: () => ({ thumb: '🏷️', title: 'পেজের সব শিরোনাম/সাবটাইটেল', sub: 'প্রতিটি সেকশনের eyebrow, title, subtitle' })
   }
 };
 
 const DEFAULT_SETTINGS = {
+  siteTitle: 'জননী সংসদ',
+  metaDescription: 'জননী সংসদ-এর পূজা, সময়সূচি, অনুষ্ঠান, নোটিশ ও যোগাযোগের তথ্য।',
   heroTitleMain: 'মা আসছেন',
   heroTitleSub: 'ঘরে ঘরে',
   committeeName: 'জননী সংসদ',
+  foundingTagline: 'প্রতিষ্ঠা ১৯৭৪',
   heroImageUrl: 'image/maa-durga.png',
   pujaDate: '2026-10-16T06:00:00+06:00',
   donationQrUrl: 'image/QR.jpg',
@@ -165,7 +218,7 @@ const DEFAULT_SETTINGS = {
   bankAccount: 'A/C: 0000-0000-0000',
   cashNote: 'কমিটি অফিসে সরাসরি জমা দিতে পারেন',
   locationTitle: 'পূজা মণ্ডপের ঠিকানা',
-  locationAddress: 'গঙ্গানগর, লস্করপুর, শায়েস্তাগঞ্জ, হবিগঞ্জ',
+  locationAddress: 'গঙ্গানগর, লস্করপুর, শায়েস্তাগঞ্জ, হবিগঞ্জ',
   locationHours: 'প্রতিদিন সকাল ৬টা থেকে রাত ১১টা পর্যন্ত খোলা',
   locationDirection: 'নিকটস্থ বাস স্ট্যান্ড থেকে ৫ মিনিটের হাঁটা পথ',
   contactPhone: '+880 1710000000',
@@ -186,6 +239,33 @@ const DEFAULT_ABOUT = {
   stat3Num: '৩৬+', stat3Label: 'সক্রিয় সদস্য'
 };
 
+const DEFAULT_PAGE_HEADINGS = {
+  eyebrow_about: 'আমাদের কথা', title_about: 'আমাদের জননী সংসদ',
+  sub_about: 'পাঁচ দশক ধরে ভক্তি, ঐতিহ্য আর প্রতিবেশীর সম্মিলনের এক উৎসব-যাত্রা।',
+  eyebrow_schedule: 'পঞ্জিকা অনুযায়ী', title_schedule: 'পূজার সময়সূচি',
+  sub_schedule: 'ষষ্ঠী থেকে দশমী — প্রতিদিনের পূজা, আরতি ও অনুষ্ঠানের বিস্তারিত সময়সূচি।',
+  eyebrow_events: 'উৎসবের আয়োজন', title_events: 'অনুষ্ঠান',
+  sub_events: 'পূজার পাঁচ দিনে যা যা থাকছে আপনার জন্য।',
+  eyebrow_gallery: 'স্মৃতির পাতা', title_gallery: 'গ্যালারি',
+  sub_gallery: 'গত বছরগুলোর পূজার কিছু বিশেষ মুহূর্ত।',
+  eyebrow_committee: 'যাঁরা এই পূজার পেছনে', title_committee: 'কার্যকরী সদস্যবৃন্দ',
+  sub_committee: 'যাঁদের নিরলস পরিশ্রমে প্রতি বছর এই উৎসব সার্থক হয়ে ওঠে।',
+  eyebrow_advisors: 'অভিজ্ঞদের পরামর্শ ও দিকনির্দেশনা', title_advisors: 'উপদেষ্টা',
+  sub_advisors: 'যাঁদের অভিজ্ঞতা, পরামর্শ ও দিকনির্দেশনায় জননী সংসদ দুর্গোৎসবের সকল কার্যক্রম আরও সুন্দরভাবে পরিচালিত হয়।',
+  eyebrow_generalMembers: 'আমাদের পরিবারের সদস্য', title_generalMembers: 'সাধারণ সদস্যবৃন্দ',
+  sub_generalMembers: 'জননী সংসদের সকল সাধারণ সদস্য, যাঁদের অংশগ্রহণে আমাদের এই আয়োজন আরও সুন্দর ও প্রাণবন্ত হয়ে ওঠে।',
+  eyebrow_affiliates: 'আমাদের সহযোগী সংগঠন', title_affiliates: 'অঙ্গসংগঠন',
+  sub_affiliates: 'জননী সংসদের সাথে যুক্ত ও সহযোগী বিভিন্ন সংগঠন।',
+  eyebrow_donation: 'সহযোগিতার আহ্বান', title_donation: 'পূজার কাজে সহযোগিতা করুন',
+  sub_donation: 'আপনার সামান্য অনুদানই এই উৎসবকে করে তোলে আরও প্রাণবন্ত ও সুন্দর।',
+  eyebrow_notice: 'গুরুত্বপূর্ণ তথ্য', title_notice: 'নোটিশ',
+  sub_notice: 'সর্বশেষ ঘোষণা ও আপডেট।',
+  eyebrow_location: 'আমাদের খুঁজে নিন', title_location: 'লোকেশন',
+  sub_location: 'মণ্ডপের ঠিকানা ও দিকনির্দেশ।',
+  eyebrow_contact: 'যোগাযোগ করুন', title_contact: 'যোগাযোগ',
+  sub_contact: 'যেকোনো প্রশ্ন বা সহযোগিতার জন্য আমাদের সাথে যোগাযোগ করুন।',
+};
+
 let currentEdit = null; // { type, id } or null for "new"
 let draggedGalleryId = null;
 const dashboardCounts = {};
@@ -199,6 +279,7 @@ auth.onAuthStateChanged(user => {
     Object.keys(SCHEMAS).forEach(attachListListener);
     seedDefaultSettings();
     seedDefaultAbout();
+    seedDefaultPageHeadings();
   } else {
     document.getElementById('loginWrap').style.display = 'flex';
     document.getElementById('app').style.display = 'none';
@@ -229,6 +310,16 @@ async function seedDefaultAbout() {
     await db.collection('about').add(DEFAULT_ABOUT);
   } catch (err) {
     console.warn('Default about seed skipped:', err);
+  }
+}
+
+async function seedDefaultPageHeadings() {
+  try {
+    const snap = await db.collection('pageHeadings').limit(1).get();
+    if (!snap.empty) return;
+    await db.collection('pageHeadings').add(DEFAULT_PAGE_HEADINGS);
+  } catch (err) {
+    console.warn('Default page headings seed skipped:', err);
   }
 }
 
