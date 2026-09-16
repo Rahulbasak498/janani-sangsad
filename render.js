@@ -27,11 +27,16 @@ function notifyAboutNewNotices(docs) {
 function renderNotices(docs) {
   const wrap = document.getElementById('noticeList');
 
-  if (!wrap || docs.length === 0) return;
+  if (!wrap) return;
 
   notifyAboutNewNotices(docs);
 
   wrap.innerHTML = '';
+
+  if (docs.length === 0) {
+    wrap.innerHTML = '<div class="empty-note">এখন কোনো নোটিশ নেই।</div>';
+    return;
+  }
 
   docs
     .slice()
@@ -63,15 +68,22 @@ function renderNotices(docs) {
 // ---------- TICKER ----------
 function renderTicker(docs) {
   const wrap = document.getElementById('tickerTrack');
+  const tickerWrap = document.querySelector('.ticker-wrap');
 
-  if (!wrap || docs.length === 0) return;
+  if (!wrap) return;
 
   const items = docs
     .filter(d => d.data().active !== false && d.data().active !== 'false')
     .map(d => `<span>${escapeHtml(d.data().message || '')}</span>`)
     .join('');
 
-  if (!items) return;
+  if (!items) {
+    wrap.innerHTML = '';
+    if (tickerWrap) tickerWrap.style.display = 'none';
+    return;
+  }
+
+  if (tickerWrap) tickerWrap.style.display = '';
 
   // Repeat the messages so the existing marquee animation remains seamless.
   wrap.innerHTML = items + items;
@@ -82,7 +94,7 @@ function renderTicker(docs) {
 function applySiteSettings(settings) {
   const setText = (id, value) => {
     const element = document.getElementById(id);
-    if (element && value !== undefined && value !== '') element.textContent = value;
+    if (element && value !== undefined) element.textContent = value;
   };
 
   const setAttr = (id, attr, value) => {
@@ -129,9 +141,14 @@ function setDataStatus(message, visible) {
 function renderSchedule(docs) {
   const wrap = document.getElementById('timeline');
 
-  if (!wrap || docs.length === 0) return;
+  if (!wrap) return;
 
   wrap.innerHTML = '';
+
+  if (docs.length === 0) {
+    wrap.innerHTML = '<div class="empty-note">সময়সূচি এখনো যোগ করা হয়নি।</div>';
+    return;
+  }
 
   docs.forEach(d => {
     const s = d.data();
@@ -171,9 +188,14 @@ function renderSchedule(docs) {
 function renderMembers(containerId, docs) {
   const wrap = document.getElementById(containerId);
 
-  if (!wrap || docs.length === 0) return;
+  if (!wrap) return;
 
   wrap.innerHTML = '';
+
+  if (docs.length === 0) {
+    wrap.innerHTML = '<div class="empty-note">এখনো কেউ যোগ করা হয়নি।</div>';
+    return;
+  }
 
   docs.forEach(d => {
     const m = d.data();
@@ -215,16 +237,9 @@ function renderMembers(containerId, docs) {
 
 
 // =========================================================
-// GALLERY
-// =========================================================
-//
-// IMPORTANT:
-// Firebase gallery data থাকলে সেটি দেখাবে।
-// Firebase gallery empty হলে HTML-এর static images
-// আগের মতোই থাকবে।
-//
-// তাই Firebase-এর gallery সমস্যা হলেও
-// GitHub-এর image folder-এর ছবি মুছে যাবে না.
+// GALLERY — সম্পূর্ণ Admin/Firestore নির্ভর।
+// Firestore-এ ছবি না থাকলে গ্যালারি খালি দেখাবে;
+// admin থেকে ছবি মুছে ফেললে সাথে সাথে ওয়েবসাইট থেকেও মুছে যাবে।
 // =========================================================
 
 function renderGallery(docs) {
@@ -233,17 +248,12 @@ function renderGallery(docs) {
 
   if (!wrap) return;
 
+  wrap.innerHTML = '';
 
-  // Firebase gallery EMPTY হলে
-  // HTML-এর existing/static images রেখে দাও
   if (docs.length === 0) {
+    wrap.innerHTML = '<div class="empty-note">গ্যালারিতে এখনো কোনো ছবি যোগ করা হয়নি।</div>';
     return;
   }
-
-
-  // Firebase gallery-তে data থাকলে
-  // তখন Firebase images দেখাবে
-  wrap.innerHTML = '';
 
 
   docs.forEach((d, index) => {
@@ -296,9 +306,14 @@ function renderAffiliates(docs) {
 
   const wrap = document.getElementById('affiliatesGrid');
 
-  if (!wrap || docs.length === 0) return;
+  if (!wrap) return;
 
   wrap.innerHTML = '';
+
+  if (docs.length === 0) {
+    wrap.innerHTML = '<div class="empty-note">এখনো কোনো অঙ্গসংগঠন যোগ করা হয়নি।</div>';
+    return;
+  }
 
 
   docs.forEach(d => {
@@ -356,6 +371,70 @@ function renderAffiliates(docs) {
     wrap.appendChild(card);
 
   });
+}
+
+
+// ---------- EVENTS ----------
+function renderEvents(docs) {
+
+  const wrap = document.getElementById('eventsGrid');
+
+  if (!wrap) return;
+
+  wrap.innerHTML = '';
+
+  if (docs.length === 0) {
+    wrap.innerHTML = '<div class="empty-note">এখনো কোনো অনুষ্ঠান যোগ করা হয়নি।</div>';
+    return;
+  }
+
+  docs.forEach(d => {
+
+    const ev = d.data();
+
+    const card = document.createElement('div');
+    card.className = 'ev-card';
+
+    card.innerHTML = `
+      <div class="ev-icon">${ev.icon || '🎉'}</div>
+      <h3>${escapeHtml(ev.title || '')}</h3>
+      <p>${escapeHtml(ev.desc || '')}</p>
+    `;
+
+    wrap.appendChild(card);
+  });
+}
+
+
+// ---------- ABOUT ----------
+function renderAbout(about) {
+
+  const setText = (id, value) => {
+    const element = document.getElementById(id);
+    if (element && value !== undefined) element.textContent = value;
+  };
+
+  setText('aboutHeading', about.heading);
+  setText('aboutStat1Num', about.stat1Num);
+  setText('aboutStat1Label', about.stat1Label);
+  setText('aboutStat2Num', about.stat2Num);
+  setText('aboutStat2Label', about.stat2Label);
+  setText('aboutStat3Num', about.stat3Num);
+  setText('aboutStat3Label', about.stat3Label);
+
+  const wrap = document.getElementById('aboutText');
+  if (!wrap) return;
+
+  const paragraphs = Array.isArray(about.paragraphs) ? about.paragraphs : [];
+
+  if (paragraphs.length === 0) {
+    wrap.innerHTML = '<p class="empty-note">এখনো বিবরণ যোগ করা হয়নি।</p>';
+    return;
+  }
+
+  wrap.innerHTML = paragraphs
+    .map(p => `<p>${escapeHtml(p)}</p>`)
+    .join('');
 }
 
 
@@ -487,6 +566,20 @@ async function loadPublicData() {
   db.collection('affiliates').onSnapshot(
     snap => renderAffiliates(sortByOrder(snap.docs)),
     e => console.warn('Affiliates listener failed:', e)
+  );
+
+
+  // ---------- EVENTS ----------
+  db.collection('events').onSnapshot(
+    snap => renderEvents(sortByOrder(snap.docs)),
+    e => console.warn('Events listener failed:', e)
+  );
+
+
+  // ---------- ABOUT ----------
+  db.collection('about').limit(1).onSnapshot(
+    snap => renderAbout(snap.empty ? {} : snap.docs[0].data()),
+    e => console.warn('About listener failed:', e)
   );
 
 }

@@ -98,6 +98,7 @@ const SCHEMAS = {
   settings: {
     label: 'সাইট সেটিংস',
     collection: 'siteSettings',
+    singleton: true,
     fields: [
       { key: 'heroTitleMain', label: 'Hero প্রধান শিরোনাম', type: 'text', default: 'মা আসছেন' },
       { key: 'heroTitleSub', label: 'Hero দ্বিতীয় লাইন', type: 'text', default: 'ঘরে ঘরে' },
@@ -122,15 +123,35 @@ const SCHEMAS = {
       { key: 'contactEmail', label: 'ইমেইল', type: 'text', default: 'info@pujacommittee.org' }
     ],
     card: s => ({ thumb: '⚙️', title: s.committeeName || 'সাইট সেটিংস', sub: 'Hero, donation, location ও contact' })
+  },
+  events: {
+    label: 'অনুষ্ঠান',
+    fields: [
+      { key: 'icon',  label: 'আইকন (ইমোজি)', type: 'text', placeholder: '🎉' },
+      { key: 'title', label: 'শিরোনাম', type: 'text', required: true },
+      { key: 'desc',  label: 'বিবরণ', type: 'textarea' },
+      { key: 'order', label: 'ক্রম (ছোট সংখ্যা আগে দেখাবে)', type: 'number', default: 0 }
+    ],
+    card: e => ({ thumb: e.icon || '🎉', title: e.title, sub: e.desc })
+  },
+  about: {
+    label: 'আমাদের সম্পর্কে',
+    collection: 'about',
+    singleton: true,
+    fields: [
+      { key: 'heading', label: 'উপ-শিরোনাম', type: 'text', default: 'প্রতিষ্ঠা ১৯৭৪ সাল থেকে ভক্তি ও ঐক্যের প্রতীক' },
+      { key: 'paragraphs', label: 'বিবরণ (প্রতি লাইনে একটি অনুচ্ছেদ)', type: 'textarea', isList: true,
+        placeholder: '১৯৭৪ সালে কয়েকজনের উদ্যোগে পথচলা শুরু হয়...' },
+      { key: 'stat1Num', label: 'পরিসংখ্যান ১ — সংখ্যা', type: 'text', default: '৫০+' },
+      { key: 'stat1Label', label: 'পরিসংখ্যান ১ — লেবেল', type: 'text', default: 'বছরের ঐতিহ্য' },
+      { key: 'stat2Num', label: 'পরিসংখ্যান ২ — সংখ্যা', type: 'text', default: '১৫০+' },
+      { key: 'stat2Label', label: 'পরিসংখ্যান ২ — লেবেল', type: 'text', default: 'পরিবারের অংশগ্রহণ' },
+      { key: 'stat3Num', label: 'পরিসংখ্যান ৩ — সংখ্যা', type: 'text', default: '৩৬+' },
+      { key: 'stat3Label', label: 'পরিসংখ্যান ৩ — লেবেল', type: 'text', default: 'সক্রিয় সদস্য' }
+    ],
+    card: a => ({ thumb: '📖', title: a.heading || 'আমাদের সম্পর্কে', sub: 'গল্প ও পরিসংখ্যান' })
   }
 };
-
-const DEFAULT_TICKERS = [
-  { message: '🔔 ষষ্ঠীর সন্ধ্যা আরতি শুরু বিকেল ৫টায়', active: 'true', order: 1 },
-  { message: '🔔 সাংস্কৃতিক অনুষ্ঠানে অংশগ্রহণের জন্য রেজিস্ট্রেশন চলছে', active: 'true', order: 2 },
-  { message: '🔔 ভোগ বিতরণ প্রতিদিন দুপুর ১২টা থেকে ২টা', active: 'true', order: 3 },
-  { message: '🔔 অনুদান জমা দেওয়ার শেষ তারিখ ১৫ অক্টোবর', active: 'true', order: 4 }
-];
 
 const DEFAULT_SETTINGS = {
   heroTitleMain: 'মা আসছেন',
@@ -152,15 +173,18 @@ const DEFAULT_SETTINGS = {
   contactEmail: 'info@pujacommittee.org'
 };
 
-const DEFAULT_GALLERY = [
-  { caption: 'সন্ধ্যা আরতি', imageUrl: 'image/সন্ধ্যা আরতি.jpg', order: 1 },
-  { caption: 'ধুনুচি নাচ', imageUrl: 'image/ধুনুচি নাচ.jpg', order: 2 },
-  { caption: 'মণ্ডপ সজ্জা', imageUrl: 'image/মণ্ডপ সজ্জা.jpg', order: 3 },
-  { caption: 'সাংস্কৃতিক সন্ধ্যা', imageUrl: 'image/সাংস্কৃতিক সন্ধ্যা.jpg', order: 4 },
-  { caption: 'ভোগ বিতরণ', imageUrl: 'image/ভোগ বিতরণ.jpg', order: 5 },
-  { caption: 'সিঁদুর খেলা', imageUrl: 'image/সিঁদুর খেলা.jpg', order: 6 },
-  { caption: 'বিসর্জন শোভাযাত্রা', imageUrl: 'image/বিসর্জন শোভাযাত্রা.jpg', order: 7 }
-];
+const DEFAULT_ABOUT = {
+  heading: 'প্রতিষ্ঠা ১৯৭৪ সাল থেকে ভক্তি ও ঐক্যের প্রতীক',
+  paragraphs: [
+    '১৯৭৪ সালে কয়েকজনের উদ্যোগে সমাজ কল্যাণ যুব সংঘ-এর পথচলা শুরু হয়। উদ্দেশ্য ছিল একটাই—এলাকার সবাইকে সঙ্গে নিয়ে ধর্মীয় ও সাংস্কৃতিক চেতনায় উৎসব উদযাপন করা।',
+    'সেই ভাবনা থেকেই ১৯৭৪ সাল থেকে আজ পর্যন্ত নিয়মিতভাবে সরস্বতী পূজার আয়োজন হয়ে আসছে।',
+    'দীর্ঘ পাঁচ দশকের এই পথচলায় পূজা আজ শুধু একটি ধর্মীয় আয়োজন নয়, এটি আমাদের ঐতিহ্য, সংস্কৃতি, সম্প্রীতি ও মিলনের প্রতীক।',
+    'প্রজন্মের পর প্রজন্ম ধরে সকলের অংশগ্রহণে এই আয়োজন আমাদের শিকড়ের সঙ্গে সম্পর্ক আরও গভীর করে চলেছে।'
+  ],
+  stat1Num: '৫০+', stat1Label: 'বছরের ঐতিহ্য',
+  stat2Num: '১৫০+', stat2Label: 'পরিবারের অংশগ্রহণ',
+  stat3Num: '৩৬+', stat3Label: 'সক্রিয় সদস্য'
+};
 
 let currentEdit = null; // { type, id } or null for "new"
 let draggedGalleryId = null;
@@ -173,27 +197,20 @@ auth.onAuthStateChanged(user => {
     document.getElementById('app').style.display = 'flex';
     document.getElementById('userEmail').textContent = user.email;
     Object.keys(SCHEMAS).forEach(attachListListener);
-    seedDefaultTickers();
     seedDefaultSettings();
-    seedDefaultGallery();
+    seedDefaultAbout();
   } else {
     document.getElementById('loginWrap').style.display = 'flex';
     document.getElementById('app').style.display = 'none';
   }
 });
 
-async function seedDefaultTickers() {
-  try {
-    const snap = await db.collection('ticker').limit(1).get();
-    if (!snap.empty) return;
-
-    await Promise.all(
-      DEFAULT_TICKERS.map(item => db.collection('ticker').add(item))
-    );
-  } catch (err) {
-    console.warn('Default ticker seed skipped:', err);
-  }
-}
+// NOTE: ticker and gallery used to auto-reseed their sample content
+// whenever the collection was empty. That meant deleting everything
+// from the admin panel didn't actually stay deleted — the defaults
+// would silently reappear on the next login. Both single-document
+// collections below (settings/about) are config, not a list the
+// admin deletes items from, so seeding them once is safe.
 
 async function seedDefaultSettings() {
   try {
@@ -205,20 +222,13 @@ async function seedDefaultSettings() {
   }
 }
 
-async function seedDefaultGallery() {
+async function seedDefaultAbout() {
   try {
-    await Promise.all(DEFAULT_GALLERY.map(async item => {
-      const existing = await db.collection('gallery')
-        .where('caption', '==', item.caption)
-        .limit(1)
-        .get();
-
-      if (existing.empty) {
-        await db.collection('gallery').add(item);
-      }
-    }));
+    const snap = await db.collection('about').limit(1).get();
+    if (!snap.empty) return;
+    await db.collection('about').add(DEFAULT_ABOUT);
   } catch (err) {
-    console.warn('Default gallery seed skipped:', err);
+    console.warn('Default about seed skipped:', err);
   }
 }
 
@@ -316,15 +326,6 @@ function showListError(type, err) {
 function renderList(type, docs) {
   const schema = SCHEMAS[type];
   const wrap = document.getElementById('list-' + type);
-  const usingLocalGallery = type === 'gallery' && docs.length === 0;
-
-  if (usingLocalGallery) {
-    docs = DEFAULT_GALLERY.map((data, index) => ({
-      id: 'local-' + index,
-      local: true,
-      data: () => data
-    }));
-  }
 
   updateDashboardCount(type, docs.length);
 
@@ -341,19 +342,10 @@ function renderList(type, docs) {
     const c = schema.card(data);
     let thumbHtml;
     if (type === 'gallery') {
-      const caption = String(data.caption || '').trim();
-      const fallbackItem = DEFAULT_GALLERY.find(item => item.caption.trim() === caption)
-        || DEFAULT_GALLERY[Number(data.order) - 1]
-        || DEFAULT_GALLERY[index % DEFAULT_GALLERY.length];
-      const defaultImage = fallbackItem?.imageUrl || '';
       const storedImage = c.thumb && typeof c.thumb === 'object' ? c.thumb.img : '';
-      const imagePath = defaultImage || storedImage;
-      const imageUrl = imagePath ? new URL(imagePath, document.baseURI).href : '';
-      const fallback = storedImage && defaultImage && storedImage !== defaultImage
-        ? ` onerror="this.onerror=null;this.src='${escapeAttr(defaultImage)}';"`
-        : '';
+      const imageUrl = storedImage ? new URL(storedImage, document.baseURI).href : '';
       thumbHtml = imageUrl
-        ? `<img src="${escapeAttr(imageUrl)}" alt="${escapeAttr(data.caption || '')}" loading="eager" style="display:block;width:100%;height:100%;object-fit:cover;"${fallback}>`
+        ? `<img src="${escapeAttr(imageUrl)}" alt="${escapeAttr(data.caption || '')}" loading="eager" style="display:block;width:100%;height:100%;object-fit:cover;" onerror="this.style.opacity='.25';">`
         : '🖼️';
     } else {
       thumbHtml = (c.thumb && typeof c.thumb === 'object' && c.thumb.img)
@@ -364,9 +356,7 @@ function renderList(type, docs) {
     const el = document.createElement('div');
     el.className = 'item-card';
     if (type === 'gallery') el.classList.add('gallery-item');
-    const actionsHtml = doc.local
-      ? `<button class="btn btn-gold btn-sm" onclick="importDefaultGalleryItem(${DEFAULT_GALLERY.indexOf(data)})">Admin-এ যোগ করুন</button>`
-      : `
+    const actionsHtml = `
         <button class="btn btn-outline btn-sm" onclick="openForm('${type}', '${doc.id}')">এডিট</button>
         <button class="btn btn-danger btn-sm" onclick="deleteItem('${type}', '${doc.id}')">মুছুন</button>
       `;
@@ -418,18 +408,6 @@ function renderList(type, docs) {
     `;
     wrap.appendChild(el);
   });
-}
-
-async function importDefaultGalleryItem(index) {
-  const item = DEFAULT_GALLERY[index];
-  if (!item) return;
-
-  try {
-    await db.collection('gallery').add(item);
-    showToast('Gallery ছবিটি Admin-এ যোগ হয়েছে ✅');
-  } catch (error) {
-    showToast('ছবি যোগ করা যায়নি');
-  }
 }
 
 // ---------------- FORM ----------------
@@ -500,7 +478,7 @@ function openForm(type, id) {
     formEl.appendChild(actions);
   };
 
-  if (type === 'settings' && !id) {
+  if (schema.singleton && !id) {
     collRef(type).limit(1).get().then(snapshot => {
       if (snapshot.empty) {
         buildFields(null);
@@ -644,7 +622,8 @@ function updateDashboardCount(type, count) {
     notices: dashboardCounts.notices,
     schedule: dashboardCounts.schedule,
     members: memberCount,
-    gallery: dashboardCounts.gallery
+    gallery: dashboardCounts.gallery,
+    events: dashboardCounts.events
   };
 
   Object.entries(countMap).forEach(([key, value]) => {

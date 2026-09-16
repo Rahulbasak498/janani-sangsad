@@ -401,48 +401,8 @@ preserveAspectRatio="xMidYMid slice"
 <div class="ticker-wrap">
 
   <div class="ticker-track" id="tickerTrack">
-
-
-<span>
-  🔔 ষষ্ঠীর সন্ধ্যা আরতি শুরু বিকেল ৫টায়
-</span>
-
-
-<span>
-  🔔 সাংস্কৃতিক অনুষ্ঠানে অংশগ্রহণের জন্য রেজিস্ট্রেশন চলছে
-</span>
-
-
-<span>
-  🔔 ভোগ বিতরণ প্রতিদিন দুপুর ১২টা থেকে ২টা
-</span>
-
-
-<span>
-  🔔 অনুদান জমা দেওয়ার শেষ তারিখ ১৫ অক্টোবর
-</span>
-
-
-<span>
-  🔔 ষষ্ঠীর সন্ধ্যা আরতি শুরু বিকেল ৫টায়
-</span>
-
-
-<span>
-  🔔 সাংস্কৃতিক অনুষ্ঠানে অংশগ্রহণের জন্য রেজিস্ট্রেশন চলছে
-</span>
-
-
-<span>
-  🔔 ভোগ বিতরণ প্রতিদিন দুপুর ১২টা থেকে ২টা
-</span>
-
-
-<span>
-  🔔 অনুদান জমা দেওয়ার শেষ তারিখ ১৫ অক্টোবর
-</span>
-
-
+    <!-- admin panel (টিকার বার্তা ট্যাব) থেকে বার্তা যোগ করলে এখানে দেখাবে -->
+  
   </div>
 
 </div>
@@ -485,9 +445,10 @@ preserveAspectRatio="xMidYMid slice"
   </div>
 
   <div class="about-text">
-    <h3>
+    <h3 id="aboutHeading">
       প্রতিষ্ঠা ১৯৭৪ সাল থেকে ভক্তি ও ঐক্যের প্রতীক
     </h3>
+    <div id="aboutText">
     <p>
 
       ১৯৭৪ সালে কয়েকজনের উদ্যোগে
@@ -523,6 +484,7 @@ preserveAspectRatio="xMidYMid slice"
       শিকড়ের সঙ্গে সম্পর্ক আরও গভীর করে চলেছে।
 
     </p>
+    </div>
 
 
     <div class="about-stats">
@@ -530,11 +492,11 @@ preserveAspectRatio="xMidYMid slice"
 
       <div>
 
-        <div class="n">
+        <div class="n" id="aboutStat1Num">
           ৫০+
         </div>
 
-        <div class="l">
+        <div class="l" id="aboutStat1Label">
           বছরের ঐতিহ্য
         </div>
 
@@ -543,11 +505,11 @@ preserveAspectRatio="xMidYMid slice"
 
       <div>
 
-        <div class="n">
+        <div class="n" id="aboutStat2Num">
           ১৫০+
         </div>
 
-        <div class="l">
+        <div class="l" id="aboutStat2Label">
           পরিবারের অংশগ্রহণ
         </div>
 
@@ -556,11 +518,11 @@ preserveAspectRatio="xMidYMid slice"
 
       <div>
 
-        <div class="n">
+        <div class="n" id="aboutStat3Num">
           ৩৬+
         </div>
 
-        <div class="l">
+        <div class="l" id="aboutStat3Label">
           সক্রিয় সদস্য
         </div>
 
@@ -660,183 +622,7 @@ preserveAspectRatio="xMidYMid slice"
 
 
 <div class="timeline" id="timeline">
-
-
-  <!-- ষষ্ঠী -->
-
-  <div class="tl-card">
-
-    <div class="tl-day">
-      ষষ্ঠী
-    </div>
-
-    <div class="tl-date">
-      ১৭ অক্টোবর ২০২৬, শনিবার
-    </div>
-
-    <h3>
-      কালপরম্ভ ও বোধন
-    </h3>
-
-    <ul>
-
-      <li>
-        ভোর ৬:০০টা — কালপরম্ভ
-      </li>
-
-      <li>
-        সকাল ৯:০০টা — পূজা ও পুষ্পাঞ্জলি
-      </li>
-
-      <li>
-        সন্ধ্যা ৬:০০টা — সন্ধ্যা আরতি
-      </li>
-
-    </ul>
-
-  </div>
-
-
-  <!-- সপ্তমী -->
-
-  <div class="tl-card">
-
-    <div class="tl-day">
-      সপ্তমী
-    </div>
-
-    <div class="tl-date">
-      ১৮ অক্টোবর ২০২৬, রবিবার
-    </div>
-
-    <h3>
-      নবপত্রিকা
-    </h3>
-
-    <ul>
-
-      <li>
-        ভোর ৬:০০টা — নবপত্রিকা স্নান
-      </li>
-
-      <li>
-        সকাল ৯:০০টা — পুষ্পাঞ্জলি
-      </li>
-
-      <li>
-        দুপুর ১২:০০টা — ভোগ আরতি
-      </li>
-
-    </ul>
-
-  </div>
-
-
-  <!-- অষ্টমী -->
-
-  <div class="tl-card">
-
-    <div class="tl-day">
-      অষ্টমী
-    </div>
-
-    <div class="tl-date">
-      ১৯ অক্টোবর ২০২৬, সোমবার
-    </div>
-
-    <h3>
-      মহাষ্টমী
-    </h3>
-
-    <ul>
-
-      <li>
-        সকাল ৯:০০টা — কুমারী পূজা
-      </li>
-
-      <li>
-        সন্ধ্যা ৬:০০টা — সন্ধি পূজা
-      </li>
-
-      <li>
-        রাত ৮:০০টা — সাংস্কৃতিক সন্ধ্যা
-      </li>
-
-    </ul>
-
-  </div>
-
-
-  <!-- নবমী -->
-
-  <div class="tl-card">
-
-    <div class="tl-day">
-      নবমী
-    </div>
-
-    <div class="tl-date">
-      ২০ অক্টোবর ২০২৬, মঙ্গলবার
-    </div>
-
-    <h3>
-      মহানবমী
-    </h3>
-
-    <ul>
-
-      <li>
-        সকাল ৯:০০টা — নবমী হোম
-      </li>
-
-      <li>
-        দুপুর ১:০০টা — মহাভোগ
-      </li>
-
-      <li>
-        রাত ৯:০০টা — ধুনুচি নাচ
-      </li>
-
-    </ul>
-
-  </div>
-
-
-  <!-- দশমী -->
-
-  <div class="tl-card">
-
-    <div class="tl-day">
-      দশমী
-    </div>
-
-    <div class="tl-date">
-      ২১ অক্টোবর ২০২৬, বুধবার
-    </div>
-
-    <h3>
-      বিসর্জন
-    </h3>
-
-    <ul>
-
-      <li>
-        সকাল ৯:০০টা — দর্পণ বিসর্জন
-      </li>
-
-      <li>
-        দুপুর ১২:০০টা — সিঁদুর খেলা
-      </li>
-
-      <li>
-        বিকেল ৪:০০টা — প্রতিমা বিসর্জন
-      </li>
-
-    </ul>
-
-  </div>
-
-
+  <div class="empty-note">লোড হচ্ছে...</div>
 </div>
 
 
@@ -870,111 +656,8 @@ preserveAspectRatio="xMidYMid slice"
 </p>
 
 
-<div class="events-grid">
-
-
-  <div class="ev-card">
-
-    <div class="ev-icon">
-      🪔
-    </div>
-
-    <h3>
-      সন্ধ্যা আরতি
-    </h3>
-
-    <p>
-      প্রতিদিন গোধূলি লগ্নে ঢাক-কাঁসরের সাথে দেবীর আরতি।
-    </p>
-
-  </div>
-
-
-  <div class="ev-card">
-
-    <div class="ev-icon">
-      💃
-    </div>
-
-    <h3>
-      ধুনুচি নাচ
-    </h3>
-
-    <p>
-      নবমীর রাতে ঐতিহ্যবাহী ধুনুচি নাচের প্রতিযোগিতা ও প্রদর্শনী।
-    </p>
-
-  </div>
-
-
-  <div class="ev-card">
-
-    <div class="ev-icon">
-      🎭
-    </div>
-
-    <h3>
-      সাংস্কৃতিক অনুষ্ঠান
-    </h3>
-
-    <p>
-      স্থানীয় শিল্পীদের গান, নাচ ও নাটকের সন্ধ্যা।
-    </p>
-
-  </div>
-
-
-  <div class="ev-card">
-
-    <div class="ev-icon">
-      🍚
-    </div>
-
-    <h3>
-      প্রসাদ / ভোগ
-    </h3>
-
-    <p>
-      প্রতিদিন দুপুরে সকলের জন্য মহাপ্রসাদ বিতরণ।
-    </p>
-
-  </div>
-
-
-  <div class="ev-card">
-
-    <div class="ev-icon">
-      🔴
-    </div>
-
-    <h3>
-      সিঁদুর খেলা
-    </h3>
-
-    <p>
-      দশমীর সকালে বিবাহিত নারীদের ঐতিহ্যবাহী সিঁদুর খেলা।
-    </p>
-
-  </div>
-
-
-  <div class="ev-card">
-
-    <div class="ev-icon">
-      🛶
-    </div>
-
-    <h3>
-      বিসর্জন শোভাযাত্রা
-    </h3>
-
-    <p>
-      ঢাক-ঢোল সহকারে প্রতিমা বিসর্জনের বর্ণাঢ্য শোভাযাত্রা।
-    </p>
-
-  </div>
-
-
+<div class="events-grid" id="eventsGrid">
+  <div class="empty-note">লোড হচ্ছে...</div>
 </div>
 
 
@@ -1009,59 +692,7 @@ preserveAspectRatio="xMidYMid slice"
 
 
 <div class="masonry" id="masonryGrid">
-
-
-
-
-  <div class="m-item">
-
-    <img class="m2" src="image/সন্ধ্যা আরতি.jpg" alt="সন্ধ্যা আরতি" style="width:100%;object-fit:cover;display:block;">
-
-  </div>
-
-
-  <div class="m-item">
-
-    <img class="m3" src="image/ধুনুচি নাচ.jpg" alt="ধুনুচি নাচ" style="width:100%;object-fit:cover;display:block;">
-
-  </div>
-
-
-  <div class="m-item">
-
-    <img class="m4" src="image/মণ্ডপ সজ্জা.jpg" alt="মণ্ডপ সজ্জা" style="width:100%;object-fit:cover;display:block;">
-
-  </div>
-
-
-  <div class="m-item">
-
-    <img class="m5" src="image/সাংস্কৃতিক সন্ধ্যা.jpg" alt="সাংস্কৃতিক সন্ধ্যা" style="width:100%;object-fit:cover;display:block;">
-
-  </div>
-
-
-  <div class="m-item">
-
-    <img class="m6" src="image/ভোগ বিতরণ.jpg" alt="ভোগ বিতরণ" style="width:100%;object-fit:cover;display:block;">
-
-  </div>
-
-
-  <div class="m-item">
-
-    <img class="m7" src="image/সিঁদুর খেলা.jpg" alt="সিঁদুর খেলা" style="width:100%;object-fit:cover;display:block;">
-
-  </div>
-
-
-  <div class="m-item">
-
-    <img class="m8" src="image/বিসর্জন শোভাযাত্রা.jpg" alt="বিসর্জন শোভাযাত্রা" style="width:100%;object-fit:cover;display:block;">
-
-  </div>
-
-
+  <div class="empty-note">লোড হচ্ছে...</div>
 </div>
 
 
@@ -1128,260 +759,7 @@ preserveAspectRatio="xMidYMid slice"
 
 
 <div class="members-grid" id="membersGrid">
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>বিশ্বজিৎ দাশ বিষু</h4>
-    <div class="role">সভাপতি</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>বিজয় কৃষ্ণ দাশ</h4>
-    <div class="role">সহ. সভাপতি</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>সুমন বসাক</h4>
-    <div class="role">সহ. সভাপতি</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>তুষার দেবরায়</h4>
-    <div class="role">সহ. সভাপতি</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>পরিতোষ চন্দ্র দেব</h4>
-    <div class="role">সাধারণ সম্পাদক</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>অপু বসাক</h4>
-    <div class="role">সহ. সাধারণ সম্পাদক</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>পাপন বসাক</h4>
-    <div class="role">সহ. সাধারণ সম্পাদক</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>শাওন চক্রবর্তী</h4>
-    <div class="role">কোষাধ্যক্ষ</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>আশীষ দেব</h4>
-    <div class="role">সহ. কোষাধ্যক্ষ</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>নয়ন মোদক</h4>
-    <div class="role">সহ. কোষাধ্যক্ষ</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>নিলয় ধর</h4>
-    <div class="role">সাংগঠনিক সম্পাদক</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>দুর্জয় বসাক</h4>
-    <div class="role">সহ. সাংগঠনিক সম্পাদক</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>জয় দেব</h4>
-    <div class="role">সহ. সাংগঠনিক সম্পাদক</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>রাতুল বসাক</h4>
-    <div class="role">দপ্তর সম্পাদক</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>কাব্যজ্যোতি দেব</h4>
-    <div class="role">সহ. দপ্তর সম্পাদক</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>প্রাণণ জ্যোতি দেব</h4>
-    <div class="role">সহ. দপ্তর সম্পাদক</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>প্রীতম বসাক</h4>
-    <div class="role">প্রচার সম্পাদক</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>নয়ন মহাপাত্র</h4>
-    <div class="role">সহ. প্রচার সম্পাদক</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>সীমান্ত বসাক</h4>
-    <div class="role">সহ. প্রচার সম্পাদক</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>সুমিত বসাক</h4>
-    <div class="role">সাজসজ্জা সম্পাদক</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>শুভ দাশ</h4>
-    <div class="role">সহ. সাজসজ্জা সম্পাদক</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>প্রিয়াঙ্কা বসাক</h4>
-    <div class="role">সহ. সাজসজ্জা সম্পাদক</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>বিশাল ভট্টাচার্য</h4>
-    <div class="role">ধর্ম বিষয়ক সম্পাদক</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>রাহুল বসাক</h4>
-    <div class="role">সহ. ধর্ম বিষয়ক সম্পাদক</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>বিষ্ণু মোদক</h4>
-    <div class="role">সহ. ধর্ম বিষয়ক সম্পাদক</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>সাম্য চক্রবর্তী স্বচ্ছ</h4>
-    <div class="role">সাংস্কৃতিক সম্পাদক</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>জয় দাশ</h4>
-    <div class="role">সহ. সাংস্কৃতিক সম্পাদক</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>তুষা বসাক</h4>
-    <div class="role">সহ. সাংস্কৃতিক সম্পাদক</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>স্পর্শ বসাক লক্ষ্মণ</h4>
-    <div class="role">আপ্যায়ন সম্পাদক</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>দিব্যজ্যোতি দেব</h4>
-    <div class="role">সহ. আপ্যায়ন সম্পাদক</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>সম্পদন বসাক</h4>
-    <div class="role">সহ. আপ্যায়ন সম্পাদক</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>সুজন বসাক</h4>
-    <div class="role">সহ. আপ্যায়ন সম্পাদক</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>অমিত বসাক</h4>
-    <div class="role">ক্রীড়া সম্পাদক</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>জয় বসাক</h4>
-    <div class="role">সহ. ক্রীড়া সম্পাদক</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>সজীব বসাক</h4>
-    <div class="role">সহ. ক্রীড়া সম্পাদক</div>
-  </div>
-
-
-  <div class="mem-card">
-    <div class="mem-photo">👤</div>
-    <h4>অর্বব দেব</h4>
-    <div class="role">সহ. ক্রীড়া সম্পাদক</div>
-  </div>
-
-
+  <div class="empty-note">লোড হচ্ছে...</div>
 </div>
 
 
@@ -1420,281 +798,7 @@ preserveAspectRatio="xMidYMid slice"
 
 
 <div class="members-grid" id="advisorsGrid">
-
-
-  <!-- =====================================================
-       01 — প্রতিষ্ঠাতা সভাপতি
-  ====================================================== -->
-
-  <div class="mem-card advisor-card">
-
-    <div class="mem-photo">
-      👤
-    </div>
-
-    <h4>
-      শ্রী হিরণয় দেব সুধা
-    </h4>
-
-    <div class="role">
-      প্রতিষ্ঠাতা সভাপতি
-    </div>
-
-  </div>
-
-
-  <!-- =====================================================
-       02 — প্রতিষ্ঠাতা সহ-সভাপতি
-  ====================================================== -->
-
-  <div class="mem-card advisor-card">
-
-    <div class="mem-photo">
-      👤
-    </div>
-
-    <h4>
-      শ্রী অশোক বসাক
-    </h4>
-
-    <div class="role">
-      প্রতিষ্ঠাতা সহ-সভাপতি
-    </div>
-
-  </div>
-
-
-  <!-- =====================================================
-       03 — প্রতিষ্ঠাতা সাধারণ সম্পাদক
-  ====================================================== -->
-
-  <div class="mem-card advisor-card">
-
-    <div class="mem-photo">
-      👤
-    </div>
-
-    <h4>
-      শ্রী তপন দেব রায়
-    </h4>
-
-    <div class="role">
-      প্রতিষ্ঠাতা সাধারণ সম্পাদক
-    </div>
-
-  </div>
-
-
-  <!-- =====================================================
-       04 — প্রতিষ্ঠাতা কোষাধ্যক্ষ
-  ====================================================== -->
-
-  <div class="mem-card advisor-card">
-
-    <div class="mem-photo">
-      👤
-    </div>
-
-    <h4>
-      শ্ৰী নকুল বসাক
-    </h4>
-
-    <div class="role">
-      প্রতিষ্ঠাতা কোষাধ্যক্ষ
-    </div>
-
-  </div>
-
-
-  <!-- =====================================================
-       05 — প্রতিষ্ঠাতা দপ্তর সম্পাদক
-  ====================================================== -->
-
-  <div class="mem-card advisor-card">
-
-    <div class="mem-photo">
-      👤
-    </div>
-
-    <h4>
-      শ্ৰী অভিমন্যু দেব
-    </h4>
-
-    <div class="role">
-      প্রতিষ্ঠাতা দপ্তর সম্পাদক
-    </div>
-
-  </div>
-
-
-  <!-- =====================================================
-       06 — প্রতিষ্ঠাতা সদস্য
-  ====================================================== -->
-
-  <div class="mem-card advisor-card">
-
-    <div class="mem-photo">
-      👤
-    </div>
-
-    <h4>
-      শ্রী অজিত কুমার বসাক
-    </h4>
-
-    <div class="role">
-      প্রতিষ্ঠাতা সদস্য
-    </div>
-
-  </div>
-
-
-  <!-- =====================================================
-       07 — প্রতিষ্ঠাতা সদস্য
-  ====================================================== -->
-
-  <div class="mem-card advisor-card">
-
-    <div class="mem-photo">
-      👤
-    </div>
-
-    <h4>
-      শ্ৰী দুলাল বসাক
-    </h4>
-
-    <div class="role">
-      প্রতিষ্ঠাতা সদস্য
-    </div>
-
-  </div>
-
-
-  <!-- =====================================================
-       08 — প্রতিষ্ঠাতা সদস্য
-  ====================================================== -->
-
-  <div class="mem-card advisor-card">
-
-    <div class="mem-photo">
-      👤
-    </div>
-
-    <h4>
-      শ্রী সমীরণ চক্রবর্ত্তী
-    </h4>
-
-    <div class="role">
-      প্রতিষ্ঠাতা সদস্য
-    </div>
-
-  </div>
-
-
-  <!-- =====================================================
-       09 — প্রতিষ্ঠাতা সদস্য
-  ====================================================== -->
-
-  <div class="mem-card advisor-card">
-
-    <div class="mem-photo">
-      👤
-    </div>
-
-    <h4>
-      শ্রী দিলীপ বসাক
-    </h4>
-
-    <div class="role">
-      প্রতিষ্ঠাতা সদস্য
-    </div>
-
-  </div>
-
-
-  <!-- =====================================================
-       10 — প্রতিষ্ঠাতা সদস্য
-  ====================================================== -->
-
-  <div class="mem-card advisor-card">
-
-    <div class="mem-photo">
-      👤
-    </div>
-
-    <h4>
-      শ্রী হীরেন্দ্র দেব
-    </h4>
-
-    <div class="role">
-      প্রতিষ্ঠাতা সদস্য
-    </div>
-
-  </div>
-
-
-  <!-- =====================================================
-       11 — প্রতিষ্ঠাতা সদস্য
-  ====================================================== -->
-
-  <div class="mem-card advisor-card">
-
-    <div class="mem-photo">
-      👤
-    </div>
-
-    <h4>
-      শ্রী দীপক দেব রায়
-    </h4>
-
-    <div class="role">
-      প্রতিষ্ঠাতা সদস্য
-    </div>
-
-  </div>
-
-
-  <!-- =====================================================
-       12 — প্রতিষ্ঠাতা সদস্য
-  ====================================================== -->
-
-  <div class="mem-card advisor-card">
-
-    <div class="mem-photo">
-      👤
-    </div>
-
-    <h4>
-      শ্ৰী দিগেন্দ্ৰ দেব
-    </h4>
-
-    <div class="role">
-      প্রতিষ্ঠাতা সদস্য
-    </div>
-
-  </div>
-
-
-  <!-- =====================================================
-       13 — প্রতিষ্ঠাতা সদস্য
-  ====================================================== -->
-
-  <div class="mem-card advisor-card">
-
-    <div class="mem-photo">
-      👤
-    </div>
-
-    <h4>
-      স্বৰ্গীয় অজয় দেব
-    </h4>
-
-    <div class="role">
-      প্রতিষ্ঠাতা সদস্য
-    </div>
-
-  </div>
-
-
+  <div class="empty-note">লোড হচ্ছে...</div>
 </div>
 
 
@@ -1732,9 +836,7 @@ preserveAspectRatio="xMidYMid slice"
 
 
 <div class="members-grid" id="generalMembersGrid">
-
-  <!-- সাধারণ সদস্যদের তথ্য এখানে যোগ করা যাবে -->
-
+  <div class="empty-note">লোড হচ্ছে...</div>
 </div>
 
 
@@ -1799,29 +901,7 @@ preserveAspectRatio="xMidYMid slice"
 
 
 <div class="affiliates-grid" id="affiliatesGrid">
-
-
-  <div class="aff-card">
-    <div class="aff-icon">🏛️</div>
-    <h3>অঙ্গসংগঠনের নাম</h3>
-    <p>এখানে সংক্ষিপ্ত বিবরণ থাকবে। </p>
-  </div>
-
-
-  <div class="aff-card">
-    <div class="aff-icon">🏛️</div>
-    <h3>অঙ্গসংগঠনের নাম</h3>
-    <p>এখানে সংক্ষিপ্ত বিবরণ থাকবে।</p>
-  </div>
-
-
-  <div class="aff-card">
-    <div class="aff-icon">🏛️</div>
-    <h3>অঙ্গসংগঠনের নাম</h3>
-    <p>এখানে সংক্ষিপ্ত বিবরণ থাকবে।</p>
-  </div>
-
-
+  <div class="empty-note">এখনো কোনো অঙ্গসংগঠন যোগ করা হয়নি।</div>
 </div>
 
 
@@ -2004,92 +1084,7 @@ preserveAspectRatio="xMidYMid slice"
 
 
 <div class="notice-list" id="noticeList">
-
-
-  <div class="notice-item">
-
-    <div class="n-icon">
-      📌
-    </div>
-
-
-    <div>
-
-      <h4>
-        সাংস্কৃতিক অনুষ্ঠানে অংশগ্রহণ
-      </h4>
-
-      <p>
-        যাঁরা গান, নাচ বা আবৃত্তিতে অংশ নিতে চান,
-        দয়া করে কমিটি অফিসে নাম নথিভুক্ত করুন।
-      </p>
-
-    </div>
-
-
-    <div class="n-date">
-      ২ দিন আগে
-    </div>
-
-  </div>
-
-
-  <div class="notice-item">
-
-    <div class="n-icon">
-      🚧
-    </div>
-
-
-    <div>
-
-      <h4>
-        যান চলাচল নিয়ন্ত্রণ
-      </h4>
-
-      <p>
-        অষ্টমী ও নবমীর সন্ধ্যায় মণ্ডপ সংলগ্ন রাস্তায়
-        সাধারণ যান চলাচল বন্ধ থাকবে।
-      </p>
-
-    </div>
-
-
-    <div class="n-date">
-      ৪ দিন আগে
-    </div>
-
-  </div>
-
-
-  <div class="notice-item">
-
-    <div class="n-icon">
-      🎟️
-    </div>
-
-
-    <div>
-
-      <h4>
-        স্টল বরাদ্দ
-      </h4>
-
-      <p>
-        খাবার ও অন্যান্য স্টলের জন্য আগ্রহীরা
-        যোগাযোগ করুন সাধারণ সম্পাদকের সাথে।
-      </p>
-
-    </div>
-
-
-    <div class="n-date">
-      ৬ দিন আগে
-    </div>
-
-  </div>
-
-
+  <div class="empty-note">লোড হচ্ছে...</div>
 </div>
 
 
@@ -2368,7 +1363,7 @@ preserveAspectRatio="xMidYMid slice"
 
 <script src="page-transition.js"></script>
 
-<script src="render.js"></script>
+<script src="render.js?v=2"></script>
 
 <script src="script.js"></script>
 

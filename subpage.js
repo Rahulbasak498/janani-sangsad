@@ -65,7 +65,7 @@ async function loadSectionPage() {
     await loadScript('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js');
     await loadScript('https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js');
     await loadScript('firebase-config.js');
-    await loadScript('render.js');
+    await loadScript('render.js?v=2');
     await loadScript('script.js');
   } catch (error) {
     target.innerHTML = '<section><div class="container"><h2 class="section-title">এই পেজটি লোড করা যায়নি</h2><p class="section-sub">অনুগ্রহ করে আবার চেষ্টা করুন।</p></div></section>';
