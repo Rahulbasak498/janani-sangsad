@@ -108,7 +108,7 @@ const SCHEMAS = {
       { key: 'committeeName', label: 'কমিটির নাম', type: 'text', default: 'জননী সংসদ' },
       { key: 'foundingTagline', label: 'প্রতিষ্ঠার লেবেল (নেভিগেশনে ছোট করে দেখাবে)', type: 'text', default: 'প্রতিষ্ঠা ১৯৭৪' },
       { key: 'heroImageUrl', label: 'Hero image URL', type: 'text', default: 'image/maa-durga.png' },
-      { key: 'pujaDate', label: 'পূজার তারিখ ও সময় (ISO format)', type: 'text', default: '2026-10-16T06:00:00+06:00' },
+      { key: 'pujaDate', label: 'পূজার তারিখ ও সময় (এই ফিল্ডটি এখন ব্যবহৃত হয় না — হোমপেজের countdown এখন puja-calendar.js-এর বাস্তব পঞ্জিকা থেকে চালিত হয়)', type: 'text', default: '2026-10-16T06:00:00+06:00' },
       { key: 'donationQrUrl', label: 'অনুদানের QR image URL', type: 'text', default: 'image/QR.jpg' },
       { key: 'bkashNagad', label: 'বিকাশ / নগদ নম্বর', type: 'text', default: '01710000000' },
       { key: 'bankName', label: 'ব্যাংক অ্যাকাউন্টের নাম', type: 'text', default: 'জননী সংসদ' },

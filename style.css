@@ -915,6 +915,88 @@ section {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, .3);
 }
 
+/* =========================================================
+   LIVE PUJA STATUS (হিরো সেকশনে countdown-এর ঠিক উপরে)
+========================================================= */
+
+.live-puja-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+
+  margin: 18px auto 0;
+
+  background: rgba(255, 249, 239, .1);
+  border: 1px solid rgba(243, 217, 138, .35);
+
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+
+  border-radius: 999px;
+  padding: 9px 20px;
+
+  font-size: .92rem;
+  font-weight: 700;
+  color: var(--gold-light);
+
+  box-shadow: 0 8px 20px -10px rgba(0, 0, 0, .35);
+}
+
+.live-puja-status.is-today {
+  color: #fff;
+  background: rgba(226, 103, 46, .28);
+  border-color: rgba(226, 103, 46, .55);
+}
+
+.lps-dot {
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+
+  background: #4CD974;
+  box-shadow: 0 0 8px #4CD974;
+
+  flex-shrink: 0;
+
+  animation: pujaDotPulse 1.6s ease-in-out infinite;
+}
+
+@keyframes pujaDotPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .55; transform: scale(.8); }
+}
+
+/* =========================================================
+   LIVE BENGALI PANJIKA EMBED (bengalicalendar.com)
+========================================================= */
+
+.live-panjika-embed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+  margin: 26px auto 0;
+}
+
+.lpe-caption {
+  font-size: .78rem;
+  color: rgba(255, 249, 239, .75);
+  letter-spacing: .02em;
+}
+
+.lpe-caption span {
+  color: var(--gold-light);
+  font-weight: 700;
+}
+
+.live-panjika-embed iframe {
+  border-radius: 14px;
+  box-shadow: 0 12px 28px -14px rgba(0, 0, 0, .5);
+  max-width: 100%;
+}
+
 .hero-ctas .pill-cta {
   border-radius: 999px;
 

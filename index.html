@@ -242,9 +242,9 @@ preserveAspectRatio="xMidYMid slice"
       <span id="heroLocation">লোকেশন খোঁজা হচ্ছে...</span>
     </div>
 
-    <div class="pill pill-center">
+    <div class="pill pill-center" id="pujaTopPill">
       <span class="pill-strong" id="heroDaysLeft">০৭</span>
-      <span>দিন বাকি ষষ্ঠী পূজার</span>
+      <span id="heroDaysLabel">দিন বাকি ষষ্ঠী পূজার</span>
     </div>
 
   </div>
@@ -267,6 +267,14 @@ preserveAspectRatio="xMidYMid slice"
 
 <div class="committee-name">
   <span id="committeeName">জননী সংসদ</span>
+</div>
+
+
+<!-- LIVE PUJA STATUS (রিয়েল পঞ্জিকা থেকে) -->
+
+<div class="live-puja-status" id="livePujaStatus" role="status" aria-live="polite">
+  <span class="lps-dot"></span>
+  <span id="livePujaText">পূজা স্ট্যাটাস লোড হচ্ছে...</span>
 </div>
 
 
@@ -347,7 +355,6 @@ preserveAspectRatio="xMidYMid slice"
 
 </div>
 
-
 <div class="hero-ctas">
 
   <a
@@ -367,23 +374,17 @@ preserveAspectRatio="xMidYMid slice"
 
 </div>
 
-
   </div>
 
 <script>
   (function(){
     var el = document.getElementById('heroClock');
-    var daysEl = document.getElementById('heroDaysLeft');
-    var cdDays = document.getElementById('cd-days');
 
     function tick(){
       if (el) {
         var now = new Date();
         var opts = { hour:'2-digit', minute:'2-digit', hour12:true, timeZone:'Asia/Dhaka' };
         el.textContent = now.toLocaleTimeString('en-US', opts);
-      }
-      if (daysEl && cdDays) {
-        daysEl.textContent = cdDays.textContent;
       }
     }
     tick();
@@ -1367,6 +1368,8 @@ preserveAspectRatio="xMidYMid slice"
 <script src="render.js?v=2"></script>
 
 <script src="script.js"></script>
+
+<script src="puja-calendar.js"></script>
 
 </body>
 
