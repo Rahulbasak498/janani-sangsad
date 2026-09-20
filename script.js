@@ -90,81 +90,8 @@ document.addEventListener('click', (e) => {
   });
 });
 
-let pujaTarget =
-  new Date("2026-10-16T06:00:00+06:00").getTime();
-
-window.addEventListener('siteSettingsLoaded', event => {
-  const configuredDate = event.detail && event.detail.pujaDate;
-  const parsedDate = configuredDate ? new Date(configuredDate).getTime() : NaN;
-
-  if (!Number.isNaN(parsedDate)) {
-    pujaTarget = parsedDate;
-    updateCountdown();
-  }
-});
-
-function updateCountdown() {
-
-  const now = new Date().getTime();
-
-  let diff = pujaTarget - now;
-
-  if (diff < 0) {
-    diff = 0;
-  }
-
-  const days = Math.floor(
-    diff / (1000 * 60 * 60 * 24)
-  );
-
-  const hours = Math.floor(
-    (diff / (1000 * 60 * 60)) % 24
-  );
-
-  const minutes = Math.floor(
-    (diff / (1000 * 60)) % 60
-  );
-
-  const seconds = Math.floor(
-    (diff / 1000) % 60
-  );
-
-  const daysElement =
-    document.getElementById('cd-days');
-
-  const hoursElement =
-    document.getElementById('cd-hours');
-
-  const minsElement =
-    document.getElementById('cd-mins');
-
-  const secsElement =
-    document.getElementById('cd-secs');
-
-  if (daysElement) {
-    daysElement.textContent =
-      String(days).padStart(2, '0');
-  }
-
-  if (hoursElement) {
-    hoursElement.textContent =
-      String(hours).padStart(2, '0');
-  }
-
-  if (minsElement) {
-    minsElement.textContent =
-      String(minutes).padStart(2, '0');
-  }
-
-  if (secsElement) {
-    secsElement.textContent =
-      String(seconds).padStart(2, '0');
-  }
-}
-
-updateCountdown();
-
-setInterval(updateCountdown, 1000);
+// পূজার countdown (cd-days/cd-hours/cd-mins/cd-secs) এখন puja-calendar.js
+// থেকে বাস্তব পঞ্জিকার তারিখ অনুযায়ী নিয়ন্ত্রিত হয়।
 
 const galleryLightbox = document.getElementById('galleryLightbox');
 const lightboxImage = document.getElementById('lightboxImage');
