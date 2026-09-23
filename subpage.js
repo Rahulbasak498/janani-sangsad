@@ -60,6 +60,14 @@ async function loadSectionPage() {
       document.body.appendChild(lightbox);
     }
 
+    const scrollTop = document.createElement('button');
+    scrollTop.type = 'button';
+    scrollTop.className = 'scroll-top-btn';
+    scrollTop.id = 'scrollTopBtn';
+    scrollTop.setAttribute('aria-label', 'উপরে যান');
+    scrollTop.textContent = '↑';
+    document.body.appendChild(scrollTop);
+
     await loadScript('https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js');
     await loadScript('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js');
     await loadScript('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js');

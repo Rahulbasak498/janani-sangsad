@@ -1,36 +1,35 @@
 :root {
-  --maroon: #650E18;
-  --maroon-deep: #440A11;
-  --maroon-light: #7A1420;
-  --vermilion: #E15A24;
-  --vermilion-soft: #F0733C;
-  --gold: #C8992F;
-  --gold-light: #EFCB74;
-  --cream: #FCF3E1;
-  --cream-deep: #F4E4C1;
+  --maroon: #7A0F21;
+  --maroon-deep: #4B0713;
+  --maroon-light: #9E162D;
+  --vermilion: #ED5C2B;
+  --vermilion-soft: #FFA585;
+  --gold: #D4AF37;
+  --gold-light: #F3DE8E;
+  --cream: #FAF7F0;
+  --cream-deep: #F4EFE3;
   --ok: #2e7d46;
   --danger: #b3261e;
 
   --sidebar-w: 232px;
-  --radius-lg: 22px;
-  --radius-md: 14px;
-  --radius-sm: 9px;
-  --shadow-deep: 0 22px 50px -20px rgba(68, 10, 17, .55);
-  --shadow-soft: 0 10px 26px -12px rgba(101, 14, 24, .22);
-}
-
-body,
-body * {
-  font-family: 'Tiro Bangla', serif !important;
+  --radius-lg: 20px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  --shadow-deep: 0 22px 50px -20px rgba(75, 7, 19, .45);
+  --shadow-soft: 0 10px 26px -12px rgba(122, 15, 33, .18);
 }
 
 * { box-sizing: border-box; }
 
 body {
   margin: 0;
-  font-family: 'Hind Siliguri', sans-serif;
+  font-family: 'Noto Sans Bengali', sans-serif;
   background: var(--cream);
-  color: var(--maroon-deep);
+  color: #280911;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Tiro Bangla', serif;
 }
 
 ::selection { background: var(--gold); color: var(--maroon-deep); }
@@ -195,13 +194,13 @@ textarea { resize: vertical; min-height: 80px; }
 }
 .btn-outline:hover { background: rgba(101, 14, 24, .06); }
 
-.btn-danger { background: #fdecea; color: var(--danger); }
+.btn-danger { background: #FFF0F2; color: var(--danger); }
 .btn-danger:hover { background: var(--danger); color: #fff; }
 
 .btn-sm { padding: 6px 12px; font-size: 13px; }
 
 .error-msg {
-  background: #fdecea;
+  background: #FFF0F2;
   color: var(--danger);
   padding: 10px 12px;
   border-radius: var(--radius-sm);
@@ -209,7 +208,7 @@ textarea { resize: vertical; min-height: 80px; }
   margin-bottom: 14px;
   display: none;
 }
-.login-box .error-msg { background: rgba(179, 38, 30, .18); color: #ffd7d3; }
+.login-box .error-msg { background: rgba(179, 38, 30, .18); color: #FFD9DF; }
 
 /* =========================================================
    APP SHELL — sidebar dashboard
@@ -245,7 +244,7 @@ textarea { resize: vertical; min-height: 80px; }
   border-radius: 2px;
   background: linear-gradient(90deg, var(--gold), transparent);
 }
-.sidebar-brand span { display: block; font-size: 11px; font-family: 'Hind Siliguri', sans-serif; font-weight: 500; color: rgba(239, 203, 116, .65); margin-top: 4px; letter-spacing: .3px; }
+.sidebar-brand span { display: block; font-size: 11px; font-family: 'Noto Sans Bengali', sans-serif; font-weight: 500; color: rgba(239, 203, 116, .65); margin-top: 4px; letter-spacing: .3px; }
 
 .tabs {
   display: flex;
@@ -356,7 +355,7 @@ textarea { resize: vertical; min-height: 80px; }
   position: relative;
   background:
     radial-gradient(circle at 100% 0%, rgba(239, 203, 116, .16), transparent 38%),
-    linear-gradient(145deg, #310a13 0%, #531722 48%, #7b2431 100%);
+    linear-gradient(145deg, #7A1226 0%, #A81F35 48%, #C2263F 100%);
 }
 
 .dashboard-deity {
@@ -595,7 +594,7 @@ textarea { resize: vertical; min-height: 80px; }
 
 .empty-note {
   text-align: center;
-  color: #a08867;
+  color: #B08A6A;
   padding: 46px 10px;
   font-size: 14px;
   background: rgba(200, 153, 47, .06);
@@ -612,9 +611,9 @@ textarea { resize: vertical; min-height: 80px; }
 }
 
 .empty-note[style*="danger"] {
-  background: #fdecea;
+  background: #FFF0F2;
   border-style: solid;
-  border-color: #f6c8c4;
+  border-color: #FFC7CE;
 }
 .empty-note[style*="danger"]::before { content: '⚠️'; }
 

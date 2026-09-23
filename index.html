@@ -38,15 +38,9 @@ content="width=device-width, initial-scale=1.0"
   <!-- GOOGLE FONTS -->
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
-
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    rel="preconnect"
-    href="https://fonts.gstatic.com"
-    crossorigin
-  >
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Tiro+Bangla&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700&family=Tiro+Bangla:ital@0;1&display=swap"
     rel="stylesheet"
   >
 
@@ -173,232 +167,170 @@ content="width=device-width, initial-scale=1.0"
      HERO
 ========================================================= -->
 
-<header class="hero">
+<header class="hero hero-v2">
 
-  <div class="hero-glow"></div>
-
-  <img
-    class="hero-deity"
-    id="heroDeity"
-    src="image/maa-durga.png"
-    alt="মা দুর্গা"
-  >
-
-<svg
-class="hero-motif"
-viewBox="0 0 1200 800"
-preserveAspectRatio="xMidYMid slice"
-
->
-
-
-<circle
-  cx="120"
-  cy="120"
-  r="90"
-  fill="none"
-  stroke="#EFCB74"
-  stroke-width="1.5"
-/>
-
-<circle
-  cx="1080"
-  cy="680"
-  r="130"
-  fill="none"
-  stroke="#EFCB74"
-  stroke-width="1.5"
-/>
-
-<circle
-  cx="1050"
-  cy="100"
-  r="50"
-  fill="none"
-  stroke="#EFCB74"
-  stroke-width="1.5"
-/>
-
-
-  </svg>
-
-  <!-- hanging string-lights garland -->
-  <svg class="hero-garland" viewBox="0 0 1200 60" preserveAspectRatio="none">
-    <path d="M0 6 Q 150 55, 300 10 T 600 10 T 900 10 T 1200 6" fill="none" stroke="rgba(243,217,138,.55)" stroke-width="1.5"/>
-    <g fill="#F3D98A">
-      <circle cx="60" cy="16"/><circle cx="180" cy="38"/><circle cx="300" cy="14"/>
-      <circle cx="420" cy="30"/><circle cx="540" cy="12"/><circle cx="660" cy="30"/>
-      <circle cx="780" cy="12"/><circle cx="900" cy="30"/><circle cx="1020" cy="14"/><circle cx="1140" cy="20"/>
-    </g>
-  </svg>
-
-  <!-- STATUS PILLS -->
-  <div class="hero-topbar">
-
-    <div class="pill pill-clock">
-      <span class="dot"></span>
-      <span id="heroClock">--:--</span>
-      <span class="pill-sep">·</span>
-      <span id="heroLocation">লোকেশন খোঁজা হচ্ছে...</span>
+  <!-- Background decorative layer -->
+  <div class="hero-bg-fx">
+    <div class="hero-glow-ambient"></div>
+    <div class="hero-motif-layer">
+      <svg class="hero-motif" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <circle cx="120" cy="120" r="90"   fill="none" stroke="#EFCB74" stroke-width="1.5"/>
+        <circle cx="1080" cy="680" r="130" fill="none" stroke="#EFCB74" stroke-width="1.5"/>
+        <circle cx="1050" cy="100" r="50"  fill="none" stroke="#EFCB74" stroke-width="1.5"/>
+      </svg>
     </div>
 
-    <div class="pill pill-center" id="pujaTopPill">
-      <span class="pill-strong" id="heroDaysLeft">০৭</span>
-      <span id="heroDaysLabel">দিন বাকি ষষ্ঠী পূজার</span>
-    </div>
-
+    <!-- Hanging string-lights garland -->
+    <svg class="hero-garland" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 6 Q 150 55, 300 10 T 600 10 T 900 10 T 1200 6" fill="none" stroke="rgba(243,217,138,.55)" stroke-width="1.5"/>
+      <g fill="#F3D98A">
+        <circle cx="60"   cy="16"/><circle cx="180" cy="38"/><circle cx="300"  cy="14"/>
+        <circle cx="420"  cy="30"/><circle cx="540" cy="12"/><circle cx="660"  cy="30"/>
+        <circle cx="780"  cy="12"/><circle cx="900" cy="30"/><circle cx="1020" cy="14"/>
+        <circle cx="1140" cy="20"/>
+      </g>
+    </svg>
   </div>
 
-  <div class="hero-content">
+  <div class="container hero-container">
 
+    <!-- ── LEFT COLUMN ── -->
+    <div class="hero-left-col">
 
-<h1 class="hero-title-script">
+      <!-- Live Puja Status Badge -->
+      <div class="hero-status-row">
+        <div class="live-puja-badge" id="livePujaBadge">
+          <span class="lpb-pulse"></span>
+          <span class="lpb-icon">🕉️</span>
+          <span class="lpb-text" id="livePujaText">পূজার প্রস্তুতি চলছে</span>
+        </div>
+      </div>
 
-  <span id="heroTitleMain">
-    মা আসছেন
-  </span>
+      <!-- Sacred Slogan & Brand Group -->
+      <div class="hero-title-group">
+        <div class="hero-om-badge">
+          <span class="om-symbol">ॐ</span>
+          <span class="om-tag">শারদীয় দুর্গোৎসব</span>
+        </div>
 
-  <span id="heroTitleSub">
-    ঘরে ঘরে
-  </span>
+        <h1 class="hero-title-script">
+          <span id="heroTitleMain">মা আসছেন</span>
+          <span id="heroTitleSub">ঘরে ঘরে</span>
+        </h1>
 
-</h1>
+        <div class="committee-name-wrap">
+          <div class="committee-name">
+            <span id="committeeName">জননী সংসদ</span>
+          </div>
+        </div>
+      </div>
 
+      <!-- Countdown Card -->
+      <div class="countdown-card-wrapper">
+        <div class="countdown-top-header">
+          <span class="countdown-heading-text">মহাষষ্ঠীর ক্ষণগণনা</span>
+          <div class="pill pill-center" id="pujaTopPill">
+            <span class="pill-strong" id="heroDaysLeft">০৭</span>
+            <span id="heroDaysLabel">দিন বাকি ষষ্ঠী পূজার</span>
+          </div>
+        </div>
 
-<div class="committee-name">
-  <span id="committeeName">জননী সংসদ</span>
-</div>
+        <div class="countdown countdown-pill" id="countdown">
+          <div class="box">
+            <div class="num" id="cd-days">07</div>
+            <div class="lbl">দিন</div>
+          </div>
+          <div class="cd-sep">:</div>
+          <div class="box">
+            <div class="num" id="cd-hours">00</div>
+            <div class="lbl">ঘণ্টা</div>
+          </div>
+          <div class="cd-sep">:</div>
+          <div class="box">
+            <div class="num" id="cd-mins">00</div>
+            <div class="lbl">মিনিট</div>
+          </div>
+          <div class="cd-sep">:</div>
+          <div class="box">
+            <div class="num" id="cd-secs">00</div>
+            <div class="lbl">সেকেন্ড</div>
+          </div>
+        </div>
+      </div>
 
+      <!-- CTA Buttons -->
+      <div class="hero-ctas">
+        <a href="about.html" class="btn btn-primary pill-cta">
+          <span class="pc-icon">🛕</span> আমাদের সম্পর্কে
+        </a>
+        <a href="schedule.html" class="btn btn-outline pill-cta">
+          <span class="pc-icon">🗓️</span> পূজার সময়সূচি
+        </a>
+      </div>
 
-<!-- LIVE PUJA STATUS (রিয়েল পঞ্জিকা থেকে) -->
+    </div><!-- /hero-left-col -->
 
-<div class="live-puja-status" id="livePujaStatus" role="status" aria-live="polite">
-  <div class="lps-inner">
-    <span class="lps-badge">
-      <span class="lps-badge-icon" id="livePujaIcon">🕉️</span>
-      <span class="lps-dot"></span>
-    </span>
-    <span id="livePujaText" class="lps-text">পূজা স্ট্যাটাস লোড হচ্ছে...</span>
-  </div>
-</div>
+    <!-- ── RIGHT COLUMN ── -->
+    <div class="hero-right-col">
+      <div class="deity-showcase">
 
+        <!-- Glowing aura rings -->
+        <div class="deity-halo-ring halo-ring-outer"></div>
+        <div class="deity-halo-ring halo-ring-mid"></div>
+        <div class="deity-halo-core"></div>
 
-<!-- COUNTDOWN -->
+        <!-- Rotating Sacred Mandala -->
+        <svg class="deity-chakra-svg" viewBox="0 0 300 300" aria-hidden="true">
+          <circle cx="150" cy="150" r="142" fill="none" stroke="rgba(212,175,55,0.45)" stroke-width="1.5" stroke-dasharray="8 6"/>
+          <circle cx="150" cy="150" r="122" fill="none" stroke="rgba(243,222,142,0.3)"  stroke-width="1"/>
+          <circle cx="150" cy="150" r="102" fill="none" stroke="rgba(212,175,55,0.2)"  stroke-width="1.5" stroke-dasharray="4 4"/>
+          <g stroke="rgba(212,175,55,0.35)" stroke-width="2">
+            <line x1="150" y1="8"   x2="150" y2="28"/>
+            <line x1="150" y1="272" x2="150" y2="292"/>
+            <line x1="8"   y1="150" x2="28"  y2="150"/>
+            <line x1="272" y1="150" x2="292" y2="150"/>
+            <line x1="50"  y1="50"  x2="65"  y2="65"/>
+            <line x1="235" y1="235" x2="250" y2="250"/>
+            <line x1="250" y1="50"  x2="235" y2="65"/>
+            <line x1="65"  y1="235" x2="50"  y2="250"/>
+          </g>
+        </svg>
 
-<div
-  class="countdown countdown-pill"
-  id="countdown"
->
+        <!-- Maa Durga Image -->
+        <div class="deity-img-frame">
+          <img class="hero-deity" id="heroDeity" src="image/maa-durga.png" alt="মা দুর্গা">
+        </div>
 
+        <!-- Pedestal blessing -->
+        <div class="deity-pedestal">
+          <span class="pedestal-tag">🙏 সর্বমঙ্গলা মঙ্গল্যে শিবে সর্বার্থ সাধিকে 🙏</span>
+        </div>
 
-  <div class="box">
+        <!-- Digital Offering Tray -->
+        <div class="deity-offering-tray" id="deityOfferingTray">
+          <div class="offering-actions">
+            <button type="button" class="btn-offering btn-diya" id="btnLightDiya" aria-label="প্রদীপ প্রজ্বলন করুন">
+              <span class="diya-flame-icon" id="diyaFlame">🪔</span>
+              <span class="btn-offering-text">প্রদীপ জ্বালান</span>
+            </button>
+            <button type="button" class="btn-offering btn-flower" id="btnOfferFlowers" aria-label="পুষ্পাঞ্জলি দিন">
+              <span class="flower-icon">🌸</span>
+              <span class="btn-offering-text">পুষ্পাঞ্জলি দিন</span>
+            </button>
+          </div>
+          <div class="offering-counter" id="offeringCounter">
+            <span class="oc-icon">🙏</span>
+            <span class="oc-text">এ পর্যন্ত <strong id="diyaCount">১,৪৫০+</strong> জন ভক্ত ভক্তি নিবেদন করেছেন</span>
+          </div>
+        </div>
 
-    <div
-      class="num"
-      id="cd-days"
-    >
-      07
-    </div>
+      </div>
+    </div><!-- /hero-right-col -->
 
-    <div class="lbl">
-      দিন
-    </div>
-
-  </div>
-
-  <div class="cd-sep">:</div>
-
-  <div class="box">
-
-    <div
-      class="num"
-      id="cd-hours"
-    >
-      00
-    </div>
-
-    <div class="lbl">
-      ঘণ্টা
-    </div>
-
-  </div>
-
-  <div class="cd-sep">:</div>
-
-  <div class="box">
-
-    <div
-      class="num"
-      id="cd-mins"
-    >
-      00
-    </div>
-
-    <div class="lbl">
-      মিনিট
-    </div>
-
-  </div>
-
-  <div class="cd-sep">:</div>
-
-  <div class="box">
-
-    <div
-      class="num"
-      id="cd-secs"
-    >
-      00
-    </div>
-
-    <div class="lbl">
-      সেকেন্ড
-    </div>
-
-  </div>
-
-
-</div>
-
-<div class="hero-ctas">
-
-  <a
-    href="about.html"
-    class="btn btn-primary pill-cta"
-  >
-    <span class="pc-icon">🛕</span> আমাদের সম্পর্কে
-  </a>
-
-
-  <a
-    href="schedule.html"
-    class="btn btn-outline pill-cta"
-  >
-    <span class="pc-icon">🗓️</span> পূজার সময়সূচি
-  </a>
-
-</div>
-
-  </div>
-
-<script>
-  (function(){
-    var el = document.getElementById('heroClock');
-
-    function tick(){
-      if (el) {
-        var now = new Date();
-        var opts = { hour:'2-digit', minute:'2-digit', hour12:true, timeZone:'Asia/Dhaka' };
-        el.textContent = now.toLocaleTimeString('en-US', opts);
-      }
-    }
-    tick();
-    setInterval(tick, 1000);
-  })();
-</script>
-
+  </div><!-- /hero-container -->
 
 </header>
+
 
 <!-- =========================================================
      NOTICE TICKER
@@ -541,6 +473,34 @@ preserveAspectRatio="xMidYMid slice"
 
 </div>
 
+    <!-- 50-Year Golden Jubilee Souvenir / Smaranika Card -->
+    <div class="jubilee-souvenir-card">
+      <div class="jsc-badge">🎉 সুবর্ণ জয়ন্তী স্মারক (১৯৭৪ - ২০২৪/২০২৬)</div>
+      <div class="jsc-grid">
+        <div class="jsc-visual">
+          <div class="jsc-book-cover">
+            <span class="jbc-om">🕉️</span>
+            <div class="jbc-title">স্মরণিকা</div>
+            <div class="jbc-sub">৫০ বছরের ঐতিহ্য</div>
+            <div class="jbc-year">১৯৭৪ - ২০২৬</div>
+          </div>
+        </div>
+        <div class="jsc-info">
+          <h3>জননী সংসদ ৫০ বছর পূর্তি বিশেষ স্মরণিকা</h3>
+          <p>
+            দীর্ঘ পাঁচ দশকের ভক্তি, সম্প্রীতি, অতীত স্মৃতিকথা, প্রতিষ্ঠাতা সদস্যদের ইতিহাস ও শারদীয় দুর্গোৎসবের ঐতিহাসিক বিরল আলোকচিত্র নিয়ে প্রকাশিত বিশেষ সুবর্ণ জয়ন্তী স্মারক ই-ম্যাগাজিন।
+          </p>
+          <div class="jsc-actions">
+            <button type="button" class="btn btn-primary" id="btnOpenSouvenirModal">
+              <span>📖 স্মরণিকা প্রিভিউ পড়ুন</span>
+            </button>
+            <a href="image/Janani.jpg" download="Janani-Sangsad-Smaranika.jpg" class="btn btn-dark" id="btnDownloadSouvenir">
+              <span>⬇️ স্মারক ডাউনলোড</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
 
   </div>
 
@@ -550,54 +510,29 @@ preserveAspectRatio="xMidYMid slice"
      ALPONA DIVIDER
 ========================================================= -->
 
-<div class="alpona-divider">
-
-  <svg viewBox="0 0 1000 46">
-
-
-<path
-  d="M0 23 Q 50 3, 100 23 T 200 23 T 300 23 T 400 23 T 500 23 T 600 23 T 700 23 T 800 23 T 900 23 T 1000 23"
-  fill="none"
-  stroke="#C8992F"
-  stroke-width="2"
-/>
-
-<g fill="#E15A24">
-
-  <circle
-    cx="100"
-    cy="23"
-    r="5"
-  />
-
-  <circle
-    cx="300"
-    cy="23"
-    r="5"
-  />
-
-  <circle
-    cx="500"
-    cy="23"
-    r="5"
-  />
-
-  <circle
-    cx="700"
-    cy="23"
-    r="5"
-  />
-
-  <circle
-    cx="900"
-    cy="23"
-    r="5"
-  />
-
-</g>
-
+<div class="alpona-divider" aria-hidden="true">
+  <svg viewBox="0 0 1000 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M500 10 C490 20 480 25 460 25 C480 25 490 30 500 40 C510 30 520 25 540 25 C520 25 510 20 500 10Z" fill="#D4AF37"/>
+    <circle cx="500" cy="25" r="4.5" fill="#7A0F21"/>
+    <path d="M500 25 H440 C410 25 390 12 360 25 C330 38 310 25 280 25 C250 25 230 12 200 25 C170 38 150 25 120 25 C90 25 70 12 40 25 H0" stroke="#D4AF37" stroke-width="2" stroke-linecap="round"/>
+    <path d="M440 25 C420 35 400 35 380 25" stroke="#E6C75E" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M340 25 C320 15 300 15 280 25" stroke="#E6C75E" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M240 25 C220 35 200 35 180 25" stroke="#E6C75E" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M140 25 C120 15 100 15 80 25" stroke="#E6C75E" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M500 25 H560 C590 25 610 12 640 25 C670 38 690 25 720 25 C750 25 770 12 800 25 C830 38 850 25 880 25 C910 25 930 12 960 25 H1000" stroke="#D4AF37" stroke-width="2" stroke-linecap="round"/>
+    <path d="M560 25 C580 35 600 35 620 25" stroke="#E6C75E" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M660 25 C680 15 700 15 720 25" stroke="#E6C75E" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M760 25 C780 35 800 35 820 25" stroke="#E6C75E" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M860 25 C880 15 900 15 920 25" stroke="#E6C75E" stroke-width="1.5" stroke-linecap="round"/>
+    <circle cx="360" cy="25" r="3.5" fill="#7A0F21"/>
+    <circle cx="280" cy="25" r="3.5" fill="#7A0F21"/>
+    <circle cx="200" cy="25" r="3.5" fill="#7A0F21"/>
+    <circle cx="120" cy="25" r="3.5" fill="#7A0F21"/>
+    <circle cx="640" cy="25" r="3.5" fill="#7A0F21"/>
+    <circle cx="720" cy="25" r="3.5" fill="#7A0F21"/>
+    <circle cx="800" cy="25" r="3.5" fill="#7A0F21"/>
+    <circle cx="880" cy="25" r="3.5" fill="#7A0F21"/>
   </svg>
-
 </div>
 
 <!-- =========================================================
@@ -710,31 +645,29 @@ preserveAspectRatio="xMidYMid slice"
      ALPONA DIVIDER
 ========================================================= -->
 
-<div class="alpona-divider">
-
-  <svg viewBox="0 0 1000 46">
-
-
-<path
-  d="M0 23 Q 50 3, 100 23 T 200 23 T 300 23 T 400 23 T 500 23 T 600 23 T 700 23 T 800 23 T 900 23 T 1000 23"
-  fill="none"
-  stroke="#C8992F"
-  stroke-width="2"
-/>
-
-<g fill="#E15A24">
-
-  <circle cx="100" cy="23" r="5"/>
-  <circle cx="300" cy="23" r="5"/>
-  <circle cx="500" cy="23" r="5"/>
-  <circle cx="700" cy="23" r="5"/>
-  <circle cx="900" cy="23" r="5"/>
-
-</g>
-
-
+<div class="alpona-divider" aria-hidden="true">
+  <svg viewBox="0 0 1000 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M500 10 C490 20 480 25 460 25 C480 25 490 30 500 40 C510 30 520 25 540 25 C520 25 510 20 500 10Z" fill="#D4AF37"/>
+    <circle cx="500" cy="25" r="4.5" fill="#7A0F21"/>
+    <path d="M500 25 H440 C410 25 390 12 360 25 C330 38 310 25 280 25 C250 25 230 12 200 25 C170 38 150 25 120 25 C90 25 70 12 40 25 H0" stroke="#D4AF37" stroke-width="2" stroke-linecap="round"/>
+    <path d="M440 25 C420 35 400 35 380 25" stroke="#E6C75E" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M340 25 C320 15 300 15 280 25" stroke="#E6C75E" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M240 25 C220 35 200 35 180 25" stroke="#E6C75E" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M140 25 C120 15 100 15 80 25" stroke="#E6C75E" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M500 25 H560 C590 25 610 12 640 25 C670 38 690 25 720 25 C750 25 770 12 800 25 C830 38 850 25 880 25 C910 25 930 12 960 25 H1000" stroke="#D4AF37" stroke-width="2" stroke-linecap="round"/>
+    <path d="M560 25 C580 35 600 35 620 25" stroke="#E6C75E" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M660 25 C680 15 700 15 720 25" stroke="#E6C75E" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M760 25 C780 35 800 35 820 25" stroke="#E6C75E" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M860 25 C880 15 900 15 920 25" stroke="#E6C75E" stroke-width="1.5" stroke-linecap="round"/>
+    <circle cx="360" cy="25" r="3.5" fill="#7A0F21"/>
+    <circle cx="280" cy="25" r="3.5" fill="#7A0F21"/>
+    <circle cx="200" cy="25" r="3.5" fill="#7A0F21"/>
+    <circle cx="120" cy="25" r="3.5" fill="#7A0F21"/>
+    <circle cx="640" cy="25" r="3.5" fill="#7A0F21"/>
+    <circle cx="720" cy="25" r="3.5" fill="#7A0F21"/>
+    <circle cx="800" cy="25" r="3.5" fill="#7A0F21"/>
+    <circle cx="880" cy="25" r="3.5" fill="#7A0F21"/>
   </svg>
-
 </div>
 
 <!-- =========================================================
@@ -854,29 +787,29 @@ preserveAspectRatio="xMidYMid slice"
      ALPONA DIVIDER
 ========================================================= -->
 
-<div class="alpona-divider">
-
-  <svg viewBox="0 0 1000 46">
-
-
-<path
-  d="M0 23 Q 50 3, 100 23 T 200 23 T 300 23 T 400 23 T 500 23 T 600 23 T 700 23 T 800 23 T 900 23 T 1000 23"
-  fill="none"
-  stroke="#C8992F"
-  stroke-width="2"
-/>
-
-<g fill="#E15A24">
-  <circle cx="100" cy="23" r="5"/>
-  <circle cx="300" cy="23" r="5"/>
-  <circle cx="500" cy="23" r="5"/>
-  <circle cx="700" cy="23" r="5"/>
-  <circle cx="900" cy="23" r="5"/>
-</g>
-
-
+<div class="alpona-divider" aria-hidden="true">
+  <svg viewBox="0 0 1000 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M500 10 C490 20 480 25 460 25 C480 25 490 30 500 40 C510 30 520 25 540 25 C520 25 510 20 500 10Z" fill="#D4AF37"/>
+    <circle cx="500" cy="25" r="4.5" fill="#7A0F21"/>
+    <path d="M500 25 H440 C410 25 390 12 360 25 C330 38 310 25 280 25 C250 25 230 12 200 25 C170 38 150 25 120 25 C90 25 70 12 40 25 H0" stroke="#D4AF37" stroke-width="2" stroke-linecap="round"/>
+    <path d="M440 25 C420 35 400 35 380 25" stroke="#E6C75E" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M340 25 C320 15 300 15 280 25" stroke="#E6C75E" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M240 25 C220 35 200 35 180 25" stroke="#E6C75E" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M140 25 C120 15 100 15 80 25" stroke="#E6C75E" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M500 25 H560 C590 25 610 12 640 25 C670 38 690 25 720 25 C750 25 770 12 800 25 C830 38 850 25 880 25 C910 25 930 12 960 25 H1000" stroke="#D4AF37" stroke-width="2" stroke-linecap="round"/>
+    <path d="M560 25 C580 35 600 35 620 25" stroke="#E6C75E" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M660 25 C680 15 700 15 720 25" stroke="#E6C75E" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M760 25 C780 35 800 35 820 25" stroke="#E6C75E" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M860 25 C880 15 900 15 920 25" stroke="#E6C75E" stroke-width="1.5" stroke-linecap="round"/>
+    <circle cx="360" cy="25" r="3.5" fill="#7A0F21"/>
+    <circle cx="280" cy="25" r="3.5" fill="#7A0F21"/>
+    <circle cx="200" cy="25" r="3.5" fill="#7A0F21"/>
+    <circle cx="120" cy="25" r="3.5" fill="#7A0F21"/>
+    <circle cx="640" cy="25" r="3.5" fill="#7A0F21"/>
+    <circle cx="720" cy="25" r="3.5" fill="#7A0F21"/>
+    <circle cx="800" cy="25" r="3.5" fill="#7A0F21"/>
+    <circle cx="880" cy="25" r="3.5" fill="#7A0F21"/>
   </svg>
-
 </div>
 
 <!-- =========================================================
@@ -919,55 +852,29 @@ preserveAspectRatio="xMidYMid slice"
      ALPONA DIVIDER
 ========================================================= -->
 
-<div class="alpona-divider">
-
-  <svg viewBox="0 0 1000 46">
-
-
-<path
-  d="M0 23 Q 50 43, 100 23 T 200 23 T 300 23 T 400 23 T 500 23 T 600 23 T 700 23 T 800 23 T 900 23 T 1000 23"
-  fill="none"
-  stroke="#C8992F"
-  stroke-width="2"
-/>
-
-<g fill="#650E18">
-
-  <circle
-    cx="150"
-    cy="23"
-    r="5"
-  />
-
-  <circle
-    cx="350"
-    cy="23"
-    r="5"
-  />
-
-  <circle
-    cx="550"
-    cy="23"
-    r="5"
-  />
-
-  <circle
-    cx="750"
-    cy="23"
-    r="5"
-  />
-
-  <circle
-    cx="950"
-    cy="23"
-    r="5"
-  />
-
-</g>
-
-
+<div class="alpona-divider" aria-hidden="true">
+  <svg viewBox="0 0 1000 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M500 10 C490 20 480 25 460 25 C480 25 490 30 500 40 C510 30 520 25 540 25 C520 25 510 20 500 10Z" fill="#D4AF37"/>
+    <circle cx="500" cy="25" r="4.5" fill="#7A0F21"/>
+    <path d="M500 25 H440 C410 25 390 12 360 25 C330 38 310 25 280 25 C250 25 230 12 200 25 C170 38 150 25 120 25 C90 25 70 12 40 25 H0" stroke="#D4AF37" stroke-width="2" stroke-linecap="round"/>
+    <path d="M440 25 C420 35 400 35 380 25" stroke="#E6C75E" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M340 25 C320 15 300 15 280 25" stroke="#E6C75E" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M240 25 C220 35 200 35 180 25" stroke="#E6C75E" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M140 25 C120 15 100 15 80 25" stroke="#E6C75E" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M500 25 H560 C590 25 610 12 640 25 C670 38 690 25 720 25 C750 25 770 12 800 25 C830 38 850 25 880 25 C910 25 930 12 960 25 H1000" stroke="#D4AF37" stroke-width="2" stroke-linecap="round"/>
+    <path d="M560 25 C580 35 600 35 620 25" stroke="#E6C75E" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M660 25 C680 15 700 15 720 25" stroke="#E6C75E" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M760 25 C780 35 800 35 820 25" stroke="#E6C75E" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M860 25 C880 15 900 15 920 25" stroke="#E6C75E" stroke-width="1.5" stroke-linecap="round"/>
+    <circle cx="360" cy="25" r="3.5" fill="#7A0F21"/>
+    <circle cx="280" cy="25" r="3.5" fill="#7A0F21"/>
+    <circle cx="200" cy="25" r="3.5" fill="#7A0F21"/>
+    <circle cx="120" cy="25" r="3.5" fill="#7A0F21"/>
+    <circle cx="640" cy="25" r="3.5" fill="#7A0F21"/>
+    <circle cx="720" cy="25" r="3.5" fill="#7A0F21"/>
+    <circle cx="800" cy="25" r="3.5" fill="#7A0F21"/>
+    <circle cx="880" cy="25" r="3.5" fill="#7A0F21"/>
   </svg>
-
 </div>
 
 <!-- =========================================================
@@ -1279,6 +1186,79 @@ preserveAspectRatio="xMidYMid slice"
 </section>
 
 <!-- =========================================================
+     ALPONA DIVIDER
+========================================================= -->
+
+<div class="alpona-divider" aria-hidden="true">
+  <svg viewBox="0 0 1000 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M500 10 C490 20 480 25 460 25 C480 25 490 30 500 40 C510 30 520 25 540 25 C520 25 510 20 500 10Z" fill="#D4AF37"/>
+    <circle cx="500" cy="25" r="4.5" fill="#7A0F21"/>
+    <path d="M500 25 H440 C410 25 390 12 360 25 C330 38 310 25 280 25 C250 25 230 12 200 25 C170 38 150 25 120 25 C90 25 70 12 40 25 H0" stroke="#D4AF37" stroke-width="2" stroke-linecap="round"/>
+    <path d="M500 25 H560 C590 25 610 12 640 25 C670 38 690 25 720 25 C750 25 770 12 800 25 C830 38 850 25 880 25 C910 25 930 12 960 25 H1000" stroke="#D4AF37" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="360" cy="25" r="3.5" fill="#7A0F21"/>
+    <circle cx="280" cy="25" r="3.5" fill="#7A0F21"/>
+    <circle cx="640" cy="25" r="3.5" fill="#7A0F21"/>
+    <circle cx="720" cy="25" r="3.5" fill="#7A0F21"/>
+  </svg>
+</div>
+
+<!-- =========================================================
+     WISHES WALL (ভক্তদের শুভকামনা ও প্রার্থনা)
+========================================================= -->
+<section class="wishes-section" id="wishes">
+  <div class="container">
+    <div class="eyebrow">ভক্তি ও প্রার্থনা</div>
+    <h2 class="section-title">ভক্তদের শুভকামনা বোর্ড</h2>
+    <p class="section-sub">মা দুর্গার চরণে আপনার ভক্তি, প্রার্থনা ও শারদীয় শুভেচ্ছা বার্তা প্রকাশ করুন।</p>
+
+    <div class="wishes-layout">
+      <!-- Left: Wish Form -->
+      <div class="wish-form-card">
+        <div class="wfc-header">
+          <span class="wfc-icon">🪷</span>
+          <div>
+            <h3>আপনার শুভেচ্ছা বার্তা লিখুন</h3>
+            <small>আপনার বার্তাটি ওয়েবসাইটে প্রদর্শিত হবে</small>
+          </div>
+        </div>
+        <form id="devoteeWishForm" class="wish-form">
+          <div class="form-group">
+            <label for="wishName">আপনার নাম <span class="req">*</span></label>
+            <input type="text" id="wishName" placeholder="যেমন: রাহুল বসাক" required maxlength="50">
+          </div>
+          <div class="form-group">
+            <label for="wishLocation">এলাকা বা শহর</label>
+            <input type="text" id="wishLocation" placeholder="যেমন: ঢাকা / নারায়নগঞ্জ" maxlength="50">
+          </div>
+          <div class="form-group">
+            <label for="wishMessage">শুভেচ্ছা বার্তা বা প্রার্থনা <span class="req">*</span></label>
+            <textarea id="wishMessage" rows="3" placeholder="মা আসছেন সবার মঙ্গল হোক, সবাই সুস্থ থাকুন ও নিরাপদে থাকুন..." required maxlength="250"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-submit-wish">
+            <span>🌸 বার্তা প্রকাশ করুন</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Right: Live Wishes Feed -->
+      <div class="wishes-feed-card">
+        <div class="wfc-header">
+          <span class="wfc-icon">📜</span>
+          <div>
+            <h3>সর্বশেষ ভক্তবার্তা</h3>
+            <small>ভক্তদের প্রকাশিত শুভকামনাসমূহ</small>
+          </div>
+          <span class="wishes-live-badge"><span class="w-dot"></span> লাইভ</span>
+        </div>
+        <div class="wishes-feed-track" id="wishesFeedTrack">
+          <!-- Populated by script -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
      FOOTER
 ========================================================= -->
 
@@ -1376,6 +1356,91 @@ preserveAspectRatio="xMidYMid slice"
 <script src="script.js"></script>
 
 <script src="puja-calendar.js"></script>
+
+
+
+
+<!-- Pushpanjali Falling Flowers Canvas -->
+<canvas id="flowerShowerCanvas" class="flower-shower-canvas" aria-hidden="true"></canvas>
+
+<!-- Festive Greeting Card Modal (শারদীয় শুভেচ্ছা শেয়ার) -->
+<div class="modal-overlay" id="greetingModal" aria-hidden="true" role="dialog" aria-labelledby="gmTitle">
+  <div class="modal-card greeting-modal-card">
+    <button type="button" class="modal-close" id="closeGreetingModal" aria-label="বন্ধ করুন">×</button>
+    
+    <div class="gm-preview-card" id="gmCardPreview">
+      <div class="gmp-om">🕉️ শারদীয়া প্রীতি ও শুভেচ্ছা 🕉️</div>
+      <div class="gmp-deity-thumb">
+        <img src="image/maa-durga.png" alt="মা দুর্গা" class="gmp-img">
+      </div>
+      <h3 id="gmTitle" class="gmp-title">মা আসছেন ঘরে ঘরে!</h3>
+      <p class="gmp-message" id="gmMessageText">পবিত্র শারদীয় দুর্গোৎসব উপলক্ষে <strong>জননী সংসদ</strong> (প্রতিষ্ঠা ১৯৭৪)-এর পক্ষ থেকে আপনাকে ও আপনার পরিবারকে জানাই আন্তরিক প্রীতি, শুভেচ্ছা ও ভালোবাসা। মা দুর্গার আশীর্বাদে আপনার জীবন সুখ, শান্তি ও সমৃদ্ধিতে ভরে উঠুক। 🙏</p>
+      <div class="gmp-footer">
+        <span>🛕 জননী সংসদ শারদোৎসব</span>
+      </div>
+    </div>
+
+    <div class="gm-actions">
+      <button type="button" class="btn btn-whatsapp" id="btnShareWhatsApp">
+        <span>💬 হোয়াটসঅ্যাপে পাঠান</span>
+      </button>
+      <button type="button" class="btn btn-copy" id="btnCopyGreeting">
+        <span>📋 শুভেচ্ছা টেক্সট কপি</span>
+      </button>
+    </div>
+    <div class="gm-copy-toast" id="gmCopyToast">✓ শুভেচ্ছা বার্তা কপি হয়েছে!</div>
+  </div>
+</div>
+
+<!-- 50-Year Golden Jubilee Souvenir Reader Modal (স্মরণিকা ই-ম্যাগাজিন প্রিভিউ) -->
+<div class="modal-overlay" id="souvenirModal" aria-hidden="true" role="dialog" aria-labelledby="smTitle">
+  <div class="modal-card souvenir-modal-card">
+    <button type="button" class="modal-close" id="closeSouvenirModal" aria-label="বন্ধ করুন">×</button>
+    
+    <div class="sm-header">
+      <div class="sm-badge">🎉 সুবর্ণ জয়ন্তী স্মারক সংখ্যা</div>
+      <h3 id="smTitle">জননী সংসদ ৫০ বছরের গৌরবময় ইতিহাস</h3>
+      <small>১৯৭৪ — ২০২৪/২০২৬ · অর্ধশতাব্দীর ভক্তি ও সম্প্রীতির উৎসব-যাত্রা</small>
+    </div>
+
+    <div class="sm-content-body">
+      <div class="sm-highlight-box">
+        <h4>“সমাজ কল্যাণ যুব সংঘ” থেকে আজকের “জননী সংসদ”</h4>
+        <p>১৯৭৪ সালে মহান মুক্তিযুদ্ধের চেতনা ও সনাতনী ঐতিহ্য ধারণ করে কয়েকজন তরুণ যুবকের হাত ধরে প্রতিষ্ঠিত হয়েছিল এই প্রতিষ্ঠান। প্রথম দিন থেকে আজ পর্যন্ত কোনো বছর ব্যত্যয় ঘটেনি পূজা ও সামাজিক কাজের।</p>
+      </div>
+
+      <div class="sm-photo-preview">
+        <img src="image/Janani.jpg" alt="জননী সংসদ স্মারক" class="sm-img-full" onerror="this.src='image/maa-durga.png'">
+      </div>
+
+      <div class="sm-pillars-grid">
+        <div class="smp-item">
+          <strong>১৯৭৪</strong>
+          <span>প্রথম সরস্বতী ও দুর্গোৎসবের শুভসূচনা</span>
+        </div>
+        <div class="smp-item">
+          <strong>৫০+ বছর</strong>
+          <span>অবিরাম পূজা, সংস্কৃতি ও মানবতার সেবা</span>
+        </div>
+        <div class="smp-item">
+          <strong>সহস্র ভক্ত</strong>
+          <span>প্রতি বছর মহাষষ্ঠী থেকে দশমী মিলনোৎসব</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sm-actions">
+      <a href="image/Janani.jpg" download="Janani-Sangsad-Smaranika.jpg" class="btn btn-primary">
+        <span>⬇️ সম্পূর্ণ স্মারক ডাউনলোড করুন (HD)</span>
+      </a>
+      <button type="button" class="btn btn-outline" id="btnCloseSouvenirAction">
+        <span>বন্ধ করুন</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<button type="button" class="scroll-top-btn" id="scrollTopBtn" aria-label="উপরে যান">↑</button>
 
 </body>
 
