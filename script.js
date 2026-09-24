@@ -695,3 +695,73 @@ function initWishesWall() {
   }
 }
 initWishesWall();
+
+// Optional web push for puja schedules and urgent notices.
+function initPushNotifications() {
+  const button = document.getElementById('notificationSubscribeButton');
+  const feedback = document.getElementById('notificationFeedback');
+  if (!button || !feedback || typeof firebase === 'undefined' || !firebase.messaging) return;
+
+  button.addEventListener('click', async () => {
+    button.disabled = true;
+    feedback.textContent = '';
+    try {
+      if (!window.isSecureContext || !('Notification' in window) || !('serviceWorker' in navigator)) {
+        throw new Error('নোটিফিকেশন পেতে HTTPS ও সমর্থিত ব্রাউজার প্রয়োজন।');
+      }
+      if (!(await firebase.messaging.isSupported())) {
+        throw new Error('এই ব্রাউজারে নোটিফিকেশন সমর্থিত নয়।');
+      }
+      const permission = await Notification.requestPermission();
+      if (permission !== 'granted') throw new Error('ব্রাউজারের নোটিফিকেশন অনুমতি চালু করুন।');
+
+      const registration = await navigator.serviceWorker.ready;
+      const messaging = firebase.messaging();
+      const tokenOptions = { serviceWorkerRegistration: registration };
+      if (typeof firebaseVapidKey === 'string' && firebaseVapidKey.trim()) {
+        tokenOptions.vapidKey = firebaseVapidKey.trim();
+      }
+      const token = await messaging.getToken(tokenOptions);
+      if (!token) throw new Error('নোটিফিকেশন রেজিস্ট্রেশন সম্পন্ন হয়নি। আবার চেষ্টা করুন।');
+
+      const storageKey = 'janani-push-subscription-id';
+      let subscriptionId = localStorage.getItem(storageKey);
+      if (!subscriptionId) {
+        const subscription = await db.collection('notificationSubscriptions').add({
+          token,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        subscriptionId = subscription.id;
+        localStorage.setItem(storageKey, subscriptionId);
+      }
+      feedback.textContent = 'নোটিফিকেশন চালু হয়েছে। গুরুত্বপূর্ণ ঘোষণা এলে জানানো হবে।';
+      button.textContent = 'নোটিফিকেশন চালু আছে';
+    } catch (error) {
+      console.warn('Push notification setup failed:', error);
+      feedback.textContent = error.message || 'নোটিফিকেশন চালু করা যায়নি।';
+    } finally {
+      button.disabled = false;
+    }
+  });
+
+  if (!firebaseVapidKey) {
+    feedback.textContent = 'Firebase Console-এর Web Push key সেট না থাকলে সাবস্ক্রিপশন ব্যর্থ হতে পারে।';
+  }
+
+  try {
+    const messaging = firebase.messaging();
+    messaging.onMessage(payload => {
+      const data = payload.data || {};
+      if (Notification.permission === 'granted') {
+        navigator.serviceWorker.ready.then(registration => registration.showNotification(data.title || 'জননী সংসদ', {
+          body: data.body || 'নতুন গুরুত্বপূর্ণ ঘোষণা এসেছে।',
+          icon: 'image/maa-durga.png',
+          data: { url: data.url || 'notice.html' }
+        }));
+      }
+    });
+  } catch (error) {
+    console.info('Push messaging is unavailable in this browser.', error);
+  }
+}
+initPushNotifications();

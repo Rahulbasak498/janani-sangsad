@@ -11,6 +11,7 @@ const SCHEMAS = {
       { key: 'desc',  label: 'বিবরণ', type: 'textarea' },
       { key: 'date',  label: 'তারিখ (যেমন: ২ দিন আগে)', type: 'text' },
       { key: 'pinned', label: 'গুরুত্বপূর্ণ notice হিসেবে ওপরে দেখাবেন?', type: 'select', options: [['false', 'না'], ['true', 'হ্যাঁ']], default: 'false' },
+      { key: 'notifySubscribers', label: 'এই নোটিশটি subscribers-দের push notification হিসেবে পাঠাবেন?', type: 'select', options: [['false', 'না'], ['true', 'হ্যাঁ']], default: 'false' },
       { key: 'order', label: 'ক্রম (ছোট সংখ্যা আগে দেখাবে)', type: 'number', default: 0 }
     ],
     card: n => ({ thumb: n.icon || '📌', title: n.title, sub: n.desc })
@@ -23,6 +24,7 @@ const SCHEMAS = {
       { key: 'title', label: 'শিরোনাম', type: 'text' },
       { key: 'items', label: 'সময়সূচি (প্রতি লাইনে একটি বিষয়)', type: 'textarea', isList: true,
         placeholder: 'ভোর ৬:০০টা — কালপরম্ভ\nসকাল ৯:০০টা — পূজা ও পুষ্পাঞ্জলি' },
+      { key: 'notifySubscribers', label: 'এই সময়সূচির আপডেট subscribers-দের push notification হিসেবে পাঠাবেন?', type: 'select', options: [['false', 'না'], ['true', 'হ্যাঁ']], default: 'false' },
       { key: 'order', label: 'ক্রম', type: 'number', default: 0 }
     ],
     card: s => ({ thumb: '🗓️', title: `${s.day || ''} — ${s.title || ''}`, sub: s.date })
@@ -67,6 +69,12 @@ const SCHEMAS = {
     label: 'গ্যালারি',
     fields: [
       { key: 'caption', label: 'ক্যাপশন', type: 'text' },
+      { key: 'year', label: 'সাল', type: 'number', placeholder: '2026', required: true },
+      { key: 'occasion', label: 'অনুষ্ঠান', type: 'select', required: true, options: [
+        ['মহালয়া', 'মহালয়া'], ['মহাষষ্ঠী', 'মহাষষ্ঠী'], ['মহাসপ্তমী', 'মহাসপ্তমী'],
+        ['মহাষ্টমী', 'মহাষ্টমী'], ['মহানবমী', 'মহানবমী'], ['বিজয়া দশমী', 'বিজয়া দশমী'],
+        ['অন্যান্য', 'অন্যান্য']
+      ] },
       { key: 'imageUrl', label: 'ছবির URL (upload না করলে)', type: 'text' },
       { key: 'imageFile', label: 'সরাসরি ছবি upload (ঐচ্ছিক)', type: 'file', accept: 'image/*' },
       { key: 'order', label: 'ক্রম', type: 'number', default: 0 }
@@ -286,21 +294,48 @@ let draggedGalleryId = null;
 const dashboardCounts = {};
 
 // ---------------- AUTH ----------------
-auth.onAuthStateChanged(user => {
-  if (user) {
-    document.getElementById('loginWrap').style.display = 'none';
-    document.getElementById('app').style.display = 'flex';
-    document.getElementById('userEmail').textContent = user.email;
-    Object.keys(SCHEMAS).forEach(attachListListener);
-    seedDefaultSettings();
-    seedDefaultAbout();
-    seedDefaultPageHeadings();
-  } else {
+const authPersistenceReady = auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
+
+authPersistenceReady
+  .then(() => auth.onAuthStateChanged(user => {
+    if (user) {
+      document.getElementById('loginWrap').style.display = 'none';
+      document.getElementById('app').style.display = 'flex';
+      document.getElementById('userEmail').textContent = user.email || '';
+      Object.keys(SCHEMAS).forEach(attachListListener);
+      seedDefaultSettings();
+      seedDefaultAbout();
+      seedDefaultPageHeadings();
+    } else {
+      document.getElementById('loginWrap').style.display = 'flex';
+      document.getElementById('app').style.display = 'none';
+    }
+  }))
+  .catch(error => {
+    console.error('Could not start session-only admin authentication:', error);
     document.getElementById('loginWrap').style.display = 'flex';
     document.getElementById('app').style.display = 'none';
-  }
-});
+    const errBox = document.getElementById('loginError');
+    errBox.textContent = 'Secure login could not start. Please try again.';
+    errBox.style.display = 'block';
+  });
 
+document.getElementById('loginForm').addEventListener('submit', event => {
+  event.preventDefault();
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass = document.getElementById('loginPassword').value;
+  const errBox = document.getElementById('loginError');
+  errBox.style.display = 'none';
+
+  authPersistenceReady
+    .then(() => auth.signInWithEmailAndPassword(email, pass))
+    .catch(err => {
+      console.error('FIREBASE LOGIN ERROR:', err);
+      errBox.textContent = 'Login failed: ' + (err.code || '') + ' — ' + (err.message || 'Please try again.');
+      errBox.style.display = 'block';
+    });
+});
+document.getElementById('logoutBtn').addEventListener('click', () => auth.signOut());
 // NOTE: ticker and gallery used to auto-reseed their sample content
 // whenever the collection was empty. That meant deleting everything
 // from the admin panel didn't actually stay deleted — the defaults
@@ -338,28 +373,7 @@ async function seedDefaultPageHeadings() {
   }
 }
 
-document.getElementById('loginForm').addEventListener('submit', event => {
-  event.preventDefault();
 
-  const email = document.getElementById('loginEmail').value.trim();
-  const pass = document.getElementById('loginPassword').value;
-  const errBox = document.getElementById('loginError');
-
-  errBox.style.display = 'none';
-
-  auth.signInWithEmailAndPassword(email, pass)
-    .then(() => {
-    })
-    .catch(err => {
-      console.error("FIREBASE LOGIN ERROR:", err);
-
-      errBox.textContent =
-        'লগইন ব্যর্থ: ' + err.code + ' — ' + err.message;
-
-      errBox.style.display = 'block';
-    });
-});
-document.getElementById('logoutBtn').addEventListener('click', () => auth.signOut());
 
 // ---------------- TABS ----------------
 document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -457,6 +471,10 @@ function renderList(type, docs) {
   }
 
   visibleDocs.forEach((doc, index) => {
+    if (type === 'wishes' && !/^[A-Za-z0-9_-]{1,128}$/.test(doc.id)) {
+      console.warn('Skipped wish with an unsupported document ID.');
+      return;
+    }
     const data = doc.data();
     const c = schema.card(data);
     let thumbHtml;

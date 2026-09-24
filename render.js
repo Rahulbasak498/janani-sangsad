@@ -2,34 +2,11 @@
 // PUBLIC SITE — FIREBASE DATA RENDER
 // =========================================================
 
-let noticeSnapshotReady = false;
-const seenNoticeIds = new Set();
-
-function notifyAboutNewNotices(docs) {
-  const newDocs = docs.filter(doc => !seenNoticeIds.has(doc.id));
-  docs.forEach(doc => seenNoticeIds.add(doc.id));
-
-  if (!noticeSnapshotReady) {
-    noticeSnapshotReady = true;
-    return;
-  }
-
-  if (!newDocs.length || !('Notification' in window) || Notification.permission !== 'granted') return;
-
-  const latest = newDocs[0].data();
-  new Notification(latest.title || 'জননী সংসদে নতুন নোটিশ', {
-    body: latest.desc || 'ওয়েবসাইটে নতুন নোটিশ প্রকাশিত হয়েছে।',
-    icon: 'image/maa-durga.png'
-  });
-}
-
 // ---------- NOTICES ----------
 function renderNotices(docs) {
   const wrap = document.getElementById('noticeList');
 
   if (!wrap) return;
-
-  notifyAboutNewNotices(docs);
 
   wrap.innerHTML = '';
 
@@ -339,13 +316,65 @@ function renderMembers(containerId, docs) {
 // admin থেকে ছবি মুছে ফেললে সাথে সাথে ওয়েবসাইট থেকেও মুছে যাবে।
 // =========================================================
 
+let selectedGalleryYear = 'all';
+let selectedGalleryOccasion = 'all';
+
 function renderGallery(docs) {
 
   const wrap = document.getElementById('masonryGrid');
 
   if (!wrap) return;
 
+  const filterBar = document.getElementById('galleryFilters');
+  if (filterBar) {
+    const years = [...new Set(docs.map(doc => String(doc.data().year || '')).filter(Boolean))]
+      .sort((a, b) => Number(b) - Number(a));
+    const occasions = [...new Set(docs.map(doc => String(doc.data().occasion || '')).filter(Boolean))]
+      .sort((a, b) => a.localeCompare(b, 'bn'));
+    if (selectedGalleryYear !== 'all' && !years.includes(selectedGalleryYear)) selectedGalleryYear = 'all';
+    if (selectedGalleryOccasion !== 'all' && !occasions.includes(selectedGalleryOccasion)) selectedGalleryOccasion = 'all';
+    filterBar.replaceChildren();
+
+    const addFilter = (labelText, options, selected, onChange) => {
+      const label = document.createElement('label');
+      label.className = 'gallery-filter';
+      const labelTextEl = document.createElement('span');
+      labelTextEl.textContent = labelText;
+      const select = document.createElement('select');
+      options.forEach(([value, text]) => {
+        const option = document.createElement('option');
+        option.value = value;
+        option.textContent = text;
+        select.appendChild(option);
+      });
+      select.value = selected;
+      select.addEventListener('change', () => onChange(select.value));
+      label.append(labelTextEl, select);
+      filterBar.appendChild(label);
+    };
+
+    addFilter('সাল', [['all', 'সব সাল'], ...years.map(year => [year, year])], selectedGalleryYear, value => {
+      selectedGalleryYear = value;
+      renderGallery(docs);
+    });
+    addFilter('অনুষ্ঠান', [['all', 'সব অনুষ্ঠান'], ...occasions.map(occasion => [occasion, occasion])], selectedGalleryOccasion, value => {
+      selectedGalleryOccasion = value;
+      renderGallery(docs);
+    });
+  }
+
+  const visibleDocs = docs.filter(doc => {
+    const data = doc.data();
+    return (selectedGalleryYear === 'all' || String(data.year || '') === selectedGalleryYear)
+      && (selectedGalleryOccasion === 'all' || String(data.occasion || '') === selectedGalleryOccasion);
+  });
+
   wrap.innerHTML = '';
+
+  if (docs.length && !visibleDocs.length) {
+    wrap.innerHTML = '<div class="empty-note">এই ফিল্টারে কোনো ছবি নেই।</div>';
+    return;
+  }
 
   if (docs.length === 0) {
     wrap.innerHTML = '<div class="empty-note">গ্যালারিতে এখনো কোনো ছবি যোগ করা হয়নি।</div>';
@@ -353,7 +382,7 @@ function renderGallery(docs) {
   }
 
 
-  docs.forEach((d, index) => {
+  visibleDocs.forEach((d, index) => {
 
     const g = d.data();
 

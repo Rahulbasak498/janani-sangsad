@@ -825,6 +825,28 @@ section .eyebrow {
   color: var(--gold-200);
 }
 
+.countdown-card-wrapper #pujaTopPill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+  text-align: right;
+}
+
+.countdown-card-wrapper #heroDaysLeft {
+  color: var(--gold-200);
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.countdown-card-wrapper #heroDaysLabel {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
 .countdown-pill {
   display: flex;
   align-items: center;
@@ -1450,6 +1472,35 @@ section .eyebrow {
   background-color: var(--cream-deep);
 }
 
+.gallery-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 26px 0 22px;
+}
+
+.gallery-filter {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 12px;
+  border: 1px solid rgba(212, 175, 55, 0.32);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.72);
+  color: rgba(42, 4, 10, 0.68);
+  font-size: 0.85rem;
+}
+
+.gallery-filter select {
+  max-width: min(52vw, 220px);
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--maroon-800);
+  font: inherit;
+  font-weight: 700;
+}
+
 .masonry {
   columns: 4 240px;
   column-gap: 20px;
@@ -1825,6 +1876,35 @@ section .eyebrow {
 --------------------------------------------------------- */
 .notice {
   background-color: var(--cream);
+}
+
+.notification-optin {
+  max-width: 840px;
+  margin: 24px auto 4px;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-md);
+  background: linear-gradient(120deg, #fffaf0, #fff);
+  box-shadow: var(--shadow-sm);
+}
+
+.notification-optin > div {
+  display: grid;
+  gap: 4px;
+}
+
+.notification-optin strong { color: var(--maroon-800); }
+.notification-optin span,
+.notification-feedback { color: rgba(42, 4, 10, 0.7); font-size: 0.88rem; }
+.notification-feedback { max-width: 840px; min-height: 1.2em; margin: 8px auto 14px; }
+
+@media (max-width: 600px) {
+  .notification-optin { align-items: stretch; flex-direction: column; }
+  .notification-optin .btn { width: 100%; }
 }
 
 .notice-list {

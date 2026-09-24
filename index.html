@@ -238,10 +238,10 @@ content="width=device-width, initial-scale=1.0"
       <!-- Countdown Card -->
       <div class="countdown-card-wrapper">
         <div class="countdown-top-header">
-          <span class="countdown-heading-text">মহাষষ্ঠীর ক্ষণগণনা</span>
+          <span class="countdown-heading-text" id="countdownHeading">মহাষষ্ঠীর ক্ষণগণনা</span>
           <div class="pill pill-center" id="pujaTopPill">
-            <span class="pill-strong" id="heroDaysLeft">--</span>
-            <span id="heroDaysLabel">দিন বাকি ষষ্ঠী পূজার</span>
+            <span class="pill-strong" id="heroDaysLeft">মহাষষ্ঠী</span>
+            <span id="heroDaysLabel">১৭ অক্টোবর ২০২৬</span>
           </div>
         </div>
 
@@ -595,6 +595,8 @@ content="width=device-width, initial-scale=1.0"
   গত বছরগুলোর পূজার কিছু বিশেষ মুহূর্ত।
 </p>
 
+
+<div class="gallery-filter-bar" id="galleryFilters" aria-label="গ্যালারি ফিল্টার"></div>
 
 <div class="masonry" id="masonryGrid">
   <div class="empty-note">লোড হচ্ছে...</div>
@@ -965,6 +967,15 @@ content="width=device-width, initial-scale=1.0"
 </p>
 
 
+<div class="notification-optin" id="notificationOptIn">
+  <div>
+    <strong>জরুরি ঘোষণা পেতে চান?</strong>
+    <span id="notificationHelp">পূজার সময়সূচি ও গুরুত্বপূর্ণ নোটিশের নোটিফিকেশন চালু করুন।</span>
+  </div>
+  <button class="btn btn-dark" type="button" id="notificationSubscribeButton">নোটিফিকেশন চালু করুন</button>
+</div>
+<p class="notification-feedback" id="notificationFeedback" role="status" aria-live="polite"></p>
+
 <div class="notice-list" id="noticeList">
   <div class="empty-note">লোড হচ্ছে...</div>
 </div>
@@ -1288,11 +1299,13 @@ content="width=device-width, initial-scale=1.0"
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js"></script>
+
 <script src="firebase-config.js"></script>
 
 <script src="page-transition.js"></script>
 
-<script src="render.js?v=2"></script>
+<script src="render.js?v=3"></script>
 
 <script src="script.js"></script>
 

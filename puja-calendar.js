@@ -89,8 +89,11 @@
     var liveTextEl = document.getElementById('livePujaText');
     var liveIconEl = document.getElementById('livePujaIcon');
     var liveStatusEl = document.getElementById('livePujaStatus');
+    var liveBadgeEl = document.getElementById('livePujaBadge');
     var pillDaysEl = document.getElementById('heroDaysLeft');
     var pillLabelEl = document.getElementById('heroDaysLabel');
+    var countdownHeadingEl = document.getElementById('countdownHeading');
+    var countdownCardEl = document.querySelector('.countdown-card-wrapper');
     var countdownEl = document.getElementById('countdown');
 
     var now = new Date();
@@ -106,18 +109,10 @@
         if (liveIconEl) liveIconEl.textContent = todayEvent.emoji;
         liveTextEl.innerHTML =
           '<span class="lps-label">আজ</span>' +
-          '<span class="lps-name">' + todayEvent.name + '</span>';
-      } else if (nextEvent) {
-        if (liveIconEl) liveIconEl.textContent = nextEvent.emoji;
-        liveTextEl.innerHTML =
-          '<span class="lps-label">পরবর্তী পূজা</span>' +
-          '<span class="lps-name">' + nextEvent.name + '</span>' +
-          '<span class="lps-date">' + formatBnDate(nextEvent.date) + '</span>';
-      } else {
-        if (liveIconEl) liveIconEl.textContent = '🕉️';
-        liveTextEl.innerHTML = '<span class="lps-name">পূজা পঞ্জিকা শীঘ্রই আপডেট হবে</span>';
+          '<span class="lps-name">' + todayEvent.name + ' চলছে</span>';
       }
     }
+    if (liveBadgeEl) liveBadgeEl.style.display = todayEvent ? '' : 'none';
     if (liveStatusEl) {
       liveStatusEl.classList.toggle('is-today', !!todayEvent);
     }
@@ -137,26 +132,33 @@
 
     if (pillDaysEl && pillLabelEl) {
       if (durgaOngoing) {
-        pillDaysEl.textContent = (todayEvent && todayEvent.emoji) || '🛕';
-        pillLabelEl.textContent = 'আজ ' + ((todayEvent && todayEvent.name) || 'দুর্গাপূজা') + ' — উৎসব চলছে';
+        var activePujaName = (todayEvent && todayEvent.name) || 'দুর্গাপূজা';
+        pillDaysEl.textContent = 'আজ';
+        pillLabelEl.textContent = activePujaName;
       } else if (durgaTarget) {
-        // নিচের বড় countdown বক্সও Math.floor দিয়ে দিন গোনে (২৬ দিন ১৪ ঘণ্টা মানেই "২৬ দিন বাকি") —
-        // এখানে Math.ceil ব্যবহার করলে ভগ্নাংশ দিনকে উপরের দিকে পূর্ণ করে ফেলত (২৭), যেটা নিচের
-        // বড় countdown-এর সাথে না মিলিয়ে বিভ্রান্তিকর দেখাচ্ছিল। তাই দুটো জায়গায় একই হিসাব রাখা হলো।
-        var daysLeft = Math.floor((durgaTarget - nowMs) / (1000 * 60 * 60 * 24));
-        pillDaysEl.textContent = toBn(pad2(Math.max(daysLeft, 0)));
-        pillLabelEl.textContent = 'দিন বাকি দুর্গাপূজার';
+        var shashthiEvent = findEvent('shashthi');
+        if (countdownHeadingEl) countdownHeadingEl.textContent = 'মহাষষ্ঠীর ক্ষণগণনা';
+        pillDaysEl.textContent = shashthiEvent.name;
+        pillLabelEl.textContent = formatBnDate(shashthiEvent.date);
       } else {
-        pillDaysEl.textContent = '—';
-        pillLabelEl.textContent = 'পরের বছরের দুর্গাপূজার তারিখ শীঘ্রই আসছে';
+        if (countdownHeadingEl) countdownHeadingEl.textContent = 'পরবর্তী পূজা';
+        pillDaysEl.textContent = nextEvent ? nextEvent.name : '—';
+        pillLabelEl.textContent = nextEvent ? formatBnDate(nextEvent.date) : 'পঞ্জিকা শীঘ্রই আপডেট হবে';
       }
     }
 
-    if (durgaTarget) {
+    if (durgaOngoing) {
+      // The livePujaBadge owns today's status while the puja is underway.
+      currentTargetTime = null;
+      if (countdownCardEl) countdownCardEl.style.display = 'none';
+      if (countdownEl) countdownEl.style.display = 'none';
+    } else if (durgaTarget) {
+      if (countdownCardEl) countdownCardEl.style.display = '';
       currentTargetTime = durgaTarget;
       if (countdownEl) countdownEl.style.display = '';
       tickCountdown();
     } else {
+      if (countdownCardEl) countdownCardEl.style.display = '';
       currentTargetTime = null;
       if (countdownEl) countdownEl.style.display = 'none';
     }
