@@ -59,15 +59,35 @@ const burger = document.getElementById('navBurger');
 const navLinks = document.getElementById('navLinks');
 
 if (burger && navLinks) {
+  const closeMobileNav = (restoreFocus = false) => {
+    navLinks.classList.remove('open');
+    burger.setAttribute('aria-expanded', 'false');
+    burger.setAttribute('aria-label', 'মেনু খুলুন');
+    document.querySelectorAll('.nav-dropdown.open').forEach(dropdown => {
+      dropdown.classList.remove('open');
+      dropdown.querySelector('.nav-dropdown-btn')?.setAttribute('aria-expanded', 'false');
+    });
+    if (restoreFocus) burger.focus();
+  };
+
   burger.addEventListener('click', () => {
-    navLinks.classList.toggle('open');
+    const isOpen = navLinks.classList.toggle('open');
+    burger.setAttribute('aria-expanded', String(isOpen));
+    burger.setAttribute('aria-label', isOpen ? 'মেনু বন্ধ করুন' : 'মেনু খুলুন');
   });
 
   navLinks.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => {
-      navLinks.classList.remove('open');
-      document.querySelectorAll('.nav-dropdown.open').forEach(dd => dd.classList.remove('open'));
-    });
+    a.addEventListener('click', () => closeMobileNav());
+  });
+
+  document.addEventListener('click', event => {
+    if (navLinks.classList.contains('open') && !navLinks.contains(event.target) && !burger.contains(event.target)) {
+      closeMobileNav();
+    }
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && navLinks.classList.contains('open')) closeMobileNav(true);
   });
 }
 
@@ -79,15 +99,32 @@ document.querySelectorAll('.nav-dropdown-btn').forEach(btn => {
     const wasOpen = dropdown.classList.contains('open');
 
     document.querySelectorAll('.nav-dropdown.open').forEach(dd => dd.classList.remove('open'));
+    document.querySelectorAll('.nav-dropdown-btn').forEach(dropdownButton => dropdownButton.setAttribute('aria-expanded', 'false'));
 
-    if (!wasOpen) dropdown.classList.add('open');
+    if (!wasOpen) {
+      dropdown.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+    }
   });
 });
 
 document.addEventListener('click', (e) => {
   document.querySelectorAll('.nav-dropdown.open').forEach(dd => {
-    if (!dd.contains(e.target)) dd.classList.remove('open');
+    if (!dd.contains(e.target)) {
+      dd.classList.remove('open');
+      dd.querySelector('.nav-dropdown-btn')?.setAttribute('aria-expanded', 'false');
+    }
   });
+});
+
+document.addEventListener('keydown', event => {
+  if (event.key !== 'Escape') return;
+  const openDropdown = document.querySelector('.nav-dropdown.open');
+  if (!openDropdown) return;
+  openDropdown.classList.remove('open');
+  const button = openDropdown.querySelector('.nav-dropdown-btn');
+  button?.setAttribute('aria-expanded', 'false');
+  button?.focus();
 });
 
 // পূজার countdown (cd-days/cd-hours/cd-mins/cd-secs) এখন puja-calendar.js
@@ -99,6 +136,27 @@ const lightboxClose = document.getElementById('lightboxClose');
 const lightboxPrev = document.getElementById('lightboxPrev');
 const lightboxNext = document.getElementById('lightboxNext');
 let lightboxIndex = 0;
+let lightboxTrigger = null;
+
+function keepFocusInDialog(dialog, event) {
+  if (event.key !== 'Tab') return;
+  const controls = [...dialog.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])')]
+    .filter(element => element.getClientRects().length);
+  if (!controls.length) {
+    event.preventDefault();
+    return;
+  }
+
+  const first = controls[0];
+  const last = controls[controls.length - 1];
+  if (event.shiftKey && (document.activeElement === first || !dialog.contains(document.activeElement))) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+}
 
 function showGalleryImage(index) {
   const images = [...document.querySelectorAll('#masonryGrid img')];
@@ -114,16 +172,26 @@ function closeGalleryLightbox() {
   if (!galleryLightbox) return;
   galleryLightbox.classList.remove('open');
   galleryLightbox.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('modal-open');
+  lightboxTrigger?.focus();
+  lightboxTrigger = null;
+}
+
+function openGalleryLightbox(image) {
+  if (!image || !galleryLightbox || !lightboxImage) return;
+  const images = [...document.querySelectorAll('#masonryGrid img')];
+  showGalleryImage(images.indexOf(image));
+  lightboxTrigger = image;
+  galleryLightbox.classList.add('open');
+  galleryLightbox.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('modal-open');
+  lightboxClose?.focus();
 }
 
 document.addEventListener('click', event => {
   const image = event.target.closest('#masonryGrid img');
   if (!image || !galleryLightbox || !lightboxImage) return;
-
-  const images = [...document.querySelectorAll('#masonryGrid img')];
-  showGalleryImage(images.indexOf(image));
-  galleryLightbox.classList.add('open');
-  galleryLightbox.setAttribute('aria-hidden', 'false');
+  openGalleryLightbox(image);
 });
 
 lightboxClose?.addEventListener('click', closeGalleryLightbox);
@@ -139,6 +207,15 @@ galleryLightbox?.addEventListener('click', event => {
   if (event.target === galleryLightbox) closeGalleryLightbox();
 });
 document.addEventListener('keydown', event => {
+  if (!galleryLightbox?.classList.contains('open')) {
+    const image = event.target.closest?.('#masonryGrid img');
+    if (image && (event.key === 'Enter' || event.key === ' ')) {
+      event.preventDefault();
+      openGalleryLightbox(image);
+    }
+    return;
+  }
+  keepFocusInDialog(galleryLightbox, event);
   if (event.key === 'Escape') closeGalleryLightbox();
   if (event.key === 'ArrowLeft') showGalleryImage(lightboxIndex - 1);
   if (event.key === 'ArrowRight') showGalleryImage(lightboxIndex + 1);
@@ -152,7 +229,8 @@ if (scrollTopBtn) {
   });
 
   scrollTopBtn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+    window.scrollTo({ top: 0, behavior });
   });
 }
 
@@ -316,57 +394,6 @@ class FlowerShower {
 const globalFlowerShower = new FlowerShower('flowerShowerCanvas');
 window._flowerShower = globalFlowerShower;
 
-// ---------- 3. DIGITAL OFFERING TRAY & DIYA LIGHTING ----------
-const BN_NUMS = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
-function toBnNum(num) {
-  return String(num).replace(/[0-9]/g, d => BN_NUMS[+d]);
-}
-
-function initOfferingTray() {
-  const diyaBtn = document.getElementById('btnLightDiya');
-  const flowerBtn = document.getElementById('btnOfferFlowers');
-  const countEl = document.getElementById('diyaCount');
-  
-  let baseCount = parseInt(localStorage.getItem('js_offering_count') || '1452', 10);
-  if (countEl) countEl.textContent = toBnNum(baseCount.toLocaleString()) + '+';
-
-  function incrementCount() {
-    baseCount++;
-    localStorage.setItem('js_offering_count', baseCount.toString());
-    if (countEl) {
-      countEl.textContent = toBnNum(baseCount.toLocaleString()) + '+';
-      countEl.style.transform = 'scale(1.15)';
-      setTimeout(() => countEl.style.transform = 'scale(1)', 300);
-    }
-    try {
-      if (typeof db !== 'undefined') {
-        db.collection('siteStats').doc('offerings').set({
-          count: firebase.firestore.FieldValue.increment(1)
-        }, { merge: true }).catch(() => {});
-      }
-    } catch (e) {}
-  }
-
-  diyaBtn?.addEventListener('click', () => {
-    const isLit = diyaBtn.classList.toggle('is-lit');
-    playTempleBell();
-    incrementCount();
-    
-    const textSpan = diyaBtn.querySelector('.btn-offering-text');
-    if (textSpan) {
-      textSpan.textContent = isLit ? 'প্রদীপ প্রজ্বলিত' : 'প্রদীপ জ্বালান';
-    }
-    globalFlowerShower.burst(25);
-  });
-
-  flowerBtn?.addEventListener('click', () => {
-    playTempleBell();
-    incrementCount();
-    globalFlowerShower.burst(65);
-  });
-}
-initOfferingTray();
-
 // ---------- 4. ADD TO GOOGLE CALENDAR & APPLE CALENDAR ----------
 function addPujaToCalendar(dayName, dateStr, title, desc) {
   const dateMap = {
@@ -436,16 +463,25 @@ function initGreetingModal() {
   const open = () => {
     modal.classList.add('open');
     modal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('modal-open');
+    closeBtn?.focus();
   };
   const close = () => {
     modal.classList.remove('open');
     modal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('modal-open');
+    openBtn?.focus();
   };
 
   openBtn?.addEventListener('click', open);
   closeBtn?.addEventListener('click', close);
   modal.addEventListener('click', e => {
     if (e.target === modal) close();
+  });
+  document.addEventListener('keydown', event => {
+    if (!modal.classList.contains('open')) return;
+    keepFocusInDialog(modal, event);
+    if (event.key === 'Escape') close();
   });
 
   const getShareText = () => {

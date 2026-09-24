@@ -1,8 +1,10 @@
-const CACHE_NAME = 'janani-sangsad-v2';   // bumped: drops old cached heavy images / demo QR
+const CACHE_NAME = 'janani-sangsad-v3';
 const APP_SHELL = [
   './index.html',
   './style.css',
   './script.js',
+  './page-transition.js',
+  './puja-calendar.js',
   './render.js',
   './firebase-config.js',
   './manifest.json',

@@ -100,6 +100,8 @@ content="width=device-width, initial-scale=1.0"
   class="nav-burger"
   id="navBurger"
   aria-label="মেনু খুলুন"
+  aria-controls="navLinks"
+  aria-expanded="false"
   type="button"
 >
 
@@ -132,7 +134,7 @@ content="width=device-width, initial-scale=1.0"
   </a>
 
   <div class="nav-dropdown">
-    <button class="nav-dropdown-btn" type="button">
+    <button class="nav-dropdown-btn" type="button" aria-expanded="false">
       সদস্য <span class="caret">▾</span>
     </button>
     <div class="nav-dropdown-menu">
@@ -209,7 +211,7 @@ content="width=device-width, initial-scale=1.0"
       <div class="hero-status-row">
         <div class="live-puja-badge" id="livePujaBadge">
           <span class="lpb-pulse"></span>
-          <span class="lpb-icon">🕉️</span>
+          <span class="lpb-icon" id="livePujaIcon">🕉️</span>
           <span class="lpb-text" id="livePujaText">পূজার প্রস্তুতি চলছে</span>
         </div>
       </div>
@@ -266,16 +268,6 @@ content="width=device-width, initial-scale=1.0"
         </div>
       </div>
 
-      <!-- CTA Buttons -->
-      <div class="hero-ctas">
-        <a href="about.html" class="btn btn-primary pill-cta">
-          <span class="pc-icon">🛕</span> আমাদের সম্পর্কে
-        </a>
-        <a href="schedule.html" class="btn btn-outline pill-cta">
-          <span class="pc-icon">🗓️</span> পূজার সময়সূচি
-        </a>
-      </div>
-
     </div><!-- /hero-left-col -->
 
     <!-- ── RIGHT COLUMN ── -->
@@ -314,21 +306,15 @@ content="width=device-width, initial-scale=1.0"
           <span class="pedestal-tag">🙏 সর্বমঙ্গলা মঙ্গল্যে শিবে সর্বার্থ সাধিকে 🙏</span>
         </div>
 
-        <!-- Digital Offering Tray -->
-        <div class="deity-offering-tray" id="deityOfferingTray">
-          <div class="offering-actions">
-            <button type="button" class="btn-offering btn-diya" id="btnLightDiya" aria-label="প্রদীপ প্রজ্বলন করুন">
-              <span class="diya-flame-icon" id="diyaFlame">🪔</span>
-              <span class="btn-offering-text">প্রদীপ জ্বালান</span>
-            </button>
-            <button type="button" class="btn-offering btn-flower" id="btnOfferFlowers" aria-label="পুষ্পাঞ্জলি দিন">
-              <span class="flower-icon">🌸</span>
-              <span class="btn-offering-text">পুষ্পাঞ্জলি দিন</span>
-            </button>
+        <!-- Festival shortcuts -->
+        <div class="hero-community-card">
+          <div class="hero-community-copy">
+            <span class="hero-community-kicker">শারদীয় উৎসব</span>
+            <p>পূজার সময়সূচি ও শুভেচ্ছা—একসাথে</p>
           </div>
-          <div class="offering-counter" id="offeringCounter">
-            <span class="oc-icon">🙏</span>
-            <span class="oc-text">এ পর্যন্ত <strong id="diyaCount">১,৪৫০+</strong> জন ভক্ত ভক্তি নিবেদন করেছেন</span>
+          <div class="hero-community-actions">
+            <a class="hero-community-link hero-community-primary" href="schedule.html">পূজার সময়সূচি <span aria-hidden="true">→</span></a>
+            <a class="hero-community-link" href="#wishes">শুভেচ্ছা জানান</a>
           </div>
         </div>
 
@@ -439,7 +425,7 @@ content="width=device-width, initial-scale=1.0"
       <div>
 
         <div class="n" id="aboutStat1Num">
-          ৫০+
+          ৫২
         </div>
 
         <div class="l" id="aboutStat1Label">
@@ -480,36 +466,6 @@ content="width=device-width, initial-scale=1.0"
   </div>
 
 </div>
-
-    <!-- 50-Year Golden Jubilee Souvenir / Smaranika Card -->
-    <div class="jubilee-souvenir-card">
-      <div class="jsc-badge">🎉 সুবর্ণ জয়ন্তী স্মারক (১৯৭৪ - ২০২৪/২০২৬)</div>
-      <div class="jsc-grid">
-        <div class="jsc-visual">
-          <div class="jsc-book-cover">
-            <span class="jbc-om">🕉️</span>
-            <div class="jbc-title">স্মরণিকা</div>
-            <div class="jbc-sub">৫০ বছরের ঐতিহ্য</div>
-            <div class="jbc-year">১৯৭৪ - ২০২৬</div>
-          </div>
-        </div>
-        <div class="jsc-info">
-          <h3>জননী সংসদ ৫০ বছর পূর্তি বিশেষ স্মরণিকা</h3>
-          <p>
-            দীর্ঘ পাঁচ দশকের ভক্তি, সম্প্রীতি, অতীত স্মৃতিকথা, প্রতিষ্ঠাতা সদস্যদের ইতিহাস ও শারদীয় দুর্গোৎসবের ঐতিহাসিক বিরল আলোকচিত্র নিয়ে প্রকাশিত বিশেষ সুবর্ণ জয়ন্তী স্মারক ই-ম্যাগাজিন।
-          </p>
-          <div class="jsc-actions">
-            <button type="button" class="btn btn-primary" id="btnOpenSouvenirModal">
-              <span>📖 স্মরণিকা প্রিভিউ পড়ুন</span>
-            </button>
-            <a href="image/Janani.jpg" download="Janani-Sangsad-Smaranika.jpg" class="btn btn-dark" id="btnDownloadSouvenir">
-              <span>⬇️ স্মারক ডাউনলোড</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
   </div>
 
 </section>
@@ -899,7 +855,6 @@ content="width=device-width, initial-scale=1.0"
 <div
   id="ph-eyebrow-donation"
   class="eyebrow"
-  style="color:var(--gold-light);"
 >
   সহযোগিতার আহ্বান
 </div>
@@ -926,6 +881,7 @@ content="width=device-width, initial-scale=1.0"
       alt="অনুদানের QR Code"
       loading="lazy"
     >
+    <p class="qr-caption">স্ক্যান করে অনুদান পাঠান</p>
 
   </div>
 
@@ -1019,29 +975,29 @@ content="width=device-width, initial-scale=1.0"
 </section>
 
 <!-- =========================================================
-     LOCATION
+     CONTACT
 ========================================================= -->
 
 <section
-  class="location"
-  id="location"
+  class="contact"
+  id="contact"
 >
 
   <div class="container">
 
 
-<div class="eyebrow" id="ph-eyebrow-location">
-  আমাদের খুঁজে নিন
+<div class="eyebrow" id="ph-eyebrow-contact">
+  যোগাযোগ করুন
 </div>
 
 
-<h2 class="section-title" id="ph-title-location">
-  লোকেশন
+<h2 class="section-title" id="ph-title-contact">
+  যোগাযোগ
 </h2>
 
 
-<p class="section-sub" id="ph-sub-location">
-  মণ্ডপের ঠিকানা ও দিকনির্দেশ।
+<p class="section-sub" id="ph-sub-contact">
+  যেকোনো প্রশ্ন বা সহযোগিতার জন্য আমাদের সাথে যোগাযোগ করুন।
 </p>
 
 
@@ -1052,6 +1008,7 @@ content="width=device-width, initial-scale=1.0"
 
     <iframe
       id="mapEmbed"
+      title="জননী সংসদের পূজামণ্ডপের মানচিত্র"
       src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1304.72335687424!2d91.4780508!3d24.2724148!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x37515c53ed2cf823%3A0xeb4bb9e4c20313d4!2sJononi%20Songsad!5e1!3m2!1sen!2sbd!4v1787825336975!5m2!1sen!2sbd"
       width="600"
       height="450"
@@ -1102,38 +1059,6 @@ content="width=device-width, initial-scale=1.0"
   </div>
 
 </div>
-
-
-  </div>
-
-</section>
-
-<!-- =========================================================
-     CONTACT
-========================================================= -->
-
-<section
-  class="contact"
-  id="contact"
->
-
-  <div class="container">
-
-
-<div class="eyebrow" id="ph-eyebrow-contact">
-  যোগাযোগ করুন
-</div>
-
-
-<h2 class="section-title" id="ph-title-contact">
-  যোগাযোগ
-</h2>
-
-
-<p class="section-sub" id="ph-sub-contact">
-  যেকোনো প্রশ্ন বা সহযোগিতার জন্য আমাদের সাথে যোগাযোগ করুন।
-</p>
-
 
 <div class="contact-grid">
 
@@ -1235,15 +1160,15 @@ content="width=device-width, initial-scale=1.0"
         <form id="devoteeWishForm" class="wish-form">
           <div class="form-group">
             <label for="wishName">আপনার নাম <span class="req">*</span></label>
-            <input type="text" id="wishName" placeholder="যেমন: রাহুল বসাক" required maxlength="50">
+            <input type="text" id="wishName" required maxlength="50">
           </div>
           <div class="form-group">
             <label for="wishLocation">এলাকা বা শহর</label>
-            <input type="text" id="wishLocation" placeholder="যেমন: ঢাকা / নারায়নগঞ্জ" maxlength="50">
+            <input type="text" id="wishLocation" maxlength="50">
           </div>
           <div class="form-group">
             <label for="wishMessage">শুভেচ্ছা বার্তা বা প্রার্থনা <span class="req">*</span></label>
-            <textarea id="wishMessage" rows="3" placeholder="মা আসছেন সবার মঙ্গল হোক, সবাই সুস্থ থাকুন ও নিরাপদে থাকুন..." required maxlength="250"></textarea>
+            <textarea id="wishMessage" rows="3" required maxlength="250"></textarea>
           </div>
           <div class="hp-field" aria-hidden="true">
             <label for="wishWebsite">Website (এটি ফাঁকা রাখুন)</label>
@@ -1342,7 +1267,7 @@ content="width=device-width, initial-scale=1.0"
 
 </footer>
 
-<div class="gallery-lightbox" id="galleryLightbox" aria-hidden="true">
+<div class="gallery-lightbox" id="galleryLightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="গ্যালারির ছবি">
   <button type="button" class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="আগের ছবি">‹</button>
   <button type="button" class="lightbox-close" id="lightboxClose" aria-label="ছবি বন্ধ করুন">×</button>
   <img id="lightboxImage" alt="">
@@ -1380,7 +1305,7 @@ content="width=device-width, initial-scale=1.0"
 <canvas id="flowerShowerCanvas" class="flower-shower-canvas" aria-hidden="true"></canvas>
 
 <!-- Festive Greeting Card Modal (শারদীয় শুভেচ্ছা শেয়ার) -->
-<div class="modal-overlay" id="greetingModal" aria-hidden="true" role="dialog" aria-labelledby="gmTitle">
+<div class="modal-overlay" id="greetingModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="gmTitle">
   <div class="modal-card greeting-modal-card">
     <button type="button" class="modal-close" id="closeGreetingModal" aria-label="বন্ধ করুন">×</button>
     
@@ -1405,54 +1330,6 @@ content="width=device-width, initial-scale=1.0"
       </button>
     </div>
     <div class="gm-copy-toast" id="gmCopyToast">✓ শুভেচ্ছা বার্তা কপি হয়েছে!</div>
-  </div>
-</div>
-
-<!-- 50-Year Golden Jubilee Souvenir Reader Modal (স্মরণিকা ই-ম্যাগাজিন প্রিভিউ) -->
-<div class="modal-overlay" id="souvenirModal" aria-hidden="true" role="dialog" aria-labelledby="smTitle">
-  <div class="modal-card souvenir-modal-card">
-    <button type="button" class="modal-close" id="closeSouvenirModal" aria-label="বন্ধ করুন">×</button>
-    
-    <div class="sm-header">
-      <div class="sm-badge">🎉 সুবর্ণ জয়ন্তী স্মারক সংখ্যা</div>
-      <h3 id="smTitle">জননী সংসদ ৫০ বছরের গৌরবময় ইতিহাস</h3>
-      <small>১৯৭৪ — ২০২৪/২০২৬ · অর্ধশতাব্দীর ভক্তি ও সম্প্রীতির উৎসব-যাত্রা</small>
-    </div>
-
-    <div class="sm-content-body">
-      <div class="sm-highlight-box">
-        <h4>“সমাজ কল্যাণ যুব সংঘ” থেকে আজকের “জননী সংসদ”</h4>
-        <p>১৯৭৪ সালে মহান মুক্তিযুদ্ধের চেতনা ও সনাতনী ঐতিহ্য ধারণ করে কয়েকজন তরুণ যুবকের হাত ধরে প্রতিষ্ঠিত হয়েছিল এই প্রতিষ্ঠান। প্রথম দিন থেকে আজ পর্যন্ত কোনো বছর ব্যত্যয় ঘটেনি পূজা ও সামাজিক কাজের।</p>
-      </div>
-
-      <div class="sm-photo-preview">
-        <img src="image/Janani.jpg" alt="জননী সংসদ স্মারক" class="sm-img-full" onerror="this.src='image/maa-durga.png'">
-      </div>
-
-      <div class="sm-pillars-grid">
-        <div class="smp-item">
-          <strong>১৯৭৪</strong>
-          <span>প্রথম সরস্বতী ও দুর্গোৎসবের শুভসূচনা</span>
-        </div>
-        <div class="smp-item">
-          <strong>৫০+ বছর</strong>
-          <span>অবিরাম পূজা, সংস্কৃতি ও মানবতার সেবা</span>
-        </div>
-        <div class="smp-item">
-          <strong>সহস্র ভক্ত</strong>
-          <span>প্রতি বছর মহাষষ্ঠী থেকে দশমী মিলনোৎসব</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="sm-actions">
-      <a href="image/Janani.jpg" download="Janani-Sangsad-Smaranika.jpg" class="btn btn-primary">
-        <span>⬇️ সম্পূর্ণ স্মারক ডাউনলোড করুন (HD)</span>
-      </a>
-      <button type="button" class="btn btn-outline" id="btnCloseSouvenirAction">
-        <span>বন্ধ করুন</span>
-      </button>
-    </div>
   </div>
 </div>
 

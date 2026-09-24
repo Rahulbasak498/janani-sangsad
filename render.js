@@ -368,6 +368,9 @@ function renderGallery(docs) {
         <img
           src="${escapeAttr(g.imageUrl)}"
           alt="${escapeAttr(g.caption || 'Gallery Image')}"
+          tabindex="0"
+          role="button"
+          aria-haspopup="dialog"
           loading="lazy"
           decoding="async"
           style="
