@@ -95,6 +95,19 @@ const SCHEMAS = {
     ],
     card: t => ({ thumb: '📣', title: t.message, sub: `ক্রম: ${t.order ?? 0}` })
   },
+  wishes: {
+    label: 'শুভেচ্ছা বার্তা',
+    fields: [
+      { key: 'name', label: 'নাম', type: 'text', required: true },
+      { key: 'loc',  label: 'এলাকা বা শহর', type: 'text' },
+      { key: 'msg',  label: 'বার্তা', type: 'textarea', required: true }
+    ],
+    card: w => ({
+      thumb: w.approved === true ? '✅' : '⏳',
+      title: (w.name || '') + (w.loc ? ' — ' + w.loc : ''),
+      sub: (w.approved === true ? '[প্রকাশিত] ' : '[অপেক্ষমান] ') + (w.msg || '')
+    })
+  },
   settings: {
     label: 'সাইট সেটিংস',
     collection: 'siteSettings',
@@ -109,10 +122,11 @@ const SCHEMAS = {
       { key: 'foundingTagline', label: 'প্রতিষ্ঠার লেবেল (নেভিগেশনে ছোট করে দেখাবে)', type: 'text', default: 'প্রতিষ্ঠা ১৯৭৪' },
       { key: 'heroImageUrl', label: 'Hero image URL', type: 'text', default: 'image/maa-durga.png' },
       { key: 'pujaDate', label: 'পূজার তারিখ ও সময় (এই ফিল্ডটি এখন ব্যবহৃত হয় না — হোমপেজের countdown এখন puja-calendar.js-এর বাস্তব পঞ্জিকা থেকে চালিত হয়)', type: 'text', default: '2026-10-16T06:00:00+06:00' },
-      { key: 'donationQrUrl', label: 'অনুদানের QR image URL', type: 'text', default: 'image/QR.jpg' },
-      { key: 'bkashNagad', label: 'বিকাশ / নগদ নম্বর', type: 'text', default: '01710000000' },
+      { key: 'donationQrUrl', label: 'অনুদানের আসল QR ছবির URL (image/QR.jpg হলো DEMO ছবি — সেটা দেবেন না; নিজের QR অন্য নামে আপলোড করে সেই নাম দিন, যেমন image/donation-qr.jpg)', type: 'text', default: '' },
+      { key: 'bkashNagad', label: 'বিকাশ / নগদ নম্বর (ফাঁকা থাকলে ওয়েবসাইটে এই লাইন দেখাবে না)', type: 'text', default: '', placeholder: '01XXXXXXXXX' },
+      { key: 'bkashNagadNote', label: 'নম্বরের ধরন (ঐচ্ছিক, যেমন: Personal / Merchant / Agent)', type: 'text', default: '' },
       { key: 'bankName', label: 'ব্যাংক অ্যাকাউন্টের নাম', type: 'text', default: 'জননী সংসদ' },
-      { key: 'bankAccount', label: 'ব্যাংক অ্যাকাউন্ট নম্বর', type: 'text', default: 'A/C: 0000-0000-0000' },
+      { key: 'bankAccount', label: 'ব্যাংক অ্যাকাউন্ট নম্বর (ফাঁকা থাকলে দেখাবে না)', type: 'text', default: '' },
       { key: 'cashNote', label: 'নগদ অনুদানের বিবরণ', type: 'textarea', default: 'কমিটি অফিসে সরাসরি জমা দিতে পারেন' },
       { key: 'receiptUrl', label: 'রসিদ download URL (ঐচ্ছিক)', type: 'text' },
       { key: 'locationTitle', label: 'লোকেশন শিরোনাম', type: 'text', default: 'পূজা মণ্ডপের ঠিকানা' },
@@ -121,12 +135,12 @@ const SCHEMAS = {
       { key: 'locationDirection', label: 'দিকনির্দেশের বিবরণ', type: 'text', default: 'নিকটস্থ বাস স্ট্যান্ড থেকে ৫ মিনিটের হাঁটা পথ' },
       { key: 'mapEmbedUrl', label: 'Google Map embed URL', type: 'text' },
       { key: 'mapLink', label: 'Google Map direction URL', type: 'text' },
-      { key: 'contactPhone', label: 'ফোন নম্বর', type: 'text', default: '+880 1710000000' },
+      { key: 'contactPhone', label: 'ফোন নম্বর (ফাঁকা থাকলে দেখাবে না)', type: 'text', default: '' },
       { key: 'facebookUrl', label: 'Facebook URL (contact ও footer আইকন দুটোতেই ব্যবহার হবে)', type: 'text' },
-      { key: 'facebookLabel', label: 'Facebook display text', type: 'text', default: 'fb.com/durgapujacommittee' },
+      { key: 'facebookLabel', label: 'Facebook display text (ঐচ্ছিক)', type: 'text', default: '' },
       { key: 'instagramUrl', label: 'Instagram URL (footer আইকন)', type: 'text' },
       { key: 'youtubeUrl', label: 'YouTube URL (footer আইকন)', type: 'text' },
-      { key: 'contactEmail', label: 'ইমেইল', type: 'text', default: 'info@pujacommittee.org' }
+      { key: 'contactEmail', label: 'ইমেইল (ফাঁকা থাকলে দেখাবে না)', type: 'text', default: '' }
     ],
     card: s => ({ thumb: '⚙️', title: s.committeeName || 'সাইট সেটিংস', sub: 'Hero, donation, location ও contact' })
   },
@@ -212,18 +226,19 @@ const DEFAULT_SETTINGS = {
   foundingTagline: 'প্রতিষ্ঠা ১৯৭৪',
   heroImageUrl: 'image/maa-durga.png',
   pujaDate: '2026-10-16T06:00:00+06:00',
-  donationQrUrl: 'image/QR.jpg',
-  bkashNagad: '01710000000',
+  donationQrUrl: '',
+  bkashNagad: '',
+  bkashNagadNote: '',
   bankName: 'জননী সংসদ',
-  bankAccount: 'A/C: 0000-0000-0000',
+  bankAccount: '',
   cashNote: 'কমিটি অফিসে সরাসরি জমা দিতে পারেন',
   locationTitle: 'পূজা মণ্ডপের ঠিকানা',
   locationAddress: 'গঙ্গানগর, লস্করপুর, শায়েস্তাগঞ্জ, হবিগঞ্জ',
   locationHours: 'প্রতিদিন সকাল ৬টা থেকে রাত ১১টা পর্যন্ত খোলা',
   locationDirection: 'নিকটস্থ বাস স্ট্যান্ড থেকে ৫ মিনিটের হাঁটা পথ',
-  contactPhone: '+880 1710000000',
-  facebookLabel: 'fb.com/durgapujacommittee',
-  contactEmail: 'info@pujacommittee.org'
+  contactPhone: '',
+  facebookLabel: '',
+  contactEmail: ''
 };
 
 const DEFAULT_ABOUT = {
@@ -391,6 +406,19 @@ function attachListListener(type) {
       const ob = Number(b.data().order);
       return (isNaN(oa) ? 0 : oa) - (isNaN(ob) ? 0 : ob);
     });
+    if (type === 'wishes') {
+      const ms = d => { const t = d.data().createdAt; return t && t.toMillis ? t.toMillis() : 0; };
+      sorted.sort((a, b) => {
+        const pa = a.data().approved === true ? 1 : 0;
+        const pb = b.data().approved === true ? 1 : 0;
+        return pa - pb || ms(b) - ms(a);   // pending first, then newest
+      });
+      const pending = docs.filter(d => d.data().approved !== true).length;
+      const tabBtn = document.querySelector('.tab-btn[data-tab="wishes"]');
+      if (tabBtn) {
+        tabBtn.innerHTML = '<span class="tab-icon">💬</span>শুভেচ্ছা বার্তা' + (pending ? ` (${pending} নতুন)` : '');
+      }
+    }
     renderList(type, sorted);
   }, err => {
     console.warn(type, 'listener error', err);
@@ -447,7 +475,11 @@ function renderList(type, docs) {
     const el = document.createElement('div');
     el.className = 'item-card';
     if (type === 'gallery') el.classList.add('gallery-item');
+    const approvalBtn = type !== 'wishes' ? '' : (data.approved === true
+      ? `<button class="btn btn-outline btn-sm" onclick="setWishApproval('${doc.id}', false)">লুকান</button>`
+      : `<button class="btn btn-gold btn-sm" onclick="setWishApproval('${doc.id}', true)">✓ অনুমোদন</button>`);
     const actionsHtml = `
+        ${approvalBtn}
         <button class="btn btn-outline btn-sm" onclick="openForm('${type}', '${doc.id}')">এডিট</button>
         <button class="btn btn-danger btn-sm" onclick="deleteItem('${type}', '${doc.id}')">মুছুন</button>
       `;
@@ -668,6 +700,16 @@ document.getElementById('itemForm').addEventListener('submit', async (e) => {
     errBox.style.display = 'block';
   }
 });
+
+// ---------------- WISH MODERATION ----------------
+async function setWishApproval(id, approved) {
+  try {
+    await db.collection('wishes').doc(id).update({ approved: approved === true });
+    showToast(approved ? 'বার্তা প্রকাশিত হয়েছে ✅' : 'বার্তা লুকানো হয়েছে');
+  } catch (err) {
+    alert('আপডেট ব্যর্থ: ' + err.message);
+  }
+}
 
 // ---------------- DELETE ----------------
 async function deleteItem(type, id) {

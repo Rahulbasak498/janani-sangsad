@@ -24,16 +24,40 @@ admin panel চালু হয়ে যাবে, যেখান থেকে
 3. Location হিসেবে যেকোনো কাছের region বেছে নিন (যেমন `asia-south1`)
 4. **Start in production mode** সিলেক্ট করে Create করুন
 
-এরপর **Rules** ট্যাবে গিয়ে নিচের rules বসিয়ে **Publish** করুন —
-(সবাই ডেটা পড়তে পারবে, কিন্তু শুধু লগইন করা admin লিখতে/এডিট/ডিলিট করতে পারবে):
+এরপর **Rules** ট্যাবে গিয়ে এই repo-র **`firestore.rules`** ফাইলের পুরো লেখা বসিয়ে **Publish** করুন —
+(সবাই ডেটা পড়তে পারবে, শুধু লগইন করা admin লিখতে পারবে। ব্যতিক্রম: শুভেচ্ছা বোর্ড — ভিজিটর নতুন বার্তা *পাঠাতে* পারবে কিন্তু সেটা
+admin অনুমোদন না করা পর্যন্ত কেউ দেখতে পাবে না):
 
 ```
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    // ---- শুভেচ্ছা বোর্ড (wishes) ----
+    // ভিজিটর: শুধু নতুন বার্তা পাঠাতে পারে (অবশ্যই approved:false) — পড়তে পারে কেবল অনুমোদিত বার্তা।
+    // অ্যাডমিন (লগইন করা): সব পড়া / অনুমোদন / এডিট / মুছা।
+    match /wishes/{wishId} {
+      allow read: if resource.data.approved == true || request.auth != null;
+
+      allow create: if request.resource.data.keys().hasOnly(['name', 'loc', 'msg', 'approved', 'createdAt'])
+                    && request.resource.data.approved == false
+                    && request.resource.data.name is string
+                    && request.resource.data.name.size() > 0
+                    && request.resource.data.name.size() <= 60
+                    && request.resource.data.loc is string
+                    && request.resource.data.loc.size() <= 60
+                    && request.resource.data.msg is string
+                    && request.resource.data.msg.size() > 0
+                    && request.resource.data.msg.size() <= 300
+                    && request.resource.data.createdAt == request.time;
+
+      allow update, delete: if request.auth != null;
+    }
+
+    // ---- বাকি সব কালেকশন: সবাই পড়তে পারে, শুধু লগইন করা অ্যাডমিন লিখতে পারে ----
     match /{collection}/{docId} {
-      allow read: if true;
-      allow write: if request.auth != null;
+      allow read: if collection != 'wishes';
+      allow write: if request.auth != null && collection != 'wishes';
     }
   }
 }

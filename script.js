@@ -179,6 +179,38 @@ function makeCopyable(elementId, label) {
 makeCopyable('bkashNagad', 'নম্বর');
 makeCopyable('bankAccount', 'অ্যাকাউন্ট নম্বর');
 
+// Visible "📋 কপি" buttons beside donation numbers
+document.addEventListener('click', async e => {
+  const btn = e.target.closest('.copy-btn');
+  if (!btn) return;
+  const target = document.getElementById(btn.dataset.copyTarget);
+  if (!target) return;
+  const text = target.textContent.trim().replace(/^A\/C:\s*/i, '');
+  if (!text) return;
+
+  let ok = false;
+  try {
+    await navigator.clipboard.writeText(text);
+    ok = true;
+  } catch (err) {
+    // Fallback for older browsers / non-secure contexts
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { ok = document.execCommand('copy'); } catch (e2) {}
+    document.body.removeChild(ta);
+  }
+
+  const original = btn.dataset.label || btn.textContent;
+  btn.dataset.label = original;
+  btn.textContent = ok ? '✓ কপি হয়েছে' : 'কপি করা যায়নি';
+  btn.classList.toggle('copied', ok);
+  setTimeout(() => { btn.textContent = original; btn.classList.remove('copied'); }, 1800);
+});
+
 // =========================================================
 // NEW FESTIVE & INTERACTIVE FEATURES IMPLEMENTATION
 // =========================================================
@@ -479,18 +511,41 @@ function initWishesWall() {
   const feed = document.getElementById('wishesFeedTrack');
   if (!form || !feed) return;
 
-  const defaultWishes = [
-    { name: 'বিজয় কুমার সাহা', loc: 'ওয়ারী, ঢাকা', msg: 'মা আসছেন ঘরে ঘরে! জননী সংসদের সকলকে শারদীয় দুর্গোৎসবের আন্তরিক প্রীতি ও শুভেচ্ছা।', time: 'আজ' },
-    { name: 'সোমা দাস', loc: 'নারায়নগঞ্জ', msg: 'মায়ের কৃপায় জগতের সকল অন্ধকার দূর হোক। জননী সংসদের পূজা প্রতি বছর আরও সুন্দর হোক।', time: 'গতকাল' },
-    { name: 'তাপস চক্রবর্তী', loc: 'পুরান ঢাকা', msg: '৫০ বছরের ঐতিহ্য বেঁচে থাকুক অনন্তকাল। মা দুর্গার চরণে শত কোটি প্রণাম।', time: '২ দিন আগে' }
-  ];
+  const statusEl = document.getElementById('wishStatus');
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const COOLDOWN_MS = 60 * 1000;          // one message per minute per browser
+  const COOLDOWN_KEY = 'js_last_wish_at';
 
-  let localWishes = [];
-  try {
-    const stored = localStorage.getItem('js_devotee_wishes');
-    localWishes = stored ? JSON.parse(stored) : defaultWishes;
-  } catch (e) {
-    localWishes = defaultWishes;
+  const toBn = n => String(n).replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[d]);
+
+  function timeAgo(ts) {
+    if (!ts || typeof ts.toMillis !== 'function') return '';
+    const diff = Date.now() - ts.toMillis();
+    const min = Math.floor(diff / 60000);
+    if (min < 1) return 'এইমাত্র';
+    if (min < 60) return `${toBn(min)} মিনিট আগে`;
+    const hr = Math.floor(min / 60);
+    if (hr < 24) return `${toBn(hr)} ঘণ্টা আগে`;
+    const day = Math.floor(hr / 24);
+    if (day < 7) return `${toBn(day)} দিন আগে`;
+    return ts.toDate().toLocaleDateString('bn-BD');
+  }
+
+  function setStatus(message, kind) {
+    if (!statusEl) return;
+    statusEl.textContent = message || '';
+    statusEl.className = 'wish-status' + (kind ? ' ' + kind : '');
+  }
+
+  // Nicer confirmation after a successful send (static markup only — no user text)
+  function showSuccess() {
+    if (!statusEl) return;
+    statusEl.className = 'wish-status ok wish-success';
+    statusEl.innerHTML =
+      '<span class="ws-icon">🌸</span>' +
+      '<strong>আপনার শুভেচ্ছা বার্তা সফলভাবে পাঠানো হয়েছে!</strong>' +
+      '<span class="ws-sub">ধন্যবাদ 🙏 মা দুর্গা আপনার ও আপনার পরিবারের মঙ্গল করুন।<br>' +
+      'কমিটির অনুমোদনের পর বার্তাটি এখানে প্রকাশিত হবে।</span>';
   }
 
   function renderWishItem(w) {
@@ -502,66 +557,105 @@ function initWishesWall() {
         ${w.loc ? `<span class="wb-loc">${escapeHtml(w.loc)}</span>` : ''}
       </div>
       <div class="wb-msg">${escapeHtml(w.msg)}</div>
-      <div class="wb-time">${escapeHtml(w.time || 'এইমাত্র')}</div>
+      ${w.time ? `<div class="wb-time">${escapeHtml(w.time)}</div>` : ''}
     `;
     return div;
   }
 
   function renderAllWishes(list) {
     feed.innerHTML = '';
+    if (!list.length) {
+      feed.innerHTML = '<div class="empty-note">এখনো কোনো বার্তা প্রকাশিত হয়নি — প্রথম শুভেচ্ছাটি আপনিই জানান 🌸</div>';
+      return;
+    }
     list.forEach(w => feed.appendChild(renderWishItem(w)));
   }
 
-  renderAllWishes(localWishes);
-
+  // ---- Submit: goes to Firestore as "pending"; admin approves it ----
   form.addEventListener('submit', async e => {
     e.preventDefault();
+
+    // Honeypot: real people never see/fill this field. Pretend success.
+    const trap = document.getElementById('wishWebsite');
+    if (trap && trap.value.trim()) {
+      form.reset();
+      showSuccess();
+      return;
+    }
+
     const name = document.getElementById('wishName')?.value.trim();
     const loc = document.getElementById('wishLocation')?.value.trim() || '';
     const msg = document.getElementById('wishMessage')?.value.trim();
+    if (!name || !msg) {
+      setStatus('অনুগ্রহ করে নাম ও বার্তা লিখুন।', 'err');
+      return;
+    }
 
-    if (!name || !msg) return;
-
-    const newWish = { name, loc, msg, time: 'এইমাত্র' };
-    localWishes.unshift(newWish);
-    if (localWishes.length > 30) localWishes.pop();
-
+    // Simple per-browser cooldown against accidental double-posts / spam.
     try {
-      localStorage.setItem('js_devotee_wishes', JSON.stringify(localWishes));
-    } catch (err) {}
-
-    feed.prepend(renderWishItem(newWish));
-    form.reset();
-
-    playTempleBell();
-    globalFlowerShower.burst(35);
-
-    try {
-      if (typeof db !== 'undefined') {
-        db.collection('wishes').add({
-          name, loc, msg, createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        }).catch(() => {});
+      const last = Number(localStorage.getItem(COOLDOWN_KEY) || 0);
+      const wait = COOLDOWN_MS - (Date.now() - last);
+      if (wait > 0) {
+        setStatus(`আরেকটি বার্তা পাঠাতে ${toBn(Math.ceil(wait / 1000))} সেকেন্ড অপেক্ষা করুন।`, 'err');
+        return;
       }
-    } catch (err) {}
+    } catch (err) { /* private mode — skip cooldown */ }
+
+    if (typeof db === 'undefined') {
+      setStatus('এই মুহূর্তে বার্তা পাঠানো যাচ্ছে না। পরে আবার চেষ্টা করুন।', 'err');
+      return;
+    }
+
+    if (submitBtn) submitBtn.disabled = true;
+    setStatus('পাঠানো হচ্ছে...', '');
+
+    try {
+      await db.collection('wishes').add({
+        name, loc, msg,
+        approved: false,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      try { localStorage.setItem(COOLDOWN_KEY, String(Date.now())); } catch (err) {}
+      form.reset();
+      showSuccess();
+      if (typeof playTempleBell === 'function') playTempleBell();
+      if (typeof globalFlowerShower !== 'undefined') globalFlowerShower.burst(35);
+    } catch (err) {
+      console.warn('Wish submit failed:', err && err.code, err);
+      // Keep what they typed so nothing is lost.
+      const code = err && err.code;
+      const looksOffline = !navigator.onLine || code === 'unavailable' || code === 'deadline-exceeded';
+      setStatus(
+        looksOffline
+          ? 'ইন্টারনেট সংযোগে সমস্যা হচ্ছে। সংযোগ দেখে আবার চেষ্টা করুন — আপনার লেখা মোছা হয়নি।'
+          : 'দুঃখিত, এই মুহূর্তে বার্তাটি পাঠানো সম্ভব হয়নি। কিছুক্ষণ পরে আবার চেষ্টা করুন — আপনার লেখা মোছা হয়নি। 🙏',
+        'err'
+      );
+    } finally {
+      if (submitBtn) submitBtn.disabled = false;
+    }
   });
 
+  // ---- Feed: only admin-approved wishes are readable by visitors ----
   try {
-    if (typeof db !== 'undefined') {
-      db.collection('wishes').orderBy('createdAt', 'desc').limit(20).onSnapshot(snap => {
-        if (!snap.empty) {
-          const remoteWishes = snap.docs.map(doc => {
-            const data = doc.data();
-            return {
-              name: data.name || '',
-              loc: data.loc || '',
-              msg: data.msg || '',
-              time: 'অনলাইন'
-            };
-          });
-          renderAllWishes(remoteWishes);
-        }
-      }, () => {});
-    }
-  } catch (err) {}
+    if (typeof db === 'undefined') throw new Error('db missing');
+    db.collection('wishes').where('approved', '==', true).limit(50).onSnapshot(snap => {
+      const wishes = snap.docs
+        .map(doc => doc.data())
+        .sort((a, b) => {
+          const ta = a.createdAt && a.createdAt.toMillis ? a.createdAt.toMillis() : 0;
+          const tb = b.createdAt && b.createdAt.toMillis ? b.createdAt.toMillis() : 0;
+          return tb - ta;
+        })
+        .slice(0, 20)
+        .map(d => ({ name: d.name || '', loc: d.loc || '', msg: d.msg || '', time: timeAgo(d.createdAt) }));
+      renderAllWishes(wishes);
+    }, err => {
+      console.warn('Wishes listener failed:', err);
+      feed.innerHTML = '<div class="empty-note is-error">বার্তাগুলো এই মুহূর্তে লোড করা যাচ্ছে না।</div>';
+    });
+  } catch (err) {
+    feed.innerHTML = '<div class="empty-note is-error">বার্তাগুলো এই মুহূর্তে লোড করা যাচ্ছে না।</div>';
+  }
 }
 initWishesWall();

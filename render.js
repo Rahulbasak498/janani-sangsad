@@ -91,6 +91,29 @@ function renderTicker(docs) {
 
 
 // ---------- SITE SETTINGS ----------
+// ---------- PLACEHOLDER GUARD ----------
+// Values that were seeded as *samples* must never be shown to visitors as if
+// they were real contact/payment details. Anything matching these patterns
+// is treated as "not filled in yet" and its row/card stays hidden.
+const PLACEHOLDER_PATTERNS = [
+  /01710000000/,
+  /0000-?0000-?0000/,
+  /durgapujacommittee/i,
+  /pujacommittee\.org/i
+];
+
+function isRealValue(value) {
+  const text = String(value == null ? '' : value).trim();
+  if (!text || text === '#') return false;
+  const compact = text.replace(/\s+/g, '');
+  return !PLACEHOLDER_PATTERNS.some(re => re.test(text) || re.test(compact));
+}
+
+function setHidden(id, hidden) {
+  const el = document.getElementById(id);
+  if (el) el.hidden = !!hidden;
+}
+
 function applySiteSettings(settings) {
   const setText = (id, value) => {
     const element = document.getElementById(id);
@@ -113,30 +136,77 @@ function applySiteSettings(settings) {
   setText('footerCreditName', committeeName);
   setText('navTagline', settings.foundingTagline);
   setAttr('heroDeity', 'src', settings.heroImageUrl);
-  setText('bkashNagad', settings.bkashNagad);
-  setText('bankName', settings.bankName);
-  setText('bankAccount', settings.bankAccount);
+  // ---- Donation (rows stay hidden until real values exist) ----
+  const bkashOk = isRealValue(settings.bkashNagad);
+  if (bkashOk) setText('bkashNagad', settings.bkashNagad);
+  setText('bkashNagadNote', bkashOk ? (settings.bkashNagadNote || '') : '');
+  setHidden('rowBkash', !bkashOk);
+
+  const bankOk = isRealValue(settings.bankAccount);
+  if (bankOk) {
+    setText('bankName', settings.bankName);
+    setText('bankAccount', settings.bankAccount);
+  }
+  setHidden('rowBank', !bankOk);
+
   setText('cashNote', settings.cashNote);
-  setAttr('donationQr', 'src', settings.donationQrUrl);
-  setAttr('receiptUrl', 'href', settings.receiptUrl);
+
+  // image/QR.jpg is the bundled DEMO placeholder — only show a QR when the
+  // admin has pointed the setting at their own real image.
+  const qrUrl = String(settings.donationQrUrl || '').trim();
+  const qrOk = qrUrl && !/(^|\/)QR\.jpg(\?.*)?$/i.test(qrUrl);
+  if (qrOk) setAttr('donationQr', 'src', qrUrl);
+  setHidden('qrBox', !qrOk);
+
+  const receiptOk = isRealValue(settings.receiptUrl);
+  if (receiptOk) {
+    setAttr('receiptUrl', 'href', settings.receiptUrl);
+    setAttr('receiptUrl', 'target', '_blank');
+    setAttr('receiptUrl', 'rel', 'noopener noreferrer');
+  }
+  setHidden('receiptUrl', !receiptOk);
+
+  // ---- Location ----
   setText('locationTitle', settings.locationTitle);
   setText('locationAddress', settings.locationAddress);
   setText('locationHours', settings.locationHours);
   setText('locationDirection', settings.locationDirection);
   setAttr('mapEmbed', 'src', settings.mapEmbedUrl);
   setAttr('mapLink', 'href', settings.mapLink);
-  setText('contactPhone', settings.contactPhone);
-  setText('facebookLabel', settings.facebookLabel);
-  setAttr('facebookLink', 'href', settings.facebookUrl);
-  setAttr('footerFacebookLink', 'href', settings.facebookUrl);
-  setAttr('footerInstagramLink', 'href', settings.instagramUrl);
-  setAttr('footerYoutubeLink', 'href', settings.youtubeUrl);
-  setText('contactEmail', settings.contactEmail);
 
-  if (settings.contactPhone) {
-    const phoneLink = document.getElementById('footerPhoneLink');
-    if (phoneLink) phoneLink.setAttribute('href', 'tel:' + String(settings.contactPhone).replace(/\s+/g, ''));
+  // ---- Contact (cards stay hidden until real values exist) ----
+  const phoneOk = isRealValue(settings.contactPhone);
+  if (phoneOk) setText('contactPhone', settings.contactPhone);
+  setHidden('cardPhone', !phoneOk);
+  const phoneLink = document.getElementById('footerPhoneLink');
+  if (phoneLink) {
+    if (phoneOk) phoneLink.setAttribute('href', 'tel:' + String(settings.contactPhone).replace(/\s+/g, ''));
+    phoneLink.hidden = !phoneOk;
   }
+
+  const fbOk = isRealValue(settings.facebookUrl);
+  if (fbOk) {
+    setAttr('facebookLink', 'href', settings.facebookUrl);
+    setAttr('facebookLink', 'target', '_blank');
+    setAttr('facebookLink', 'rel', 'noopener noreferrer');
+    setText('facebookLabel', isRealValue(settings.facebookLabel)
+      ? settings.facebookLabel
+      : String(settings.facebookUrl).replace(/^https?:\/\/(www\.)?/, ''));
+  }
+  setHidden('cardFacebook', !fbOk);
+
+  [['footerFacebookLink', settings.facebookUrl],
+   ['footerInstagramLink', settings.instagramUrl],
+   ['footerYoutubeLink', settings.youtubeUrl]].forEach(([id, url]) => {
+    const ok = isRealValue(url);
+    if (ok) setAttr(id, 'href', url);
+    setHidden(id, !ok);
+  });
+
+  const emailOk = isRealValue(settings.contactEmail);
+  if (emailOk) setText('contactEmail', settings.contactEmail);
+  setHidden('cardEmail', !emailOk);
+
 
   // ---- page title / meta (SEO) ----
   if (settings.siteTitle) document.title = settings.siteTitle;
@@ -149,7 +219,6 @@ function applySiteSettings(settings) {
   setMeta('meta[name="description"]', 'content', settings.metaDescription);
   setMeta('meta[property="og:title"]', 'content', settings.siteTitle);
   setMeta('meta[property="og:description"]', 'content', settings.metaDescription);
-  if (settings.heroImageUrl) setMeta('meta[property="og:image"]', 'content', settings.heroImageUrl);
 
   const footerYear = document.getElementById('footerYear');
   if (footerYear) footerYear.textContent = new Date().getFullYear();
@@ -338,10 +407,16 @@ function renderAffiliates(docs) {
 
   wrap.innerHTML = '';
 
+  // On the homepage, don't show an empty section at all.
+  const affiliatesSection = document.getElementById('affiliates');
+
   if (docs.length === 0) {
+    if (affiliatesSection && !document.body.classList.contains('subpage')) affiliatesSection.hidden = true;
     wrap.innerHTML = '<div class="empty-note">এখনো কোনো অঙ্গসংগঠন যোগ করা হয়নি।</div>';
     return;
   }
+
+  if (affiliatesSection) affiliatesSection.hidden = false;
 
 
   docs.forEach(d => {
@@ -531,6 +606,29 @@ function sortByOrder(docs) {
 }
 
 
+// ---------- LOAD-ERROR FALLBACK ----------
+// If a listener fails (offline, blocked, bad Firestore rules) the
+// "লোড হচ্ছে..." placeholder used to stay forever. Replace only that
+// placeholder — never real content — with a friendly retry note.
+const LOADING_CONTAINERS = [
+  'timeline', 'eventsGrid', 'masonryGrid', 'membersGrid',
+  'advisorsGrid', 'generalMembersGrid', 'noticeList'
+];
+
+function showLoadError(containerId) {
+  const el = document.getElementById(containerId);
+  if (!el || el.children.length !== 1) return;
+  const note = el.querySelector('.empty-note');
+  if (!note || !/লোড হচ্ছে/.test(note.textContent)) return;
+  note.classList.add('is-error');
+  note.innerHTML = 'তথ্য এই মুহূর্তে লোড করা যাচ্ছে না। ইন্টারনেট সংযোগ দেখে ' +
+    '<button type="button" class="retry-link" onclick="location.reload()">আবার চেষ্টা করুন</button>';
+}
+
+// Safety net, independent of Firebase: if nothing arrived after 12s
+// (SDK blocked, very slow network) turn the placeholders into a retry note.
+setTimeout(() => LOADING_CONTAINERS.forEach(showLoadError), 12000);
+
 // =========================================================
 // LOAD FIREBASE DATA
 // =========================================================
@@ -554,7 +652,7 @@ async function loadPublicData() {
   try {
     db.collection('notices').onSnapshot(
       snap => renderNotices(sortByOrder(snap.docs)),
-      e => console.warn('Notices listener failed:', e)
+      e => { console.warn('Notices listener failed:', e); showLoadError('noticeList'); }
     );
   } catch (e) {
     console.warn('Notices listener setup failed:', e);
@@ -564,21 +662,21 @@ async function loadPublicData() {
   // ---------- SCHEDULE ----------
   db.collection('schedule').onSnapshot(
     snap => renderSchedule(sortByOrder(snap.docs)),
-    e => console.warn('Schedule listener failed:', e)
+    e => { console.warn('Schedule listener failed:', e); showLoadError('timeline'); }
   );
 
 
   // ---------- COMMITTEE MEMBERS ----------
   db.collection('members').where('group', '==', 'committee').onSnapshot(
     snap => renderMembers('membersGrid', sortByOrder(snap.docs)),
-    e => console.warn('Committee members listener failed:', e)
+    e => { console.warn('Committee members listener failed:', e); showLoadError('membersGrid'); }
   );
 
 
   // ---------- ADVISORS ----------
   db.collection('members').where('group', '==', 'advisor').onSnapshot(
     snap => renderMembers('advisorsGrid', sortByOrder(snap.docs)),
-    e => console.warn('Advisor listener failed:', e)
+    e => { console.warn('Advisor listener failed:', e); showLoadError('advisorsGrid'); }
   );
 
 
@@ -592,7 +690,7 @@ async function loadPublicData() {
   // ---------- GENERAL MEMBERS ----------
   db.collection('members').where('group', '==', 'general').onSnapshot(
     snap => renderMembers('generalMembersGrid', sortByOrder(snap.docs)),
-    e => console.warn('General members listener failed:', e)
+    e => { console.warn('General members listener failed:', e); showLoadError('generalMembersGrid'); }
   );
 
 
@@ -609,7 +707,7 @@ async function loadPublicData() {
 
   db.collection('gallery').onSnapshot(
     snap => renderGallery(sortByOrder(snap.docs)),
-    e => console.warn('Gallery listener failed. Static images kept:', e)
+    e => { console.warn('Gallery listener failed:', e); showLoadError('masonryGrid'); }
   );
 
 
@@ -623,7 +721,7 @@ async function loadPublicData() {
   // ---------- EVENTS ----------
   db.collection('events').onSnapshot(
     snap => renderEvents(sortByOrder(snap.docs)),
-    e => console.warn('Events listener failed:', e)
+    e => { console.warn('Events listener failed:', e); showLoadError('eventsGrid'); }
   );
 
 

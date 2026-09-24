@@ -45,6 +45,8 @@ async function loadSectionPage() {
       .filter(Boolean);
     if (!sections.length) throw new Error('Section unavailable');
     target.replaceChildren(...sections.map(section => document.importNode(section, true)));
+    // Sections that the homepage hides while empty (e.g. অঙ্গসংগঠন) still get their own page.
+    target.querySelectorAll('section[hidden]').forEach(section => { section.hidden = false; });
 
     if (pageSection.split(',').map(sectionId => sectionId.trim()).includes('gallery')) {
       const lightbox = document.createElement('div');

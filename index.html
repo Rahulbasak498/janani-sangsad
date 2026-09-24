@@ -17,11 +17,19 @@ content="width=device-width, initial-scale=1.0"
   <meta name="theme-color" content="#650E18">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <link rel="canonical" href="./index.html">
+  <link rel="canonical" href="https://rahulbasak498.github.io/janani-sangsad/">
+  <link rel="icon" type="image/png" href="image/maa-durga.png">
+  <link rel="apple-touch-icon" href="image/maa-durga.png">
   <link rel="manifest" href="manifest.json">
   <meta property="og:title" content="জননী সংসদ">
   <meta property="og:description" content="ভক্তি, ঐতিহ্য ও সম্প্রীতির সঙ্গে আমাদের পূজার আয়োজন।">
-  <meta property="og:image" content="image/maa-durga.png">
+  <meta property="og:image" content="https://rahulbasak498.github.io/janani-sangsad/image/og-share.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="জননী সংসদ — মা আসছেন ঘরে ঘরে">
+  <meta property="og:url" content="https://rahulbasak498.github.io/janani-sangsad/">
+  <meta property="og:locale" content="bn_BD">
+  <meta name="twitter:card" content="summary_large_image">
   <meta property="og:type" content="website">
 
   <script type="application/ld+json">
@@ -30,8 +38,8 @@ content="width=device-width, initial-scale=1.0"
     "@type": "Organization",
     "name": "জননী সংসদ",
     "foundingDate": "1974",
-    "url": "./index.html",
-    "image": "image/maa-durga.png"
+    "url": "https://rahulbasak498.github.io/janani-sangsad/",
+    "image": "https://rahulbasak498.github.io/janani-sangsad/image/og-share.jpg"
   }
   </script>
 
@@ -230,29 +238,29 @@ content="width=device-width, initial-scale=1.0"
         <div class="countdown-top-header">
           <span class="countdown-heading-text">মহাষষ্ঠীর ক্ষণগণনা</span>
           <div class="pill pill-center" id="pujaTopPill">
-            <span class="pill-strong" id="heroDaysLeft">০৭</span>
+            <span class="pill-strong" id="heroDaysLeft">--</span>
             <span id="heroDaysLabel">দিন বাকি ষষ্ঠী পূজার</span>
           </div>
         </div>
 
         <div class="countdown countdown-pill" id="countdown">
           <div class="box">
-            <div class="num" id="cd-days">07</div>
+            <div class="num" id="cd-days">--</div>
             <div class="lbl">দিন</div>
           </div>
           <div class="cd-sep">:</div>
           <div class="box">
-            <div class="num" id="cd-hours">00</div>
+            <div class="num" id="cd-hours">--</div>
             <div class="lbl">ঘণ্টা</div>
           </div>
           <div class="cd-sep">:</div>
           <div class="box">
-            <div class="num" id="cd-mins">00</div>
+            <div class="num" id="cd-mins">--</div>
             <div class="lbl">মিনিট</div>
           </div>
           <div class="cd-sep">:</div>
           <div class="box">
-            <div class="num" id="cd-secs">00</div>
+            <div class="num" id="cd-secs">--</div>
             <div class="lbl">সেকেন্ড</div>
           </div>
         </div>
@@ -298,7 +306,7 @@ content="width=device-width, initial-scale=1.0"
 
         <!-- Maa Durga Image -->
         <div class="deity-img-frame">
-          <img class="hero-deity" id="heroDeity" src="image/maa-durga.png" alt="মা দুর্গা">
+          <img class="hero-deity" id="heroDeity" src="image/maa-durga.png" alt="মা দুর্গা" fetchpriority="high" decoding="async">
         </div>
 
         <!-- Pedestal blessing -->
@@ -819,7 +827,7 @@ content="width=device-width, initial-scale=1.0"
 
 <section
   class="affiliates"
-  id="affiliates"
+  id="affiliates" hidden
 >
 
   <div class="container">
@@ -840,7 +848,7 @@ content="width=device-width, initial-scale=1.0"
 
 
 <div class="affiliates-grid" id="affiliatesGrid">
-  <div class="empty-note">এখনো কোনো অঙ্গসংগঠন যোগ করা হয়নি।</div>
+  <div class="empty-note">লোড হচ্ছে...</div>
 </div>
 
 
@@ -910,11 +918,11 @@ content="width=device-width, initial-scale=1.0"
 <div class="donate-card">
 
 
-  <div class="qr-box">
+  <div class="qr-box" id="qrBox" hidden>
 
     <img
       id="donationQr"
-      src="image/QR.jpg"
+      src=""
       alt="অনুদানের QR Code"
       loading="lazy"
     >
@@ -925,22 +933,25 @@ content="width=device-width, initial-scale=1.0"
   <div class="donate-info">
 
 
-    <p>
+    <p id="rowBkash" hidden>
       <span class="donate-row-icon" aria-hidden="true">📱</span>
       <span class="donate-row-content">
         <strong>Bkash / Nagad:</strong>
-        <span id="bkashNagad">01710000000</span>
+        <span id="bkashNagad"></span>
+        <small id="bkashNagadNote" class="donate-note"></small>
       </span>
+      <button type="button" class="copy-btn" data-copy-target="bkashNagad" aria-label="নম্বর কপি করুন">📋 কপি</button>
     </p>
 
 
-    <p>
+    <p id="rowBank" hidden>
       <span class="donate-row-icon" aria-hidden="true">🏦</span>
       <span class="donate-row-content">
         <strong>ব্যাংক অ্যাকাউন্ট:</strong>
-        <span id="bankName">জননী সংসদ</span>
-        <span id="bankAccount">A/C: 0000-0000-0000</span>
+        <span id="bankName"></span>
+        <span id="bankAccount"></span>
       </span>
+      <button type="button" class="copy-btn" data-copy-target="bankAccount" aria-label="অ্যাকাউন্ট নম্বর কপি করুন">📋 কপি</button>
     </p>
 
 
@@ -957,7 +968,7 @@ content="width=device-width, initial-scale=1.0"
       href="#"
       id="receiptUrl"
       class="btn btn-dark"
-      style="margin-top:8px;"
+      style="margin-top:8px;" hidden
     >
       রসিদ ডাউনলোড করুন
     </a>
@@ -1127,7 +1138,7 @@ content="width=device-width, initial-scale=1.0"
 <div class="contact-grid">
 
 
-  <div class="contact-card">
+  <div class="contact-card" id="cardPhone" hidden>
 
     <div class="c-icon">
       📞
@@ -1138,13 +1149,13 @@ content="width=device-width, initial-scale=1.0"
     </h4>
 
     <p>
-      <span id="contactPhone">+880 1710000000</span>
+      <span id="contactPhone"></span>
     </p>
 
   </div>
 
 
-  <div class="contact-card">
+  <div class="contact-card" id="cardFacebook" hidden>
 
     <div class="c-icon">
       📘
@@ -1155,13 +1166,13 @@ content="width=device-width, initial-scale=1.0"
     </h4>
 
     <a href="#" id="facebookLink">
-      <span id="facebookLabel">fb.com/durgapujacommittee</span>
+      <span id="facebookLabel"></span>
     </a>
 
   </div>
 
 
-  <div class="contact-card">
+  <div class="contact-card" id="cardEmail" hidden>
 
     <div class="c-icon">
       ✉️
@@ -1172,7 +1183,7 @@ content="width=device-width, initial-scale=1.0"
     </h4>
 
     <p>
-      <span id="contactEmail">info@pujacommittee.org</span>
+      <span id="contactEmail"></span>
     </p>
 
   </div>
@@ -1218,7 +1229,7 @@ content="width=device-width, initial-scale=1.0"
           <span class="wfc-icon">🪷</span>
           <div>
             <h3>আপনার শুভেচ্ছা বার্তা লিখুন</h3>
-            <small>আপনার বার্তাটি ওয়েবসাইটে প্রদর্শিত হবে</small>
+            <small>কমিটির অনুমোদনের পর বার্তাটি ওয়েবসাইটে প্রদর্শিত হবে</small>
           </div>
         </div>
         <form id="devoteeWishForm" class="wish-form">
@@ -1234,6 +1245,11 @@ content="width=device-width, initial-scale=1.0"
             <label for="wishMessage">শুভেচ্ছা বার্তা বা প্রার্থনা <span class="req">*</span></label>
             <textarea id="wishMessage" rows="3" placeholder="মা আসছেন সবার মঙ্গল হোক, সবাই সুস্থ থাকুন ও নিরাপদে থাকুন..." required maxlength="250"></textarea>
           </div>
+          <div class="hp-field" aria-hidden="true">
+            <label for="wishWebsite">Website (এটি ফাঁকা রাখুন)</label>
+            <input type="text" id="wishWebsite" name="website" tabindex="-1" autocomplete="off">
+          </div>
+          <p class="wish-status" id="wishStatus" role="status" aria-live="polite"></p>
           <button type="submit" class="btn btn-primary btn-submit-wish">
             <span>🌸 বার্তা প্রকাশ করুন</span>
           </button>
@@ -1251,7 +1267,7 @@ content="width=device-width, initial-scale=1.0"
           <span class="wishes-live-badge"><span class="w-dot"></span> লাইভ</span>
         </div>
         <div class="wishes-feed-track" id="wishesFeedTrack">
-          <!-- Populated by script -->
+          <div class="empty-note">লোড হচ্ছে...</div>
         </div>
       </div>
     </div>
@@ -1288,22 +1304,22 @@ content="width=device-width, initial-scale=1.0"
 <div class="footer-social">
 
 
-  <a href="#" id="footerFacebookLink" target="_blank" rel="noopener noreferrer">
+  <a href="#" id="footerFacebookLink" target="_blank" rel="noopener noreferrer" hidden aria-label="Facebook">
     📘
   </a>
 
 
-  <a href="#" id="footerInstagramLink" target="_blank" rel="noopener noreferrer">
+  <a href="#" id="footerInstagramLink" target="_blank" rel="noopener noreferrer" hidden aria-label="Instagram">
     📸
   </a>
 
 
-  <a href="#" id="footerYoutubeLink" target="_blank" rel="noopener noreferrer">
+  <a href="#" id="footerYoutubeLink" target="_blank" rel="noopener noreferrer" hidden aria-label="YouTube">
     ▶️
   </a>
 
 
-  <a href="#" id="footerPhoneLink">
+  <a href="#" id="footerPhoneLink" hidden aria-label="ফোন করুন">
     📞
   </a>
 
@@ -1371,7 +1387,7 @@ content="width=device-width, initial-scale=1.0"
     <div class="gm-preview-card" id="gmCardPreview">
       <div class="gmp-om">🕉️ শারদীয়া প্রীতি ও শুভেচ্ছা 🕉️</div>
       <div class="gmp-deity-thumb">
-        <img src="image/maa-durga.png" alt="মা দুর্গা" class="gmp-img">
+        <img src="image/maa-durga.png" alt="মা দুর্গা" class="gmp-img" loading="lazy" decoding="async">
       </div>
       <h3 id="gmTitle" class="gmp-title">মা আসছেন ঘরে ঘরে!</h3>
       <p class="gmp-message" id="gmMessageText">পবিত্র শারদীয় দুর্গোৎসব উপলক্ষে <strong>জননী সংসদ</strong> (প্রতিষ্ঠা ১৯৭৪)-এর পক্ষ থেকে আপনাকে ও আপনার পরিবারকে জানাই আন্তরিক প্রীতি, শুভেচ্ছা ও ভালোবাসা। মা দুর্গার আশীর্বাদে আপনার জীবন সুখ, শান্তি ও সমৃদ্ধিতে ভরে উঠুক। 🙏</p>

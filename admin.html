@@ -58,6 +58,7 @@
       <button class="tab-btn" data-tab="generalMembers"><span class="tab-icon">👥</span>সাধারণ সদস্যবৃন্দ</button>
       <button class="tab-btn" data-tab="gallery"><span class="tab-icon">🖼️</span>গ্যালারি</button>
       <button class="tab-btn" data-tab="affiliates"><span class="tab-icon">🏛️</span>অঙ্গসংগঠন</button>
+      <button class="tab-btn" data-tab="wishes"><span class="tab-icon">💬</span>শুভেচ্ছা বার্তা</button>
       <button class="tab-btn" data-tab="ticker"><span class="tab-icon">📣</span>টিকার বার্তা</button>
       <button class="tab-btn" data-tab="settings"><span class="tab-icon">⚙️</span>সাইট সেটিংস</button>
     </nav>
@@ -201,6 +202,17 @@
         <button class="btn btn-gold btn-sm" onclick="openForm('ticker')">+ নতুন বার্তা</button>
       </div>
       <div id="list-ticker"></div>
+    </div>
+
+    <!-- ---------- WISHES (moderation) ---------- -->
+    <div class="panel" id="panel-wishes">
+      <div class="panel-head">
+        <h2>শুভেচ্ছা বার্তা</h2>
+      </div>
+      <p style="margin:0 0 14px;color:var(--muted,#6b5b4d);font-size:14px;">
+        ভিজিটরদের পাঠানো বার্তা এখানে ⏳ অপেক্ষমান অবস্থায় আসে। "✓ অনুমোদন" দিলে তবেই ওয়েবসাইটে দেখাবে।
+      </p>
+      <div id="list-wishes"></div>
     </div>
 
     <!-- ---------- SITE SETTINGS ---------- -->

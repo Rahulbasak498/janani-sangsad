@@ -1,4 +1,4 @@
-const CACHE_NAME = 'janani-sangsad-v1';
+const CACHE_NAME = 'janani-sangsad-v2';   // bumped: drops old cached heavy images / demo QR
 const APP_SHELL = [
   './index.html',
   './style.css',
@@ -6,8 +6,7 @@ const APP_SHELL = [
   './render.js',
   './firebase-config.js',
   './manifest.json',
-  './image/maa-durga.png',
-  './image/QR.jpg'
+  './image/maa-durga.png'
 ];
 
 self.addEventListener('install', event => {
@@ -33,12 +32,18 @@ self.addEventListener('fetch', event => {
   if (request.method !== 'GET' || !request.url.startsWith(self.location.origin)) return;
 
   if (request.destination === 'image') {
+    // Stale-while-revalidate: instant from cache, but silently refresh so a
+    // replaced image (e.g. the real donation QR) shows up on the next visit.
     event.respondWith(
-      caches.match(request).then(cached => cached || fetch(request).then(response => {
-        const copy = response.clone();
-        caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
-        return response;
-      }))
+      caches.open(CACHE_NAME).then(cache =>
+        cache.match(request).then(cached => {
+          const network = fetch(request).then(response => {
+            if (response && response.ok) cache.put(request, response.clone());
+            return response;
+          }).catch(() => cached);
+          return cached || network;
+        })
+      )
     );
     return;
   }
