@@ -11,7 +11,6 @@ const SCHEMAS = {
       { key: 'desc',  label: 'বিবরণ', type: 'textarea' },
       { key: 'date',  label: 'তারিখ (যেমন: ২ দিন আগে)', type: 'text' },
       { key: 'pinned', label: 'গুরুত্বপূর্ণ notice হিসেবে ওপরে দেখাবেন?', type: 'select', options: [['false', 'না'], ['true', 'হ্যাঁ']], default: 'false' },
-      { key: 'notifySubscribers', label: 'এই নোটিশটি subscribers-দের push notification হিসেবে পাঠাবেন?', type: 'select', options: [['false', 'না'], ['true', 'হ্যাঁ']], default: 'false' },
       { key: 'order', label: 'ক্রম (ছোট সংখ্যা আগে দেখাবে)', type: 'number', default: 0 }
     ],
     card: n => ({ thumb: n.icon || '📌', title: n.title, sub: n.desc })
@@ -24,7 +23,6 @@ const SCHEMAS = {
       { key: 'title', label: 'শিরোনাম', type: 'text' },
       { key: 'items', label: 'সময়সূচি (প্রতি লাইনে একটি বিষয়)', type: 'textarea', isList: true,
         placeholder: 'ভোর ৬:০০টা — কালপরম্ভ\nসকাল ৯:০০টা — পূজা ও পুষ্পাঞ্জলি' },
-      { key: 'notifySubscribers', label: 'এই সময়সূচির আপডেট subscribers-দের push notification হিসেবে পাঠাবেন?', type: 'select', options: [['false', 'না'], ['true', 'হ্যাঁ']], default: 'false' },
       { key: 'order', label: 'ক্রম', type: 'number', default: 0 }
     ],
     card: s => ({ thumb: '🗓️', title: `${s.day || ''} — ${s.title || ''}`, sub: s.date })
@@ -252,9 +250,9 @@ const DEFAULT_SETTINGS = {
 const DEFAULT_ABOUT = {
   heading: 'প্রতিষ্ঠা ১৯৭৪ সাল থেকে ভক্তি ও ঐক্যের প্রতীক',
   paragraphs: [
-    '১৯৭৪ সালে কয়েকজনের উদ্যোগে সমাজ কল্যাণ যুব সংঘ-এর পথচলা শুরু হয়। উদ্দেশ্য ছিল একটাই—এলাকার সবাইকে সঙ্গে নিয়ে ধর্মীয় ও সাংস্কৃতিক চেতনায় উৎসব উদযাপন করা।',
+    '১৯৭৪ সালে কয়েকজনের উদ্যোগে ‘সমাজ কল্যাণ যুব সংঘ’-এর পথচলা শুরু হয়। উদ্দেশ্য ছিল একটাই—এলাকার সবাইকে সঙ্গে নিয়ে ধর্মীয় ও সাংস্কৃতিক চেতনায় উৎসব উদ্‌যাপন করা।',
     'সেই ভাবনা থেকেই ১৯৭৪ সাল থেকে আজ পর্যন্ত নিয়মিতভাবে সরস্বতী পূজার আয়োজন হয়ে আসছে।',
-    'দীর্ঘ পাঁচ দশকের এই পথচলায় পূজা আজ শুধু একটি ধর্মীয় আয়োজন নয়, এটি আমাদের ঐতিহ্য, সংস্কৃতি, সম্প্রীতি ও মিলনের প্রতীক।',
+    'দীর্ঘ পাঁচ দশকের এই পথচলায় পূজা আজ শুধু একটি ধর্মীয় আয়োজন নয়; এটি আমাদের ঐতিহ্য, সংস্কৃতি, সম্প্রীতি ও মিলনের প্রতীক।',
     'প্রজন্মের পর প্রজন্ম ধরে সকলের অংশগ্রহণে এই আয়োজন আমাদের শিকড়ের সঙ্গে সম্পর্ক আরও গভীর করে চলেছে।'
   ],
   stat1Num: '৫০+', stat1Label: 'বছরের ঐতিহ্য',
@@ -278,7 +276,7 @@ const DEFAULT_PAGE_HEADINGS = {
   eyebrow_generalMembers: 'আমাদের পরিবারের সদস্য', title_generalMembers: 'সাধারণ সদস্যবৃন্দ',
   sub_generalMembers: 'জননী সংসদের সকল সাধারণ সদস্য, যাঁদের অংশগ্রহণে আমাদের এই আয়োজন আরও সুন্দর ও প্রাণবন্ত হয়ে ওঠে।',
   eyebrow_affiliates: 'আমাদের সহযোগী সংগঠন', title_affiliates: 'অঙ্গসংগঠন',
-  sub_affiliates: 'জননী সংসদের সাথে যুক্ত ও সহযোগী বিভিন্ন সংগঠন।',
+  sub_affiliates: 'জননী সংসদের সঙ্গে যুক্ত ও সহযোগী বিভিন্ন সংগঠন।',
   eyebrow_donation: 'সহযোগিতার আহ্বান', title_donation: 'পূজার কাজে সহযোগিতা করুন',
   sub_donation: 'আপনার সামান্য অনুদানই এই উৎসবকে করে তোলে আরও প্রাণবন্ত ও সুন্দর।',
   eyebrow_notice: 'গুরুত্বপূর্ণ তথ্য', title_notice: 'নোটিশ',
@@ -286,7 +284,7 @@ const DEFAULT_PAGE_HEADINGS = {
   eyebrow_location: 'আমাদের খুঁজে নিন', title_location: 'লোকেশন',
   sub_location: 'মণ্ডপের ঠিকানা ও দিকনির্দেশ।',
   eyebrow_contact: 'যোগাযোগ করুন', title_contact: 'যোগাযোগ',
-  sub_contact: 'যেকোনো প্রশ্ন বা সহযোগিতার জন্য আমাদের সাথে যোগাযোগ করুন।',
+  sub_contact: 'যেকোনো প্রশ্ন বা সহযোগিতার জন্য আমাদের সঙ্গে যোগাযোগ করুন।',
 };
 
 let currentEdit = null; // { type, id } or null for "new"
@@ -498,7 +496,7 @@ function renderList(type, docs) {
       : `<button class="btn btn-gold btn-sm" onclick="setWishApproval('${doc.id}', true)">✓ অনুমোদন</button>`);
     const actionsHtml = `
         ${approvalBtn}
-        <button class="btn btn-outline btn-sm" onclick="openForm('${type}', '${doc.id}')">এডিট</button>
+        <button class="btn btn-outline btn-sm" onclick="openForm('${type}', '${doc.id}')">সম্পাদনা</button>
         <button class="btn btn-danger btn-sm" onclick="deleteItem('${type}', '${doc.id}')">মুছুন</button>
       `;
     if (type === 'gallery') {
@@ -556,7 +554,7 @@ function openForm(type, id) {
   currentEdit = { type, id: id || null };
   const schema = SCHEMAS[type];
   document.getElementById('modalTitle').textContent =
-    (id ? 'এডিট করুন — ' : 'নতুন যোগ করুন — ') + schema.label;
+    (id ? 'সম্পাদনা করুন — ' : 'নতুন যোগ করুন — ') + schema.label;
   document.getElementById('formError').style.display = 'none';
 
   const formEl = document.getElementById('itemForm');
@@ -628,7 +626,7 @@ function openForm(type, id) {
 
       const settingsDoc = snapshot.docs[0];
       currentEdit.id = settingsDoc.id;
-      document.getElementById('modalTitle').textContent = 'এডিট করুন — ' + schema.label;
+      document.getElementById('modalTitle').textContent = 'সম্পাদনা করুন — ' + schema.label;
       buildFields(settingsDoc.data());
     }).catch(error => {
       const formError = document.getElementById('formError');

@@ -1321,16 +1321,16 @@ section .eyebrow {
 
 .timeline {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
   align-items: stretch;
 }
 
 .tl-card {
   background: var(--sand-card);
   border-radius: var(--radius-lg);
-  padding: 26px 20px;
-  text-align: center;
+  padding: 18px 12px;
+  text-align: left;
   border: 1px solid var(--glass-card-border);
   box-shadow: var(--shadow-sm);
   position: relative;
@@ -1360,64 +1360,89 @@ section .eyebrow {
 .tl-day {
   font-family: var(--font-sans);
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 0.82rem;
   color: #FFFFFF;
   background: var(--maroon-700);
-  width: 52px;
-  height: 52px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 14px;
+  margin: 0 auto 10px;
   box-shadow: 0 4px 12px rgba(122, 15, 33, 0.3);
   border: 2px solid var(--gold-300);
 }
 
 .tl-date {
   font-family: var(--font-sans);
-  font-size: 0.88rem;
+  font-size: 0.74rem;
   font-weight: 700;
   color: var(--maroon-800);
   background: var(--cream-deep);
   border: 1px solid rgba(212, 175, 55, 0.28);
   border-radius: var(--radius-full);
-  padding: 5px 12px;
+  padding: 4px 8px;
   display: inline-block;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 
 .tl-card h3 {
-  font-size: 1.18rem;
+  font-size: 0.98rem;
   color: var(--maroon-950);
   margin-bottom: 12px;
   line-height: 1.4;
+  text-align: center;
 }
 
 .tl-card ul {
   list-style: none;
   color: var(--ink-soft);
-  font-size: 0.88rem;
-  line-height: 1.8;
+  font-size: 0.76rem;
+  line-height: 1.45;
   text-align: left;
-  margin-top: auto;
-  padding-top: 10px;
-  border-top: 1px dashed rgba(212, 175, 55, 0.25);
+  margin: 0;
+  padding: 4px 0 0;
 }
 
 .tl-card ul li {
-  margin-bottom: 6px;
   position: relative;
-  padding-left: 16px;
+  margin: 0;
+}
+
+.tl-card ul .tl-event-item {
+  display: grid;
+  grid-template-columns: minmax(68px, auto) 1fr;
+  gap: 6px;
+  align-items: start;
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(212, 175, 55, .16);
+}
+
+.tl-card ul .tl-event-item-wide {
+  grid-template-columns: 1fr;
+  gap: 4px;
+}
+
+.tl-event-time {
+  color: var(--maroon-800);
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.tl-card ul .tl-note-item {
+  margin-top: 10px;
+  padding: 9px 11px;
+  border-left: 3px solid var(--gold-500);
+  border-radius: 0 8px 8px 0;
+  background: rgba(212, 175, 55, .09);
+  color: var(--ink-muted);
+  font-size: .72rem;
 }
 
 .tl-card ul li::before {
-  content: "◆";
-  position: absolute;
-  left: 0;
-  color: var(--gold-600);
-  font-size: 0.65rem;
-  top: 1px;
+  content: none;
 }
 
 /* ---------------------------------------------------------
@@ -1902,35 +1927,6 @@ section .eyebrow {
 --------------------------------------------------------- */
 .notice {
   background-color: var(--cream);
-}
-
-.notification-optin {
-  max-width: 840px;
-  margin: 24px auto 4px;
-  padding: 16px 18px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  border: 1px solid var(--gold-border);
-  border-radius: var(--radius-md);
-  background: linear-gradient(120deg, #fffaf0, #fff);
-  box-shadow: var(--shadow-sm);
-}
-
-.notification-optin > div {
-  display: grid;
-  gap: 4px;
-}
-
-.notification-optin strong { color: var(--maroon-800); }
-.notification-optin span,
-.notification-feedback { color: rgba(42, 4, 10, 0.7); font-size: 0.88rem; }
-.notification-feedback { max-width: 840px; min-height: 1.2em; margin: 8px auto 14px; }
-
-@media (max-width: 600px) {
-  .notification-optin { align-items: stretch; flex-direction: column; }
-  .notification-optin .btn { width: 100%; }
 }
 
 .notice-list {
@@ -3674,7 +3670,6 @@ section {
 .hero-community-primary:hover { background: var(--gold-300); }
 
 @media (max-width: 600px) {
-  .hero-community-card { width: min(100%, 360px); padding: 15px 13px; }
   .hero-community-actions { gap: 7px; }
   .hero-community-link { padding-inline: 12px; font-size: .78rem; }
 }

@@ -8,49 +8,6 @@ if ('serviceWorker' in navigator && ['http:', 'https:'].includes(window.location
   });
 }
 
-async function updateHeroLocation() {
-  const locationElement = document.getElementById('heroLocation');
-  if (!locationElement) return;
-
-  if (!navigator.geolocation) {
-    locationElement.textContent = 'লোকেশন পাওয়া যায়নি';
-    return;
-  }
-
-  navigator.geolocation.getCurrentPosition(async ({ coords }) => {
-    try {
-      const params = new URLSearchParams({
-        format: 'jsonv2',
-        lat: coords.latitude.toString(),
-        lon: coords.longitude.toString(),
-        zoom: '14',
-        'accept-language': 'bn'
-      });
-      const response = await fetch(`https://nominatim.openstreetmap.org/reverse?${params}`);
-    if (!response.ok) throw new Error('Location lookup failed');
-
-      const location = await response.json();
-      const address = location.address || {};
-      const area = address.suburb || address.neighbourhood || address.city_district;
-      const city = address.city || address.town || address.municipality || address.state;
-      const label = [area, city].filter(Boolean).join(', ');
-
-      locationElement.textContent = label || 'লোকেশন পাওয়া যায়নি';
-    } catch (error) {
-      locationElement.textContent = 'লোকেশন পাওয়া যায়নি';
-      console.warn('Hero location unavailable.', error);
-    }
-  }, () => {
-    locationElement.textContent = 'লোকেশন অনুমতি দিন';
-  }, {
-    enableHighAccuracy: true,
-    timeout: 10000,
-    maximumAge: 300000
-  });
-}
-
-
-
 window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 40);
 });
@@ -222,16 +179,30 @@ document.addEventListener('keydown', event => {
 });
 
 // ---------- SCROLL TO TOP ----------
-const scrollTopBtn = document.getElementById('scrollTopBtn');
-if (scrollTopBtn) {
-  window.addEventListener('scroll', () => {
+function initScrollTopButton() {
+  const scrollTopBtn = document.getElementById('scrollTopBtn');
+  if (!scrollTopBtn || scrollTopBtn.dataset.scrollTopReady === 'true') return;
+  scrollTopBtn.dataset.scrollTopReady = 'true';
+
+  const updateScrollTopVisibility = () => {
     scrollTopBtn.classList.toggle('visible', window.scrollY > 350);
+  };
+  updateScrollTopVisibility();
+
+  window.addEventListener('scroll', () => {
+    updateScrollTopVisibility();
   });
 
   scrollTopBtn.addEventListener('click', () => {
     const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
     window.scrollTo({ top: 0, behavior });
   });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initScrollTopButton, { once: true });
+} else {
+  initScrollTopButton();
 }
 
 // ---------- QUICK COPY FOR DONATION DETAILS ----------
@@ -245,7 +216,7 @@ function makeCopyable(elementId, label) {
     try {
       await navigator.clipboard.writeText(text);
       if (typeof setDataStatus === 'function') {
-        setDataStatus(`${label} কপি করা হয়েছে! (${text})`, true);
+        setDataStatus(`${label} কপি করা হয়েছে! (${text})`, true);
         setTimeout(() => setDataStatus('', false), 2500);
       }
     } catch (err) {
@@ -398,6 +369,7 @@ window._flowerShower = globalFlowerShower;
 function addPujaToCalendar(dayName, dateStr, title, desc) {
   const dateMap = {
     'মহাষষ্ঠী': { start: '20261016T000000Z', end: '20261016T120000Z' },
+    'মহাসপ্তমী — তিথির প্রথম দিন': { start: '20261017T002400Z', end: '20261018T025700Z' },
     'মহাসপ্তমী': { start: '20261018T000000Z', end: '20261018T060000Z' },
     'মহাষ্টমী': { start: '20261019T030000Z', end: '20261019T140000Z' },
     'মহানবমী': { start: '20261020T030000Z', end: '20261020T150000Z' },
@@ -421,11 +393,12 @@ function initScheduleCalendarButtons() {
   if (!timelineEl) return;
 
   const defaultSchedule = [
-    { day: '০১', date: '১৬ অক্টোবর ২০২৬, শুক্রবার', title: 'মহাষষ্ঠী — কালপরম্ভ ও বোধন', items: ['ভোর ৬:০০টা — কালপরম্ভ', 'সকাল ৯:০০টা — পূজা ও পুষ্পাঞ্জলি', 'সন্ধ্যা ৬:০০টা — বোধন, আমন্ত্রণ ও অধিবাস; সন্ধ্যা আরতি', 'ষষ্ঠী তিথি শেষ: ১৭ অক্টোবর সকাল ৬:২৪'] },
-    { day: '০২', date: '১৮ অক্টোবর ২০২৬, রবিবার', title: 'মহাসপ্তমী — নবপত্রিকা ও পূজা', items: ['ভোর ৬:০০টা — নবপত্রিকা স্নান ও স্থাপন', 'সকাল ৯:০০টা — সপ্তমী বিহিত পূজা ও পুষ্পাঞ্জলি', 'দুপুর ১২:০০টা — ভোগ আরতি', 'সপ্তমী তিথি ১৭ অক্টোবর সকাল ৬:২৪-এ শুরু; ১৮ অক্টোবর সকাল ৮:৫৭-এ শেষ'] },
-    { day: '০৩', date: '১৯ অক্টোবর ২০২৬, সোমবার', title: 'মহাষ্টমী — কুমারী পূজা ও সন্ধিপূজা', items: ['সকাল ৯:০০টা — কুমারী পূজা ও পুষ্পাঞ্জলি', 'সকাল ১০:৫৮টা–১১:৪৬টা — সন্ধিপূজা (ঢাকার পঞ্জিকা অনুযায়ী)', 'রাত ৮:০০টা — সাংস্কৃতিক সন্ধ্যা', 'অষ্টমী তিথি শেষ: সকাল ১১:২২; সন্ধিপূজা তিথি-সন্ধিক্ষণে'] },
-    { day: '০৪', date: '২০ অক্টোবর ২০২৬, মঙ্গলবার', title: 'মহানবমী — হোম ও মহাভোগ', items: ['সকাল ৯:০০টা — নবমী পূজা ও হোম', 'দুপুর ১:০০টা — মহাভোগ', 'রাত ৯:০০টা — ধুনুচি নাচ', 'নবমী তিথি শেষ: দুপুর ১:২০'] },
-    { day: '০৫', date: '২১ অক্টোবর ২০২৬, বুধবার', title: 'বিজয়া দশমী — দর্পণ বিসর্জন ও প্রতিমা বিসর্জন', items: ['সকাল ৯:০০টা — দশমী পূজা ও দর্পণ বিসর্জন', 'দুপুর ১২:০০টা — সিঁদুর খেলা', 'বিকেল ৪:০০টা — প্রতিমা বিসর্জন', 'দশমী তিথি শেষ: দুপুর ২:৪২'] }
+    { day: '০১', date: '১৬ অক্টোবর ২০২৬, শুক্রবার · ২৮ আশ্বিন', title: 'মহাষষ্ঠী — কালপরম্ভ ও বোধন', items: ['ভোর ৬:০০টা — কালপরম্ভ', 'সকাল ৯:০০টা — পূজা ও পুষ্পাঞ্জলি', 'সন্ধ্যা ৬:০০টা — বোধন, আমন্ত্রণ ও অধিবাস; সন্ধ্যা আরতি', 'ষষ্ঠী তিথি ২৮ আশ্বিন; শেষ ১৭ অক্টোবর সকাল ৬:২৪-এ'] },
+    { day: '০২', date: '১৭ অক্টোবর ২০২৬, শনিবার · ২৯ আশ্বিন', title: 'মহাসপ্তমী — তিথির প্রথম দিন', items: ['সকাল ৬:২৪টা — সপ্তমী তিথি শুরু', 'নবপত্রিকা স্নান ও সপ্তমী বিহিত পূজা ১৮ অক্টোবর অনুষ্ঠিত হবে'] },
+    { day: '০৩', date: '১৮ অক্টোবর ২০২৬, রবিবার · ৩০ আশ্বিন', title: 'মহাসপ্তমী — নবপত্রিকা ও পূজা', items: ['ভোর ৬:০০টা — নবপত্রিকা স্নান ও স্থাপন', 'সকাল ৯:০০টা — সপ্তমী বিহিত পূজা ও পুষ্পাঞ্জলি', 'দুপুর ১২:০০টা — ভোগ আরতি', 'সকাল ৮:৫৭টা — সপ্তমী তিথি শেষ'] },
+    { day: '০৪', date: '১৯ অক্টোবর ২০২৬, সোমবার · ১ কার্তিক', title: 'মহাষ্টমী — কুমারী পূজা ও সন্ধিপূজা', items: ['সকাল ৯:০০টা — কুমারী পূজা ও পুষ্পাঞ্জলি', 'সকাল ১০:৫৮টা–১১:৪৬টা — সন্ধিপূজা', 'রাত ৮:০০টা — সাংস্কৃতিক সন্ধ্যা', 'অষ্টমী তিথি ১ কার্তিক; শেষ সকাল ১১:২২-এ, সন্ধিপূজা তিথি-সন্ধিক্ষণে'] },
+    { day: '০৫', date: '২০ অক্টোবর ২০২৬, মঙ্গলবার · ২ কার্তিক', title: 'মহানবমী — হোম ও মহাভোগ', items: ['সকাল ৯:০০টা — নবমী পূজা ও হোম', 'দুপুর ১:০০টা — মহাভোগ', 'রাত ৯:০০টা — ধুনুচি নাচ', 'নবমী তিথি ২ কার্তিক; শেষ দুপুর ১:২০-এ'] },
+    { day: '০৬', date: '২১ অক্টোবর ২০২৬, বুধবার · ৩ কার্তিক', title: 'বিজয়া দশমী — দর্পণ বিসর্জন ও প্রতিমা বিসর্জন', items: ['সকাল ৯:০০টা — দশমী পূজা ও দর্পণ বিসর্জন', 'দুপুর ১২:০০টা — সিঁদুর খেলা', 'বিকেল ৪:০০টা — প্রতিমা বিসর্জন', 'দশমী তিথি ৩ কার্তিক; শেষ দুপুর ২:৪২-এ'] }
   ];
 
   setTimeout(() => {
@@ -434,11 +407,20 @@ function initScheduleCalendarButtons() {
       defaultSchedule.forEach(s => {
         const card = document.createElement('div');
         card.className = 'tl-card';
+        const scheduleItems = s.items.map(item => {
+          const separator = item.indexOf(' — ');
+          const timeLabel = separator > -1 ? item.slice(0, separator) : '';
+          if (!/^(ভোর|সকাল|দুপুর|বিকেল|সন্ধ্যা|রাত)/.test(timeLabel)) {
+            return `<li class="tl-note-item">${item}</li>`;
+          }
+          const eventClass = timeLabel.includes('১১:৪৬টা') ? ' tl-event-item-wide' : '';
+          return `<li class="tl-event-item${eventClass}"><span class="tl-event-time">${timeLabel}</span><span>${item.slice(separator + 3)}</span></li>`;
+        }).join('');
         card.innerHTML = `
           <div class="tl-day">${s.day}</div>
           <div class="tl-date">${s.date}</div>
           <h3>${s.title}</h3>
-          <ul>${s.items.map(i => `<li>${i}</li>`).join('')}</ul>
+          <ul>${scheduleItems}</ul>
           <button type="button" class="btn-cal-add" onclick="addPujaToCalendar('${s.title}', '${s.date}', '${s.title}', '${s.items.join(', ')}')">
             <span>🗓️ ক্যালেন্ডারে রিমাইন্ডার</span>
           </button>
@@ -696,73 +678,3 @@ function initWishesWall() {
   }
 }
 initWishesWall();
-
-// Optional web push for puja schedules and urgent notices.
-function initPushNotifications() {
-  const button = document.getElementById('notificationSubscribeButton');
-  const feedback = document.getElementById('notificationFeedback');
-  if (!button || !feedback || typeof firebase === 'undefined' || !firebase.messaging) return;
-
-  button.addEventListener('click', async () => {
-    button.disabled = true;
-    feedback.textContent = '';
-    try {
-      if (!window.isSecureContext || !('Notification' in window) || !('serviceWorker' in navigator)) {
-        throw new Error('নোটিফিকেশন পেতে HTTPS ও সমর্থিত ব্রাউজার প্রয়োজন।');
-      }
-      if (!(await firebase.messaging.isSupported())) {
-        throw new Error('এই ব্রাউজারে নোটিফিকেশন সমর্থিত নয়।');
-      }
-      const permission = await Notification.requestPermission();
-      if (permission !== 'granted') throw new Error('ব্রাউজারের নোটিফিকেশন অনুমতি চালু করুন।');
-
-      const registration = await navigator.serviceWorker.ready;
-      const messaging = firebase.messaging();
-      const tokenOptions = { serviceWorkerRegistration: registration };
-      if (typeof firebaseVapidKey === 'string' && firebaseVapidKey.trim()) {
-        tokenOptions.vapidKey = firebaseVapidKey.trim();
-      }
-      const token = await messaging.getToken(tokenOptions);
-      if (!token) throw new Error('নোটিফিকেশন রেজিস্ট্রেশন সম্পন্ন হয়নি। আবার চেষ্টা করুন।');
-
-      const storageKey = 'janani-push-subscription-id';
-      let subscriptionId = localStorage.getItem(storageKey);
-      if (!subscriptionId) {
-        const subscription = await db.collection('notificationSubscriptions').add({
-          token,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        subscriptionId = subscription.id;
-        localStorage.setItem(storageKey, subscriptionId);
-      }
-      feedback.textContent = 'নোটিফিকেশন চালু হয়েছে। গুরুত্বপূর্ণ ঘোষণা এলে জানানো হবে।';
-      button.textContent = 'নোটিফিকেশন চালু আছে';
-    } catch (error) {
-      console.warn('Push notification setup failed:', error);
-      feedback.textContent = error.message || 'নোটিফিকেশন চালু করা যায়নি।';
-    } finally {
-      button.disabled = false;
-    }
-  });
-
-  if (!firebaseVapidKey) {
-    feedback.textContent = 'Firebase Console-এর Web Push key সেট না থাকলে সাবস্ক্রিপশন ব্যর্থ হতে পারে।';
-  }
-
-  try {
-    const messaging = firebase.messaging();
-    messaging.onMessage(payload => {
-      const data = payload.data || {};
-      if (Notification.permission === 'granted') {
-        navigator.serviceWorker.ready.then(registration => registration.showNotification(data.title || 'জননী সংসদ', {
-          body: data.body || 'নতুন গুরুত্বপূর্ণ ঘোষণা এসেছে।',
-          icon: 'image/maa-durga.png',
-          data: { url: data.url || 'notice.html' }
-        }));
-      }
-    });
-  } catch (error) {
-    console.info('Push messaging is unavailable in this browser.', error);
-  }
-}
-initPushNotifications();

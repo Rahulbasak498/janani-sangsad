@@ -74,7 +74,6 @@ async function loadSectionPage() {
     await loadScript('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js');
     await loadScript('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js');
     await loadScript('https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js');
-    await loadScript('https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js');
     await loadScript('firebase-config.js');
     await loadScript('render.js?v=3');
     await loadScript('script.js');
