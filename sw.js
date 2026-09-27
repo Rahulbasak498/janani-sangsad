@@ -30,7 +30,7 @@ self.addEventListener('notificationclick', event => {
   }));
 });
 
-const CACHE_NAME = 'janani-sangsad-v10';
+const CACHE_NAME = 'janani-sangsad-v11';
 const APP_SHELL = [
   './index.html',
   './style.css',

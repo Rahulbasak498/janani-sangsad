@@ -3592,7 +3592,7 @@ section {
 
 .hero-community-card {
   position: absolute;
-  top: calc(46% + 175px);
+  top: calc(46% + 250px);
   left: 50%;
   z-index: 20;
   display: grid;
