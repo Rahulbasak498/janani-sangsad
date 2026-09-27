@@ -75,6 +75,9 @@ h1, h2, h3, h4 {
 
 .admin-deity {
   position: absolute;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 50%;
   pointer-events: none;
   user-select: none;
 }

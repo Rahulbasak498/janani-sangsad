@@ -938,8 +938,11 @@ section .eyebrow {
 
 .deity-showcase {
   position: relative;
+  isolation: isolate;
   width: 100%;
   max-width: 480px;
+  aspect-ratio: 1;
+  margin-bottom: 210px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1009,22 +1012,27 @@ section .eyebrow {
 
 /* The Image Container & Maa Durga (Zero text overlap!) */
 .deity-img-frame {
-  position: relative;
+  position: absolute;
+  top: 46%;
+  left: 50%;
   z-index: 3;
-  width: 100%;
-  max-width: 440px;
+  width: min(100%, 320px);
+  max-width: 320px;
+  aspect-ratio: 1;
   display: flex;
   align-items: center;
   justify-content: center;
+  transform: translate(-50%, -50%);
 }
 
 .hero-deity {
   position: relative;
   width: 100%;
-  height: auto;
-  max-height: 490px;
-  object-fit: contain;
-  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.75)) drop-shadow(0 0 45px rgba(212, 175, 55, 0.4));
+  height: 100%;
+  max-height: none;
+  border-radius: 50%;
+  object-fit: cover;
+  filter: drop-shadow(0 16px 30px rgba(0, 0, 0, 0.62)) drop-shadow(0 0 28px rgba(212, 175, 55, 0.28));
   animation: deityFloat 6.5s ease-in-out infinite;
   pointer-events: none;
 }
@@ -1047,8 +1055,11 @@ section .eyebrow {
 
 /* Pedestal Tag */
 .deity-pedestal {
-  position: relative;
-  margin-top: 10px;
+  position: absolute;
+  right: 0;
+  bottom: 2%;
+  left: 0;
+  margin-top: 0;
   z-index: 5;
   text-align: center;
   white-space: nowrap;
@@ -1739,6 +1750,21 @@ section .eyebrow {
   color: var(--maroon-800);
 }
 
+.aff-icon-org-logo {
+  width: 104px;
+  height: 104px;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 5px 16px rgba(68, 10, 17, .12);
+}
+
+.aff-icon-org-logo .aff-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .aff-card h3 {
   font-size: 1.25rem;
   color: var(--maroon-900);
@@ -2222,7 +2248,8 @@ footer .brand {
   left: 50%;
   width: min(50vw, 260px);
   aspect-ratio: 1;
-  background: url("image/maa-durga.png") center / contain no-repeat;
+  background: url("image/Puja%20Logo.png") center / cover no-repeat;
+  border-radius: 50%;
   filter: drop-shadow(0 0 25px rgba(212, 175, 55, 0.8));
   opacity: 0.35;
   transform: translate(-50%, -50%) scale(0.95);
@@ -3136,10 +3163,6 @@ body.page-leaving > *:not(.page-transition-layer) {
     margin: 0 auto;
   }
 
-  .hero-deity {
-    max-height: 350px;
-  }
-
   .halo-ring-outer {
     width: min(340px, 82vw);
     height: min(340px, 82vw);
@@ -3222,10 +3245,14 @@ body.page-leaving > *:not(.page-transition-layer) {
   /* Deity image smaller on very small screens */
   .deity-showcase {
     max-width: min(290px, 82vw);
+    margin-bottom: 250px;
   }
 
-  .hero-deity {
-    max-height: 290px;
+  .hero-community-card {
+    top: calc(46% + 145px);
+    width: min(calc(100vw - 32px), 420px);
+    gap: 10px;
+    padding: 14px;
   }
 
   .halo-ring-outer {
@@ -3564,13 +3591,16 @@ section {
 }
 
 .hero-community-card {
-  position: relative;
-  z-index: 6;
+  position: absolute;
+  top: calc(46% + 175px);
+  left: 50%;
+  z-index: 20;
   display: grid;
   gap: 14px;
   width: min(100%, 420px);
-  margin-top: 18px;
+  margin-top: 0;
   padding: 18px;
+  transform: translateX(-50%);
   border: 1px solid rgba(243, 222, 142, .32);
   border-radius: 20px;
   background: linear-gradient(145deg, rgba(50, 5, 13, .82), rgba(30, 3, 8, .76));
@@ -3580,6 +3610,17 @@ section {
 }
 
 .hero-community-copy { text-align: center; }
+
+.hero-community-logo {
+  display: block;
+  width: 112px;
+  height: 112px;
+  margin: 0 auto -2px;
+  border: 1px solid rgba(243, 222, 142, .65);
+  border-radius: 50%;
+  object-fit: contain;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .35), 0 0 18px rgba(243, 222, 142, .14);
+}
 
 .hero-community-kicker {
   display: inline-block;
@@ -3651,14 +3692,19 @@ section {
     padding-bottom: 0;
   }
 
+  .hero-om-badge { transform: translateY(6px); }
+
   .deity-showcase { max-width: min(250px, 72vw); }
+
+  .hero-community-card {
+    top: calc(46% + 145px);
+    width: min(calc(100vw - 32px), 420px);
+  }
 
   .deity-img-frame {
     max-width: 250px;
-    transform: translateY(-12px);
+    transform: translate(-50%, -50%);
   }
-
-  .hero-deity { max-height: 225px; }
 
   .halo-ring-outer {
     width: min(250px, 72vw);

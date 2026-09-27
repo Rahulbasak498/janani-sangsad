@@ -219,13 +219,25 @@ function renderSchedule(docs) {
 
   wrap.innerHTML = '';
 
-  if (docs.length === 0) {
+  // The 2026 dates and tithi-based Sandhi Puja window follow the Dhaka panjika.
+  // These confirmed public schedule entries take precedence over older Firestore rows.
+  const schedule2026 = [
+    { day: '০১', date: '১৬ অক্টোবর ২০২৬, শুক্রবার', title: 'মহাষষ্ঠী — কালপরম্ভ ও বোধন', items: ['ভোর ৬:০০টা — কালপরম্ভ', 'সকাল ৯:০০টা — পূজা ও পুষ্পাঞ্জলি', 'সন্ধ্যা ৬:০০টা — বোধন, আমন্ত্রণ ও অধিবাস; সন্ধ্যা আরতি', 'ষষ্ঠী তিথি শেষ: ১৭ অক্টোবর সকাল ৬:২৪'] },
+    { day: '০২', date: '১৮ অক্টোবর ২০২৬, রবিবার', title: 'মহাসপ্তমী — নবপত্রিকা ও পূজা', items: ['ভোর ৬:০০টা — নবপত্রিকা স্নান ও স্থাপন', 'সকাল ৯:০০টা — সপ্তমী বিহিত পূজা ও পুষ্পাঞ্জলি', 'দুপুর ১২:০০টা — ভোগ আরতি', 'সপ্তমী তিথি ১৭ অক্টোবর সকাল ৬:২৪-এ শুরু; ১৮ অক্টোবর সকাল ৮:৫৭-এ শেষ'] },
+    { day: '০৩', date: '১৯ অক্টোবর ২০২৬, সোমবার', title: 'মহাষ্টমী — কুমারী পূজা ও সন্ধিপূজা', items: ['সকাল ৯:০০টা — কুমারী পূজা ও পুষ্পাঞ্জলি', 'সকাল ১০:৫৮টা–১১:৪৬টা — সন্ধিপূজা (ঢাকার পঞ্জিকা অনুযায়ী)', 'রাত ৮:০০টা — সাংস্কৃতিক সন্ধ্যা', 'অষ্টমী তিথি শেষ: সকাল ১১:২২; সন্ধিপূজা তিথি-সন্ধিক্ষণে'] },
+    { day: '০৪', date: '২০ অক্টোবর ২০২৬, মঙ্গলবার', title: 'মহানবমী — হোম ও মহাভোগ', items: ['সকাল ৯:০০টা — নবমী পূজা ও হোম', 'দুপুর ১:০০টা — মহাভোগ', 'রাত ৯:০০টা — ধুনুচি নাচ', 'নবমী তিথি শেষ: দুপুর ১:২০'] },
+    { day: '০৫', date: '২১ অক্টোবর ২০২৬, বুধবার', title: 'বিজয়া দশমী — দর্পণ বিসর্জন ও প্রতিমা বিসর্জন', items: ['সকাল ৯:০০টা — দশমী পূজা ও দর্পণ বিসর্জন', 'দুপুর ১২:০০টা — সিঁদুর খেলা', 'বিকেল ৪:০০টা — প্রতিমা বিসর্জন', 'দশমী তিথি শেষ: দুপুর ২:৪২'] }
+  ];
+  const entries = new Date().getFullYear() === 2026
+    ? schedule2026
+    : docs.map(d => d.data());
+
+  if (entries.length === 0) {
     wrap.innerHTML = '<div class="empty-note">সময়সূচি এখনো যোগ করা হয়নি।</div>';
     return;
   }
 
-  docs.forEach(d => {
-    const s = d.data();
+  entries.forEach(s => {
 
     const items = (s.items || [])
       .map(item => `<li>${escapeHtml(item)}</li>`)
@@ -454,14 +466,20 @@ function renderAffiliates(docs) {
   docs.forEach(d => {
 
     const a = d.data();
+    const affiliateNameKey = String(a.name || '').replace(/[\s_-]/g, '');
+    const isJananiNatyaGoshthi = affiliateNameKey === 'জননীনাট্যগোষ্ঠী';
+    const affiliateLogoUrl = isJananiNatyaGoshthi
+      ? 'image/জননী_নাট্যগোষ্ঠী.jpg'
+      : a.logoUrl;
 
 
-    const iconHtml = a.logoUrl
+    const iconHtml = affiliateLogoUrl
       ? `
         <img
-          src="${escapeAttr(a.logoUrl)}"
+          class="aff-logo-img"
+          src="${escapeAttr(affiliateLogoUrl)}"
           alt="${escapeAttr(a.name || '')}"
-          style="max-width:100%;height:auto;"
+          style="${isJananiNatyaGoshthi ? 'width:100%;height:100%;object-fit:cover;' : 'max-width:100%;height:auto;'}"
         >
       `
       : (a.icon || '🏛️');
@@ -487,7 +505,7 @@ function renderAffiliates(docs) {
 
 
     card.innerHTML = `
-      <div class="aff-icon">
+      <div class="aff-icon${isJananiNatyaGoshthi ? ' aff-icon-org-logo' : ''}">
         ${iconHtml}
       </div>
 

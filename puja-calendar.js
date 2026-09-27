@@ -36,7 +36,7 @@
   var PUJA_CALENDAR = [
     { id: 'mahalaya',    name: 'মহালয়া',        emoji: '🪔', date: '2026-10-10T00:00:00+06:00' },
     { id: 'panchami',    name: 'মহাপঞ্চমী',      emoji: '🌸', date: '2026-10-16T00:00:00+06:00' },
-    { id: 'shashthi',    name: 'মহাষষ্ঠী',       emoji: '🛕', date: '2026-10-17T00:00:00+06:00' },
+    { id: 'shashthi',    name: 'মহাষষ্ঠী',       emoji: '🛕', date: '2026-10-16T00:00:00+06:00' },
     { id: 'saptami',     name: 'মহাসপ্তমী',      emoji: '🛕', date: '2026-10-18T00:00:00+06:00' },
     { id: 'ashtami',     name: 'মহাষ্টমী',       emoji: '🙏', date: '2026-10-19T00:00:00+06:00' },
     { id: 'nabami',      name: 'মহানবমী',        emoji: '🔥', date: '2026-10-20T00:00:00+06:00' },

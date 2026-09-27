@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>লোগো প্রিভিউ | জননী সংসদ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; padding: 44px 22px;
+      color: #fff5d8; font-family: "Noto Sans Bengali", sans-serif;
+      background: radial-gradient(ellipse at 50% 0, #711d27, #26070c 65%);
+    }
+    main { width: min(980px, 100%); margin: auto; }
+    h1 { margin: 0 0 8px; text-align: center; color: #f3de8e; font-size: clamp(1.4rem, 4vw, 2rem); }
+    .intro { margin: 0 0 30px; text-align: center; color: rgba(255,255,255,.78); }
+    .options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; align-items: start; }
+    .option { text-align: center; }
+    .label { display: block; margin: 0 0 10px; color: #f3de8e; font-weight: 700; }
+    .card {
+      display: grid; justify-items: center; gap: 14px; padding: 23px 18px;
+      border: 1px solid rgba(243,222,142,.36); border-radius: 20px;
+      background: linear-gradient(145deg, rgba(50,5,13,.94), rgba(30,3,8,.92));
+      box-shadow: 0 14px 34px rgba(10,0,2,.3), inset 0 1px rgba(255,255,255,.1);
+    }
+    .mark { width: 132px; height: 132px; display: grid; place-items: center; overflow: hidden; border: 1px solid rgba(243,222,142,.65); border-radius: 50%; box-shadow: 0 6px 20px rgba(0,0,0,.35), 0 0 18px rgba(243,222,142,.14); }
+    .mark img { width: 100%; height: 100%; }
+    .puja img { object-fit: cover; }
+    .maa img { padding: 5px; object-fit: contain; }
+    .kicker { color: #f3de8e; font-size: .9rem; font-weight: 700; }
+    .copy { margin: -10px 0 0; color: rgba(255,255,255,.9); font-size: .96rem; }
+    .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 9px; }
+    .button { min-height: 40px; padding: 8px 14px; border: 1px solid rgba(243,222,142,.34); border-radius: 999px; color: #fff5d8; font-size: .86rem; }
+    .primary { border-color: transparent; color: #2a090c; background: linear-gradient(135deg,#fff2bd,#d9ae50); font-weight: 700; }
+    @media (max-width: 620px) { body { padding: 28px 16px; } .options { grid-template-columns: 1fr; } .card { max-width: 420px; margin: auto; } }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>হোমপেজের উৎসব কার্ডে কোন লোগোটি ভালো লাগে?</h1>
+    <p class="intro">দুটোই একই আকারে ও একই জায়গায় বসিয়ে তুলনা করুন।</p>
+    <section class="options" aria-label="লোগো তুলনা">
+      <article class="option">
+        <span class="label">বর্তমান Puja Logo</span>
+        <div class="card">
+          <div class="mark puja"><img src="image/Puja%20Logo.png" alt="জননী সংসদের পূজা লোগো"></div>
+          <div class="kicker">শারদীয় উৎসব</div>
+          <p class="copy">পূজার সময়সূচি ও শুভেচ্ছা—একসাথে</p>
+          <div class="actions"><span class="button primary">পূজার সময়সূচি →</span><span class="button">শুভেচ্ছা জানান</span></div>
+        </div>
+      </article>
+      <article class="option">
+        <span class="label">মা দুর্গার ছবি</span>
+        <div class="card">
+          <div class="mark maa"><img src="image/maa-durga.png" alt="মা দুর্গা"></div>
+          <div class="kicker">শারদীয় উৎসব</div>
+          <p class="copy">পূজার সময়সূচি ও শুভেচ্ছা—একসাথে</p>
+          <div class="actions"><span class="button primary">পূজার সময়সূচি →</span><span class="button">শুভেচ্ছা জানান</span></div>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

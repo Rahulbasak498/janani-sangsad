@@ -30,7 +30,7 @@ self.addEventListener('notificationclick', event => {
   }));
 });
 
-const CACHE_NAME = 'janani-sangsad-v4';
+const CACHE_NAME = 'janani-sangsad-v10';
 const APP_SHELL = [
   './index.html',
   './style.css',
@@ -40,7 +40,9 @@ const APP_SHELL = [
   './render.js',
   './firebase-config.js',
   './manifest.json',
-  './image/maa-durga.png'
+  './image/maa-durga.png',
+  './image/Puja%20Logo.png',
+  './image/জননী_নাট্যগোষ্ঠী.jpg'
 ];
 
 self.addEventListener('install', event => {
