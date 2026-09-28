@@ -270,11 +270,11 @@ document.addEventListener('click', async e => {
 // ---------- 2. PUSHPANJALI FLOWER SHOWER CANVAS ----------
 class FlowerShower {
   constructor(canvasId) {
+    this.particles = [];
+    this.animationId = null;
     this.canvas = document.getElementById(canvasId);
     if (!this.canvas) return;
     this.ctx = this.canvas.getContext('2d');
-    this.particles = [];
-    this.animationId = null;
     this.resize();
     window.addEventListener('resize', () => this.resize());
   }
@@ -286,6 +286,7 @@ class FlowerShower {
   }
 
   burst(count = 70) {
+    if (!this.canvas || !this.ctx || !this.particles) return;
     this.resize();
     const colors = [
       { fill: '#FFA000', edge: '#FF6F00' }, // Marigold orange
@@ -564,7 +565,7 @@ function initWishesWall() {
       '<span class="ws-icon">🌸</span>' +
       '<strong>আপনার শুভেচ্ছা বার্তা সফলভাবে পাঠানো হয়েছে!</strong>' +
       '<span class="ws-sub">ধন্যবাদ 🙏 মা দুর্গা আপনার ও আপনার পরিবারের মঙ্গল করুন।<br>' +
-      'কমিটির অনুমোদনের পর বার্তাটি এখানে প্রকাশিত হবে।</span>';
+      'আপনার শুভকামনা বোর্ডে প্রকাশিত হয়েছে।</span>';
   }
 
   function renderWishItem(w) {
@@ -590,7 +591,7 @@ function initWishesWall() {
     list.forEach(w => feed.appendChild(renderWishItem(w)));
   }
 
-  // ---- Submit: goes to Firestore as "pending"; admin approves it ----
+  // ---- Submit: publish the wish immediately ----
   form.addEventListener('submit', async e => {
     e.preventDefault();
 
@@ -631,14 +632,18 @@ function initWishesWall() {
     try {
       await db.collection('wishes').add({
         name, loc, msg,
-        approved: false,
+        approved: true,
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       });
       try { localStorage.setItem(COOLDOWN_KEY, String(Date.now())); } catch (err) {}
       form.reset();
       showSuccess();
-      if (typeof playTempleBell === 'function') playTempleBell();
-      if (typeof globalFlowerShower !== 'undefined') globalFlowerShower.burst(35);
+      try { if (typeof playTempleBell === 'function') playTempleBell(); } catch (effectErr) {
+        console.warn('Wish success sound failed:', effectErr);
+      }
+      try { if (typeof globalFlowerShower !== 'undefined') globalFlowerShower.burst(35); } catch (effectErr) {
+        console.warn('Wish success animation failed:', effectErr);
+      }
     } catch (err) {
       console.warn('Wish submit failed:', err && err.code, err);
       // Keep what they typed so nothing is lost.
@@ -655,10 +660,10 @@ function initWishesWall() {
     }
   });
 
-  // ---- Feed: only admin-approved wishes are readable by visitors ----
+  // ---- Feed: all published wishes are readable by visitors ----
   try {
     if (typeof db === 'undefined') throw new Error('db missing');
-    db.collection('wishes').where('approved', '==', true).limit(50).onSnapshot(snap => {
+    db.collection('wishes').limit(50).onSnapshot(snap => {
       const wishes = snap.docs
         .map(doc => doc.data())
         .sort((a, b) => {

@@ -109,9 +109,9 @@ const SCHEMAS = {
       { key: 'msg',  label: 'বার্তা', type: 'textarea', required: true }
     ],
     card: w => ({
-      thumb: w.approved === true ? '✅' : '⏳',
+      thumb: '💬',
       title: (w.name || '') + (w.loc ? ' — ' + w.loc : ''),
-      sub: (w.approved === true ? '[প্রকাশিত] ' : '[অপেক্ষমান] ') + (w.msg || '')
+      sub: w.msg || ''
     })
   },
   settings: {
@@ -420,15 +420,10 @@ function attachListListener(type) {
     });
     if (type === 'wishes') {
       const ms = d => { const t = d.data().createdAt; return t && t.toMillis ? t.toMillis() : 0; };
-      sorted.sort((a, b) => {
-        const pa = a.data().approved === true ? 1 : 0;
-        const pb = b.data().approved === true ? 1 : 0;
-        return pa - pb || ms(b) - ms(a);   // pending first, then newest
-      });
-      const pending = docs.filter(d => d.data().approved !== true).length;
+      sorted.sort((a, b) => ms(b) - ms(a));
       const tabBtn = document.querySelector('.tab-btn[data-tab="wishes"]');
       if (tabBtn) {
-        tabBtn.innerHTML = '<span class="tab-icon">💬</span>শুভেচ্ছা বার্তা' + (pending ? ` (${pending} নতুন)` : '');
+        tabBtn.innerHTML = '<span class="tab-icon">💬</span>শুভেচ্ছা বার্তা';
       }
     }
     renderList(type, sorted);
@@ -491,11 +486,7 @@ function renderList(type, docs) {
     const el = document.createElement('div');
     el.className = 'item-card';
     if (type === 'gallery') el.classList.add('gallery-item');
-    const approvalBtn = type !== 'wishes' ? '' : (data.approved === true
-      ? `<button class="btn btn-outline btn-sm" onclick="setWishApproval('${doc.id}', false)">লুকান</button>`
-      : `<button class="btn btn-gold btn-sm" onclick="setWishApproval('${doc.id}', true)">✓ অনুমোদন</button>`);
     const actionsHtml = `
-        ${approvalBtn}
         <button class="btn btn-outline btn-sm" onclick="openForm('${type}', '${doc.id}')">সম্পাদনা</button>
         <button class="btn btn-danger btn-sm" onclick="deleteItem('${type}', '${doc.id}')">মুছুন</button>
       `;
@@ -716,16 +707,6 @@ document.getElementById('itemForm').addEventListener('submit', async (e) => {
     errBox.style.display = 'block';
   }
 });
-
-// ---------------- WISH MODERATION ----------------
-async function setWishApproval(id, approved) {
-  try {
-    await db.collection('wishes').doc(id).update({ approved: approved === true });
-    showToast(approved ? 'বার্তা প্রকাশিত হয়েছে ✅' : 'বার্তা লুকানো হয়েছে');
-  } catch (err) {
-    alert('আপডেট ব্যর্থ: ' + err.message);
-  }
-}
 
 // ---------------- DELETE ----------------
 async function deleteItem(type, id) {

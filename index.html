@@ -1154,7 +1154,7 @@ content="width=device-width, initial-scale=1.0"
           <span class="wfc-icon">🪷</span>
           <div>
             <h3>আপনার শুভেচ্ছা বার্তা লিখুন</h3>
-            <small>কমিটির অনুমোদনের পর বার্তাটি ওয়েবসাইটে প্রদর্শিত হবে</small>
+            <small>আপনার শুভকামনা পাঠানোর সঙ্গে সঙ্গেই বোর্ডে প্রকাশিত হবে</small>
           </div>
         </div>
         <form id="devoteeWishForm" class="wish-form">
@@ -1280,6 +1280,9 @@ content="width=device-width, initial-scale=1.0"
 
 <!-- FIREBASE (data source for notices/schedule/members/gallery) -->
 
+<!-- Pushpanjali Falling Flowers Canvas (must exist before script.js initializes it) -->
+<canvas id="flowerShowerCanvas" class="flower-shower-canvas" aria-hidden="true"></canvas>
+
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -1300,9 +1303,6 @@ content="width=device-width, initial-scale=1.0"
 
 
 
-
-<!-- Pushpanjali Falling Flowers Canvas -->
-<canvas id="flowerShowerCanvas" class="flower-shower-canvas" aria-hidden="true"></canvas>
 
 <!-- Festive Greeting Card Modal (শারদীয় শুভেচ্ছা শেয়ার) -->
 <div class="modal-overlay" id="greetingModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="gmTitle">
