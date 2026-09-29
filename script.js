@@ -533,6 +533,10 @@ function initWishesWall() {
 
   const statusEl = document.getElementById('wishStatus');
   const submitBtn = form.querySelector('button[type="submit"]');
+  let successMessageTimer;
+  let successMessageCleanupTimer;
+  let wishSubmitInProgress = false;
+  let deferredWishes;
   const COOLDOWN_MS = 60 * 1000;          // one message per minute per browser
   const COOLDOWN_KEY = 'js_last_wish_at';
 
@@ -560,12 +564,23 @@ function initWishesWall() {
   // Nicer confirmation after a successful send (static markup only — no user text)
   function showSuccess() {
     if (!statusEl) return;
+    clearTimeout(successMessageTimer);
+    clearTimeout(successMessageCleanupTimer);
     statusEl.className = 'wish-status ok wish-success';
     statusEl.innerHTML =
       '<span class="ws-icon">🌸</span>' +
       '<strong>আপনার শুভেচ্ছা বার্তা সফলভাবে পাঠানো হয়েছে!</strong>' +
       '<span class="ws-sub">ধন্যবাদ 🙏 মা দুর্গা আপনার ও আপনার পরিবারের মঙ্গল করুন।<br>' +
       'আপনার শুভকামনা বোর্ডে প্রকাশিত হয়েছে।</span>';
+    successMessageTimer = setTimeout(() => {
+      if (!statusEl.classList.contains('wish-success')) return;
+      statusEl.classList.add('is-leaving');
+      successMessageCleanupTimer = setTimeout(() => {
+        if (statusEl.classList.contains('wish-success') && statusEl.classList.contains('is-leaving')) {
+          setStatus('', '');
+        }
+      }, 350);
+    }, 4000);
   }
 
   function renderWishItem(w) {
@@ -629,6 +644,7 @@ function initWishesWall() {
     if (submitBtn) submitBtn.disabled = true;
     setStatus('পাঠানো হচ্ছে...', '');
 
+    wishSubmitInProgress = true;
     try {
       await db.collection('wishes').add({
         name, loc, msg,
@@ -656,6 +672,11 @@ function initWishesWall() {
         'err'
       );
     } finally {
+      wishSubmitInProgress = false;
+      if (deferredWishes) {
+        renderAllWishes(deferredWishes);
+        deferredWishes = undefined;
+      }
       if (submitBtn) submitBtn.disabled = false;
     }
   });
@@ -673,7 +694,8 @@ function initWishesWall() {
         })
         .slice(0, 20)
         .map(d => ({ name: d.name || '', loc: d.loc || '', msg: d.msg || '', time: timeAgo(d.createdAt) }));
-      renderAllWishes(wishes);
+      if (wishSubmitInProgress) deferredWishes = wishes;
+      else renderAllWishes(wishes);
     }, err => {
       console.warn('Wishes listener failed:', err);
       feed.innerHTML = '<div class="empty-note is-error">বার্তাগুলো এই মুহূর্তে লোড করা যাচ্ছে না।</div>';
