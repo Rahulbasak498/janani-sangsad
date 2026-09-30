@@ -429,19 +429,24 @@ section .eyebrow {
   border-radius: var(--radius-md);
   padding: 8px;
   min-width: 210px;
-  display: none;
+  display: flex;
   flex-direction: column;
   gap: 4px;
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), 0 0 20px rgba(212, 175, 55, 0.15);
   z-index: 1200;
   opacity: 0;
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.22s ease, transform 0.22s ease, visibility 0s linear 0.22s;
 }
 
 .nav-dropdown.open .nav-dropdown-menu {
   display: flex;
   opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
   transform: translateX(-50%) translateY(0);
+  transition-delay: 0s;
 }
 
 .nav-dropdown-menu a {
@@ -924,7 +929,7 @@ section .eyebrow {
   font-size: 0.94rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
 }
 
@@ -2140,7 +2145,7 @@ footer .brand {
   align-items: center;
   justify-content: center;
   font-size: 1.2rem;
-  transition: all 0.25s ease;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .footer-social a:hover {
@@ -2234,7 +2239,7 @@ footer .brand {
   opacity: 0;
   visibility: hidden;
   background: var(--maroon-950);
-  transition: opacity 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .page-transition-layer::before {
@@ -2249,7 +2254,7 @@ footer .brand {
   filter: drop-shadow(0 0 25px rgba(212, 175, 55, 0.8));
   opacity: 0.35;
   transform: translate(-50%, -50%) scale(0.95);
-  transition: opacity 0.42s ease, transform 0.42s ease;
+  transition: opacity 0.28s ease, transform 0.28s ease;
 }
 
 .page-transition-layer.is-leaving {
@@ -2264,8 +2269,7 @@ footer .brand {
 
 body.page-leaving > *:not(.page-transition-layer) {
   opacity: 0;
-  transform: translateY(-12px);
-  transition: opacity 0.42s ease, transform 0.42s ease;
+  transition: opacity 0.28s ease;
 }
 
 /* Scroll To Top Button */
@@ -2290,7 +2294,7 @@ body.page-leaving > *:not(.page-transition-layer) {
   opacity: 0;
   visibility: hidden;
   transform: translateY(16px);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
 }
 
 .scroll-top-btn.visible {
@@ -2328,7 +2332,7 @@ body.page-leaving > *:not(.page-transition-layer) {
   font-weight: 600;
   cursor: pointer;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 16px rgba(212, 175, 55, 0.25);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease, color 0.3s ease;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
@@ -2582,7 +2586,7 @@ body.page-leaving > *:not(.page-transition-layer) {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  transition: all 0.25s ease;
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
 }
 
 .btn-copy:hover {
@@ -3035,7 +3039,7 @@ body.page-leaving > *:not(.page-transition-layer) {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  transition: all 0.25s ease;
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .btn-cal-add:hover {
@@ -3096,7 +3100,8 @@ body.page-leaving > *:not(.page-transition-layer) {
   .nav-links {
     position: fixed;
     top: 0;
-    right: -100%;
+    right: 0;
+    transform: translateX(100%);
     width: min(80vw, 320px);
     height: 100vh;
     background: var(--maroon-950);
@@ -3106,13 +3111,13 @@ body.page-leaving > *:not(.page-transition-layer) {
     padding: 90px 24px 40px;
     gap: 12px;
     box-shadow: -15px 0 40px rgba(0, 0, 0, 0.6);
-    transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 1050;
     overflow-y: auto;
   }
 
   .nav-links.open {
-    right: 0;
+    transform: translateX(0);
   }
 
   .nav-links a, .nav-dropdown-btn {
@@ -3129,16 +3134,30 @@ body.page-leaving > *:not(.page-transition-layer) {
   .nav-dropdown-menu {
     position: static;
     transform: none;
-    display: none;
+    display: flex;
     box-shadow: none;
     background: rgba(255, 255, 255, 0.06);
     margin-top: 6px;
     border: 1px solid rgba(212, 175, 55, 0.2);
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transform: none;
+    transition: max-height 0.28s ease, opacity 0.2s ease, margin-top 0.28s ease, padding 0.28s ease, visibility 0s linear 0.28s;
   }
 
   .nav-dropdown.open .nav-dropdown-menu {
-    display: flex;
+    max-height: 20rem;
+    padding: 8px;
+    margin-top: 6px;
+    opacity: 1;
+    visibility: visible;
     transform: none;
+    transition-delay: 0s;
   }
 
   /* Hero responsive – collapse split layout to single column */
@@ -3589,6 +3608,11 @@ section {
   }
 
   .lpb-pulse { animation: none; }
+  .page-transition-layer,
+  .page-transition-layer::before,
+  body.page-leaving > *:not(.page-transition-layer) {
+    transition: none !important;
+  }
 }
 
 .hero-community-card {
