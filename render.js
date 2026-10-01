@@ -41,15 +41,13 @@ function renderNotices(docs) {
     const details = item.querySelector('.notice-details');
     const setExpanded = expanded => {
       titleButton.setAttribute('aria-expanded', String(expanded));
+      item.classList.toggle('is-expanded', expanded);
       details.hidden = !expanded;
     };
     titleButton.addEventListener('click', () => {
       const expanded = titleButton.getAttribute('aria-expanded') === 'true';
       setExpanded(!expanded);
     });
-    titleButton.addEventListener('mouseenter', () => setExpanded(true));
-    item.addEventListener('mouseleave', () => setExpanded(false));
-
     wrap.appendChild(item);
   });
 }

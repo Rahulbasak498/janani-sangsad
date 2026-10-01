@@ -1977,6 +1977,7 @@ section .eyebrow {
 
 .notice-title {
   display: block;
+  max-width: 100%;
   padding: 0;
   border: 0;
   background: transparent;
@@ -1986,6 +1987,7 @@ section .eyebrow {
   font-weight: 700;
   color: var(--maroon-900);
   font-family: inherit;
+  overflow-wrap: anywhere;
 }
 
 .notice-title:focus-visible {
@@ -3364,12 +3366,69 @@ body.page-leaving > *:not(.page-transition-layer) {
   }
 
   .notice-item {
-    grid-template-columns: 1fr;
+    grid-template-columns: 32px minmax(0, 1fr);
+    gap: 10px 12px;
+    align-items: start;
+    padding: 16px;
     text-align: left;
   }
 
+  .notice-item:not(.is-expanded) {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 14px 16px;
+  }
+
+  .notice-item:not(.is-expanded) .n-icon,
+  .notice-item:not(.is-expanded) .n-date {
+    display: none;
+  }
+
+  .notice-item:not(.is-expanded) .notice-copy {
+    grid-column: 1 / -1;
+  }
+
+  .notice-item.is-expanded .n-date {
+    grid-column: 2;
+    margin-left: 0;
+  }
+
+  .notice-item.is-pinned {
+    border-left-width: 3px;
+  }
+
+  .n-icon {
+    font-size: 1.25rem;
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  .notice-copy {
+    grid-column: 2;
+  }
+
+  .notice-title {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .notice-details {
+    padding-top: 8px;
+  }
+
+  .notice-details p {
+    font-size: 0.88rem;
+    overflow-wrap: anywhere;
+  }
+
   .n-date {
+    grid-column: 2;
     align-self: flex-start;
+    justify-self: start;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    font-size: 0.75rem;
+    padding: 4px 9px;
   }
 
   .scroll-top-btn {
