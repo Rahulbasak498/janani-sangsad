@@ -1971,16 +1971,37 @@ section .eyebrow {
   flex-shrink: 0;
 }
 
-.notice-item h4 {
-  font-size: 1.15rem;
-  color: var(--maroon-900);
-  margin-bottom: 4px;
+.notice-copy {
+  min-width: 0;
 }
 
-.notice-item p {
+.notice-title {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--maroon-900);
+  font-family: inherit;
+}
+
+.notice-title:focus-visible {
+  outline: 2px solid var(--gold-500);
+  outline-offset: 4px;
+}
+
+.notice-details {
+  padding-top: 14px;
+}
+
+.notice-details p {
   font-size: 0.92rem;
   color: var(--ink-soft);
   line-height: 1.6;
+  white-space: pre-wrap;
 }
 
 .n-date {

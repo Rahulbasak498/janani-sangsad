@@ -24,18 +24,31 @@ function renderNotices(docs) {
     const item = document.createElement('div');
     item.className = `notice-item${n.pinned === true || n.pinned === 'true' ? ' is-pinned' : ''}`;
 
+    const noticeId = `notice-${d.id}`;
     item.innerHTML = `
-      <div class="n-icon">${n.icon || '📌'}</div>
-
-      <div>
-        <h4>${escapeHtml(n.title || '')}</h4>
-        <p>${escapeHtml(n.desc || '')}</p>
+      <div class="n-icon">${escapeHtml(n.icon || '📌')}</div>
+      <div class="notice-copy">
+        <button class="notice-title" type="button" aria-expanded="false" aria-controls="${noticeId}">
+          ${escapeHtml(n.title || 'নোটিশ')}
+        </button>
+        <div class="notice-details" id="${noticeId}" hidden>
+          <p>${escapeHtml(n.desc || '')}</p>
+        </div>
       </div>
-
-      <div class="n-date">
-        ${escapeHtml(n.date || '')}
-      </div>
+      <div class="n-date">${escapeHtml(n.date || '')}</div>
     `;
+    const titleButton = item.querySelector('.notice-title');
+    const details = item.querySelector('.notice-details');
+    const setExpanded = expanded => {
+      titleButton.setAttribute('aria-expanded', String(expanded));
+      details.hidden = !expanded;
+    };
+    titleButton.addEventListener('click', () => {
+      const expanded = titleButton.getAttribute('aria-expanded') === 'true';
+      setExpanded(!expanded);
+    });
+    titleButton.addEventListener('mouseenter', () => setExpanded(true));
+    item.addEventListener('mouseleave', () => setExpanded(false));
 
     wrap.appendChild(item);
   });
