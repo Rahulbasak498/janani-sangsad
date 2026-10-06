@@ -1,4 +1,7 @@
 (function () {
+  if (window.__pageTransitionLoaded) return;
+  window.__pageTransitionLoaded = true;
+
   const layer = document.createElement('div');
   let isLeaving = false;
   layer.className = 'page-transition-layer';

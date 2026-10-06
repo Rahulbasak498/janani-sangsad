@@ -71,6 +71,54 @@ function requestDashboardLocation() {
   }, { enableHighAccuracy: false, timeout: 12000, maximumAge: 300000 });
 }
 
+
+// =========================================================
+// CLOUDINARY DIRECT UPLOAD
+// =========================================================
+async function uploadToCloudinary(file, onProgress) {
+  if (file.size > 10 * 1024 * 1024) {
+    throw new Error('ছবির সাইজ 10MB-এর কম হতে হবে।');
+  }
+
+  const cloudName = (typeof CLOUDINARY_CONFIG !== 'undefined' && CLOUDINARY_CONFIG.cloudName) || 'c5ap4zda';
+  const uploadPreset = (typeof CLOUDINARY_CONFIG !== 'undefined' && CLOUDINARY_CONFIG.uploadPreset) || 'janani_upload';
+
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', uploadPreset);
+
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'https://api.cloudinary.com/v1_1/' + cloudName + '/image/upload');
+
+    if (xhr.upload && typeof onProgress === 'function') {
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) {
+          const percent = (e.loaded / e.total) * 100;
+          onProgress(percent);
+        }
+      };
+    }
+
+    xhr.onload = () => {
+      try {
+        const data = JSON.parse(xhr.responseText);
+        if (xhr.status >= 200 && xhr.status < 300 && data.secure_url) {
+          resolve(data.secure_url);
+        } else {
+          const errDetail = data.error?.message || xhr.statusText || 'Upload failed';
+          reject(new Error('ছবি আপলোড ব্যর্থ: ' + errDetail));
+        }
+      } catch (err) {
+        reject(new Error('Cloudinary সার্ভার রেসপন্স বুঝতে সমস্যা হয়েছে।'));
+      }
+    };
+
+    xhr.onerror = () => reject(new Error('নেটওয়ার্ক সমস্যার কারণে ছবি আপলোড হয়নি।'));
+    xhr.send(formData);
+  });
+}
+
 const SCHEMAS = {
   notices: {
     label: 'নোটিশ',
@@ -103,7 +151,8 @@ const SCHEMAS = {
     fields: [
       { key: 'name', label: 'নাম', type: 'text', required: true },
       { key: 'role', label: 'পদবি', type: 'text' },
-      { key: 'photoUrl', label: 'ছবির URL (ঐচ্ছিক, না দিলে 👤 দেখাবে)', type: 'text' },
+      { key: 'photoUrl', label: 'ছবির URL (ঐচ্ছিক, নিচে ফাইল আপলোড করলে স্বয়ংক্রিয়ভাবে বসবে)', type: 'text' },
+      { key: 'photoFile', label: 'সরাসরি ছবি upload (ঐচ্ছিক)', type: 'file', accept: 'image/*', targetKey: 'photoUrl' },
       { key: 'order', label: 'ক্রম', type: 'number', default: 0 }
     ],
     card: m => ({ thumb: m.photoUrl ? { img: m.photoUrl } : '👤', title: m.name, sub: m.role })
@@ -115,7 +164,8 @@ const SCHEMAS = {
     fields: [
       { key: 'name', label: 'নাম', type: 'text', required: true },
       { key: 'role', label: 'পদবি', type: 'text' },
-      { key: 'photoUrl', label: 'ছবির URL (ঐচ্ছিক, না দিলে 👤 দেখাবে)', type: 'text' },
+      { key: 'photoUrl', label: 'ছবির URL (ঐচ্ছিক, নিচে ফাইল আপলোড করলে স্বয়ংক্রিয়ভাবে বসবে)', type: 'text' },
+      { key: 'photoFile', label: 'সরাসরি ছবি upload (ঐচ্ছিক)', type: 'file', accept: 'image/*', targetKey: 'photoUrl' },
       { key: 'order', label: 'ক্রম', type: 'number', default: 0 }
     ],
     card: m => ({ thumb: m.photoUrl ? { img: m.photoUrl } : '👤', title: m.name, sub: m.role })
@@ -127,7 +177,8 @@ const SCHEMAS = {
     fields: [
       { key: 'name', label: 'নাম', type: 'text', required: true },
       { key: 'role', label: 'পদবি', type: 'text' },
-      { key: 'photoUrl', label: 'ছবির URL (ঐচ্ছিক, না দিলে 👤 দেখাবে)', type: 'text' },
+      { key: 'photoUrl', label: 'ছবির URL (ঐচ্ছিক, নিচে ফাইল আপলোড করলে স্বয়ংক্রিয়ভাবে বসবে)', type: 'text' },
+      { key: 'photoFile', label: 'সরাসরি ছবি upload (ঐচ্ছিক)', type: 'file', accept: 'image/*', targetKey: 'photoUrl' },
       { key: 'order', label: 'ক্রম', type: 'number', default: 0 }
     ],
     card: m => ({ thumb: m.photoUrl ? { img: m.photoUrl } : '👤', title: m.name, sub: m.role })
@@ -143,7 +194,7 @@ const SCHEMAS = {
         ['অন্যান্য', 'অন্যান্য']
       ] },
       { key: 'imageUrl', label: 'ছবির URL (upload না করলে)', type: 'text' },
-      { key: 'imageFile', label: 'সরাসরি ছবি upload (ঐচ্ছিক)', type: 'file', accept: 'image/*' },
+      { key: 'imageFile', label: 'সরাসরি ছবি upload (ঐচ্ছিক)', type: 'file', accept: 'image/*', targetKey: 'imageUrl' },
       { key: 'order', label: 'ক্রম', type: 'number', default: 0 }
     ],
     card: g => ({ thumb: g.imageUrl ? { img: g.imageUrl } : '🖼️', title: g.caption, sub: g.imageUrl })
@@ -154,7 +205,8 @@ const SCHEMAS = {
       { key: 'icon',    label: 'আইকন (ইমোজি, লোগো URL না দিলে এটা দেখাবে)', type: 'text', placeholder: '🏛️' },
       { key: 'name',    label: 'সংগঠনের নাম', type: 'text', required: true },
       { key: 'desc',    label: 'সংক্ষিপ্ত বিবরণ', type: 'textarea' },
-      { key: 'logoUrl', label: 'লোগো/ছবির URL (ঐচ্ছিক)', type: 'text' },
+      { key: 'logoUrl', label: 'লোগো/ছবির URL (ঐচ্ছিক, নিচে ফাইল আপলোড করলে স্বয়ংক্রিয়ভাবে বসবে)', type: 'text' },
+      { key: 'logoFile', label: 'সরাসরি লোগো upload (ঐচ্ছিক)', type: 'file', accept: 'image/*', targetKey: 'logoUrl' },
       { key: 'link',    label: 'ওয়েবসাইট/ফেসবুক লিংক (ঐচ্ছিক)', type: 'text' },
       { key: 'order',   label: 'ক্রম', type: 'number', default: 0 }
     ],
@@ -196,8 +248,10 @@ const SCHEMAS = {
       { key: 'committeeName', label: 'কমিটির নাম', type: 'text', default: 'জননী সংসদ' },
       { key: 'foundingTagline', label: 'প্রতিষ্ঠার লেবেল (নেভিগেশনে ছোট করে দেখাবে)', type: 'text', default: 'প্রতিষ্ঠা ১৯৭৪' },
       { key: 'heroImageUrl', label: 'Hero image URL', type: 'text', default: 'image/maa-durga.png' },
+      { key: 'heroImageFile', label: 'সরাসরি Hero ছবি upload (ঐচ্ছিক)', type: 'file', accept: 'image/*', targetKey: 'heroImageUrl' },
       { key: 'pujaDate', label: 'পূজার তারিখ ও সময় (এই ফিল্ডটি এখন ব্যবহৃত হয় না — হোমপেজের countdown এখন puja-calendar.js-এর বাস্তব পঞ্জিকা থেকে চালিত হয়)', type: 'text', default: '2026-10-16T06:00:00+06:00' },
       { key: 'donationQrUrl', label: 'অনুদানের আসল QR ছবির URL (image/QR.jpg হলো DEMO ছবি — সেটা দেবেন না; নিজের QR অন্য নামে আপলোড করে সেই নাম দিন, যেমন image/donation-qr.jpg)', type: 'text', default: '' },
+      { key: 'donationQrFile', label: 'সরাসরি QR কোড ছবি upload (ঐচ্ছিক)', type: 'file', accept: 'image/*', targetKey: 'donationQrUrl' },
       { key: 'bkashNagad', label: 'বিকাশ / নগদ নম্বর (ফাঁকা থাকলে ওয়েবসাইটে এই লাইন দেখাবে না)', type: 'text', default: '', placeholder: '01XXXXXXXXX' },
       { key: 'bkashNagadNote', label: 'নম্বরের ধরন (ঐচ্ছিক, যেমন: Personal / Merchant / Agent)', type: 'text', default: '' },
       { key: 'bankName', label: 'ব্যাংক অ্যাকাউন্টের নাম', type: 'text', default: 'জননী সংসদ' },
@@ -737,9 +791,30 @@ function openForm(type, id) {
       input.dataset.key = f.key;
       input.dataset.type = f.type;
       input.dataset.isList = f.isList ? '1' : '';
+      if (f.targetKey) input.dataset.targetKey = f.targetKey;
       if (f.required) input.required = true;
 
       fieldWrap.appendChild(input);
+
+      if (f.type === 'file') {
+        const previewEl = document.createElement('div');
+        previewEl.className = 'file-preview-wrap';
+        previewEl.style.cssText = 'margin-top: 6px; display: none; align-items: center; gap: 8px; font-size: 0.85rem; color: #f3de8e;';
+        input.addEventListener('change', () => {
+          const file = input.files?.[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+              previewEl.innerHTML = '<img src="' + ev.target.result + '" style="width:44px;height:44px;object-fit:cover;border-radius:6px;border:1px solid rgba(255,255,255,0.25);"> <span>' + escapeHtml(file.name) + ' (' + (file.size / 1024).toFixed(0) + ' KB)</span>';
+              previewEl.style.display = 'flex';
+            };
+            reader.readAsDataURL(file);
+          } else {
+            previewEl.style.display = 'none';
+          }
+        });
+        fieldWrap.appendChild(previewEl);
+      }
       formEl.appendChild(fieldWrap);
     });
 
@@ -803,12 +878,16 @@ document.getElementById('itemForm').addEventListener('submit', async (e) => {
   const errBox = document.getElementById('formError');
   errBox.style.display = 'none';
 
-  const uploadInput = form.querySelector('[data-type="file"]');
-  const uploadFile = uploadInput?.files?.[0] || null;
+  const fileInputs = Array.from(form.querySelectorAll('input[type="file"]'));
+  const filesToUpload = fileInputs
+    .map(inp => ({ input: inp, file: inp.files?.[0] || null, targetKey: inp.dataset.targetKey || 'imageUrl' }))
+    .filter(item => item.file !== null);
+
+  const hasFilesToUpload = filesToUpload.length > 0;
   setFormBusy(form, true);
   const operation = startOperationProgress(
-    type === 'gallery' && uploadFile ? 'ছবি upload হচ্ছে…' : 'তথ্য সংরক্ষণ হচ্ছে…',
-    !(type === 'gallery' && uploadFile)
+    hasFilesToUpload ? 'ছবি Cloudinary-তে upload হচ্ছে…' : 'তথ্য সংরক্ষণ হচ্ছে…',
+    !hasFilesToUpload
   );
 
   const payload = {};
@@ -828,22 +907,19 @@ document.getElementById('itemForm').addEventListener('submit', async (e) => {
 
   let heldTypes = [];
   try {
-    if (type === 'gallery' && uploadFile) {
-      if (uploadFile.size > 5 * 1024 * 1024) {
-        throw new Error('ছবির size 5MB-এর কম হতে হবে।');
-      }
-      const safeName = uploadFile.name.replace(/[^a-zA-Z0-9._-]/g, '-');
-      const uploadRef = storage.ref().child(`gallery/${Date.now()}-${safeName}`);
-      const uploadTask = uploadRef.put(uploadFile);
-      const snapshot = await new Promise((resolve, reject) => {
-        uploadTask.on('state_changed', uploadSnapshot => {
-          const uploaded = uploadSnapshot.totalBytes
-            ? uploadSnapshot.bytesTransferred / uploadSnapshot.totalBytes
-            : 0;
-          operation.set(uploaded * 85);
-        }, reject, () => resolve(uploadTask.snapshot));
+    for (let i = 0; i < filesToUpload.length; i++) {
+      const { file, targetKey } = filesToUpload[i];
+      const uploadedUrl = await uploadToCloudinary(file, (percent) => {
+        const slice = 85 / filesToUpload.length;
+        const currentProgress = (i * slice) + ((percent / 100) * slice);
+        operation.set(currentProgress);
       });
-      payload.imageUrl = await snapshot.ref.getDownloadURL();
+      payload[targetKey] = uploadedUrl;
+      const matchingTextInput = form.querySelector('[data-key="' + targetKey + '"]');
+      if (matchingTextInput) matchingTextInput.value = uploadedUrl;
+    }
+
+    if (hasFilesToUpload) {
       operation.estimateFrom(86);
     }
 

@@ -28,9 +28,11 @@ const navigationMarkup = `
   </nav>`;
 
 document.getElementById('pageNav').innerHTML = navigationMarkup;
-const transitionScript = document.createElement('script');
-transitionScript.src = 'page-transition.js';
-document.body.appendChild(transitionScript);
+if (!window.__pageTransitionLoaded && !document.querySelector('script[src="page-transition.js"]')) {
+  const transitionScript = document.createElement('script');
+  transitionScript.src = 'page-transition.js';
+  document.body.appendChild(transitionScript);
+}
 const pageSection = document.body.dataset.section;
 
 async function loadSectionPage() {
