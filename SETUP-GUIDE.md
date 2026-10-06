@@ -1,0 +1,151 @@
+# Admin Panel সেটআপ গাইড (জননী সংসদ ওয়েবসাইট)
+
+এই গাইড অনুসরণ করলে আপনার সাইটে backend সার্ভার কোড ছাড়াই একটা পূর্ণাঙ্গ
+admin panel চালু হয়ে যাবে, যেখান থেকে নোটিশ, সময়সূচি, সদস্য ও গ্যালারি —
+সব CRUD (Add/Edit/Delete) করা যাবে। ডেটা থাকবে **Firebase Firestore**-এ (ফ্রি)।
+
+মোট সময় লাগবে: **~15-20 মিনিট**।
+
+---
+
+## ধাপ ১ — Firebase প্রজেক্ট তৈরি
+
+1. যান: https://console.firebase.google.com
+2. Google অ্যাকাউন্ট দিয়ে লগইন করুন
+3. **"Add project"** ক্লিক করুন → নাম দিন (যেমন: `jononi-songsad`) → Continue
+4. Google Analytics অপশন **off** করে দিতে পারেন (দরকার নেই) → **Create project**
+
+---
+
+## ধাপ ২ — Firestore ডেটাবেস চালু করা
+
+1. বাম পাশের মেনু থেকে **Build → Firestore Database** এ যান
+2. **Create database** ক্লিক করুন
+3. Location হিসেবে যেকোনো কাছের region বেছে নিন (যেমন `asia-south1`)
+4. **Start in production mode** সিলেক্ট করে Create করুন
+
+এরপর **Rules** ট্যাবে গিয়ে এই repo-র **`firestore.rules`** ফাইলের পুরো লেখা বসিয়ে **Publish** করুন —
+(সবাই ডেটা পড়তে পারবে, শুধু লগইন করা admin লিখতে পারবে। ব্যতিক্রম: শুভেচ্ছা বোর্ড — ভিজিটর নতুন বার্তা *পাঠাতে* পারবে কিন্তু সেটা
+নতুন শুভেচ্ছা সঙ্গে সঙ্গে ওয়েবসাইটে প্রকাশিত হবে; অ্যাডমিন শুধু সম্পাদনা বা মুছতে পারবেন):
+
+```
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---- শুভেচ্ছা বোর্ড (wishes) ----
+    // সবাই নতুন বার্তা প্রকাশ ও প্রকাশিত বার্তা পড়তে পারে; শুধু লগইন করা অ্যাডমিন edit/delete করতে পারে।
+    match /wishes/{wishId} {
+      allow read: if true;
+
+      allow create: if request.resource.data.keys().hasOnly(['name', 'loc', 'msg', 'approved', 'createdAt'])
+                    && request.resource.data.approved == true
+                    && request.resource.data.name is string
+                    && request.resource.data.name.size() > 0
+                    && request.resource.data.name.size() <= 60
+                    && request.resource.data.loc is string
+                    && request.resource.data.loc.size() <= 60
+                    && request.resource.data.msg is string
+                    && request.resource.data.msg.size() > 0
+                    && request.resource.data.msg.size() <= 300
+                    && request.resource.data.createdAt == request.time;
+
+      allow update, delete: if request.auth != null;
+    }
+
+    // ---- বাকি সব কালেকশন: সবাই পড়তে পারে, শুধু লগইন করা অ্যাডমিন লিখতে পারে ----
+    match /{collection}/{docId} {
+      allow read: if collection != 'wishes';
+      allow write: if request.auth != null && collection != 'wishes';
+    }
+  }
+}
+```
+
+---
+
+## ধাপ ৩ — Authentication চালু করা (আপনার লগইন)
+
+1. বাম মেনু থেকে **Build → Authentication** এ যান → **Get started**
+2. **Sign-in method** ট্যাবে **Email/Password** সিলেক্ট করে **Enable** করুন → Save
+3. **Users** ট্যাবে যান → **Add user**
+4. আপনার ইমেইল ও একটা শক্তিশালী পাসওয়ার্ড দিন → Add user
+
+এই ইমেইল/পাসওয়ার্ড দিয়েই `admin.html`-এ লগইন করবেন।
+(নিরাপত্তার জন্য admin.html-এ কোনো Sign-up/Register অপশন রাখা হয়নি —
+নতুন admin দরকার হলে এখান থেকেই Add user করবেন।)
+
+---
+
+## ধাপ ৪ — Web App রেজিস্টার করে Config কপি করা
+
+1. Project Overview পেজে যান (⚙️ আইকনের পাশে বা হোমে) → **</> (Web)** আইকনে ক্লিক করুন
+2. একটা নিকনেম দিন (যেমন `jononi-web`) → **Register app**
+3. যে `firebaseConfig = { ... }` অবজেক্টটা দেখাবে, সেটা পুরো কপি করুন
+4. আপনার ফোল্ডারের **`firebase-config.js`** ফাইল খুলে, ওখানে থাকা
+   placeholder মান (`YOUR_API_KEY` ইত্যাদি) বদলে আসল মানগুলো বসান
+
+---
+
+## ধাপ ৫ — সাইট আপলোড করা (হোস্টিং)
+
+আপনার এই ফোল্ডারের সব ফাইল (`index.html`, `style.css`, `script.js`,
+`admin.html`, `admin.css`, `admin.js`, `firebase-config.js`, `render.js`)
+যেকোনো static hosting-এ আপলোড করলেই চলবে — Firebase-এর সাথে সরাসরি
+সম্পর্ক নেই, তাই আগে যেভাবে হোস্ট করছিলেন (GitHub Pages / cPanel /
+Netlify / Firebase Hosting) সেভাবেই রাখতে পারেন।
+
+---
+
+## ধাপ ৬ — ব্যবহার শুরু
+
+1. ব্রাউজারে যান: `আপনারডোমেইন.com/admin.html`
+2. ধাপ ৩-এ বানানো ইমেইল/পাসওয়ার্ড দিয়ে লগইন করুন
+3. যেকোনো ট্যাব (নোটিশ / সময়সূচি / সদস্য / গ্যালারি) থেকে
+  **"+ নতুন"** বাটনে ক্লিক করে ডেটা যোগ করুন।
+4. সেভ করার সাথে সাথেই মূল ওয়েবসাইটে (`index.html`) সেটা দেখা যাবে
+   (পেজ রিফ্রেশ করলে)
+
+**"ক্রম" (order)** ফিল্ড দিয়ে বোঝাবেন কোনটা আগে দেখাবে — ছোট সংখ্যা
+আগে দেখায় (০, ১, ২ ... এভাবে)।
+
+
+## ছবি আপলোড কীভাবে করবেন?
+
+Gallery-এর জন্য Admin Panel থেকে সরাসরি ছবি upload করা যায়। এর জন্য
+Firebase Console-এর **Build → Storage → Get started** চালু করে Storage Rules-এ
+authenticated admin upload/read অনুমতি দিন। চাইলে আগের মতো direct image URL-ও
+ব্যবহার করা যাবে।
+
+সদস্যের ছবি দিতে হলে —
+
+- ছবিটা প্রথমে কোথাও আপলোড করুন (যেমন: [imgbb.com](https://imgbb.com) —
+  ফ্রি, লগইন ছাড়াই আপলোড করা যায়) এবং সেখান থেকে "Direct link" কপি করুন
+- সেই লিংকটা admin panel-এর "ছবির URL" ফিল্ডে বসিয়ে দিন
+
+(ছবির URL ফাঁকা রাখলে ডিফল্ট 👤 বা 🖼️ আইকন দেখাবে — সমস্যা নেই)
+
+---
+
+## অঙ্গসংগঠন
+
+Admin panel-এ নতুন একটা ট্যাব যোগ হয়েছে — **"অঙ্গসংগঠন"**। এটা অন্য
+ট্যাবগুলোর (নোটিশ/সদস্য/গ্যালারি) মতোই কাজ করে — আলাদা কোনো Firebase
+সেটআপ লাগবে না। Admin panel-এ লগইন করে ঐ ট্যাব থেকে "+ নতুন সংগঠন"
+ক্লিক করে নাম, বিবরণ, লোগো/আইকন ও (ঐচ্ছিক) ওয়েবসাইট লিংক যোগ করলেই
+মূল ওয়েবসাইটের "অঙ্গসংগঠন" সেকশনে (মেনুতেও আছে) সেটা দেখা যাবে।
+
+---
+
+## নোটিশ টিকার (উপরের চলমান লেখা)
+
+`admin.html`-এর **টিকার বার্তা** tab থেকে চলমান বার্তা add, edit, delete,
+ক্রম পরিবর্তন এবং active/inactive করা যায়। Firestore-এর `ticker` collection
+খালি থাকলে বর্তমান default বার্তাগুলো একবার তৈরি হয় এবং static fallback-ও থাকে।
+
+---
+
+## খরচ
+
+Firebase Spark (ফ্রি) প্ল্যানে দৈনিক ৫০,০০০ read + ২০,০০০ write পর্যন্ত
+ফ্রি — এই সাইজের কমিটির সাইটের জন্য এটা যথেষ্টের চেয়েও বেশি।

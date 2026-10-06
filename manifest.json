@@ -1,0 +1,19 @@
+{
+  "name": "জননী সংসদ",
+  "short_name": "জননী সংসদ",
+  "description": "জননী সংসদের পূজা, অনুষ্ঠান, নোটিশ ও যোগাযোগের তথ্য।",
+  "lang": "bn",
+  "dir": "ltr",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#FFF9EF",
+  "theme_color": "#650E18",
+  "icons": [
+    {
+      "src": "image/maa-durga.png",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
