@@ -410,6 +410,15 @@ const DEFAULT_PAGE_HEADINGS = {
   sub_contact: 'যেকোনো প্রশ্ন বা সহযোগিতার জন্য আমাদের সঙ্গে যোগাযোগ করুন।',
 };
 
+const WEBSITE_PUJA_SCHEDULE = [
+    { day: '০১', date: '১৬ অক্টোবর ২০২৬, শুক্রবার · ২৮ আশ্বিন', title: 'মহাষষ্ঠী — কালপরম্ভ ও বোধন', items: ['ভোর ৬:০০টা — কালপরম্ভ', 'সকাল ৯:০০টা — পূজা ও পুষ্পাঞ্জলি', 'সন্ধ্যা ৬:০০টা — বোধন, আমন্ত্রণ ও অধিবাস; সন্ধ্যা আরতি', 'ষষ্ঠী তিথি ২৮ আশ্বিন; শেষ ১৭ অক্টোবর সকাল ৬:২৪-এ'] },
+    { day: '০২', date: '১৭ অক্টোবর ২০২৬, শনিবার · ২৯ আশ্বিন', title: 'মহাসপ্তমী — তিথির প্রথম দিন', items: ['সকাল ৬:২৪টা — সপ্তমী তিথি শুরু', 'নবপত্রিকা স্নান ও সপ্তমী বিহিত পূজা ১৮ অক্টোবর অনুষ্ঠিত হবে'] },
+    { day: '০৩', date: '১৮ অক্টোবর ২০২৬, রবিবার · ৩০ আশ্বিন', title: 'মহাসপ্তমী — নবপত্রিকা ও পূজা', items: ['ভোর ৬:০০টা — নবপত্রিকা স্নান ও স্থাপন', 'সকাল ৯:০০টা — সপ্তমী বিহিত পূজা ও পুষ্পাঞ্জলি', 'দুপুর ১২:০০টা — ভোগ আরতি', 'সকাল ৮:৫৭টা — সপ্তমী তিথি শেষ'] },
+    { day: '০৪', date: '১৯ অক্টোবর ২০২৬, সোমবার · ১ কার্তিক', title: 'মহাষ্টমী — কুমারী পূজা ও সন্ধিপূজা', items: ['সকাল ৯:০০টা — কুমারী পূজা ও পুষ্পাঞ্জলি', 'সকাল ১০:৫৮টা–১১:৪৬টা — সন্ধিপূজা', 'রাত ৮:০০টা — সাংস্কৃতিক সন্ধ্যা', 'অষ্টমী তিথি ১ কার্তিক; শেষ সকাল ১১:২২-এ, সন্ধিপূজা তিথি-সন্ধিক্ষণে'] },
+    { day: '০৫', date: '২০ অক্টোবর ২০২৬, মঙ্গলবার · ২ কার্তিক', title: 'মহানবমী — হোম ও মহাভোগ', items: ['সকাল ৯:০০টা — নবমী পূজা ও হোম', 'দুপুর ১:০০টা — মহাভোগ', 'রাত ৯:০০টা — ধুনুচি নাচ', 'নবমী তিথি ২ কার্তিক; শেষ দুপুর ১:২০-এ'] },
+    { day: '০৬', date: '২১ অক্টোবর ২০২৬, বুধবার · ৩ কার্তিক', title: 'বিজয়া দশমী — দর্পণ বিসর্জন ও প্রতিমা বিসর্জন', items: ['সকাল ৯:০০টা — দশমী পূজা ও দর্পণ বিসর্জন', 'দুপুর ১২:০০টা — সিঁদুর খেলা', 'বিকেল ৪:০০টা — প্রতিমা বিসর্জন', 'দশমী তিথি ৩ কার্তিক; শেষ দুপুর ২:৪২-এ'] }
+  ];
+
 let currentEdit = null; // { type, id } or null for "new"
 let draggedGalleryId = null;
 const dashboardCounts = {};
@@ -430,6 +439,7 @@ authPersistenceReady
       document.getElementById('userEmail').textContent = user.email || '';
       requestDashboardLocation();
       Object.keys(SCHEMAS).forEach(attachListListener);
+      seedWebsitePujaSchedule();
       seedDefaultSettings();
       seedDefaultAbout();
       seedDefaultPageHeadings();
@@ -529,6 +539,35 @@ async function seedDefaultPageHeadings() {
   }
 }
 
+
+
+async function seedWebsitePujaSchedule() {
+  try {
+    const migrationRef = db.collection('migrationFlags').doc('puja-schedule-2026-v1');
+    const migration = await migrationRef.get();
+    if (migration.exists) return;
+
+    const collection = db.collection('schedule');
+    const snapshot = await collection.get();
+    const batch = db.batch();
+    const keptIds = new Set();
+
+    WEBSITE_PUJA_SCHEDULE.forEach((entry, index) => {
+      const docId = `website-puja-2026-${String(index + 1).padStart(2, '0')}`;
+      keptIds.add(docId);
+      batch.set(collection.doc(docId), { ...entry, order: index + 1 });
+    });
+
+    snapshot.docs.forEach(doc => {
+      if (!keptIds.has(doc.id)) batch.delete(doc.ref);
+    });
+
+    batch.set(migrationRef, { completed: true, completedAt: firebase.firestore.FieldValue.serverTimestamp() });
+    await batch.commit();
+  } catch (error) {
+    console.warn('Website puja schedule migration skipped:', error);
+  }
+}
 
 
 // ---------------- TABS ----------------
