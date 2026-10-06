@@ -1074,8 +1074,30 @@ a:focus-visible {
 }
 .sidebar-foot { border-top-color: rgba(255,255,255,.12); }
 .user-email { color: rgba(255,255,255,.7); }
-.sidebar-foot .btn-outline { border-color: rgba(241,216,148,.55); color: #f1d894; }
-.sidebar-foot .btn-outline:hover { background: rgba(241,216,148,.12); }
+.sidebar-foot #logoutBtn {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border: 1px solid rgba(255, 155, 164, .34);
+  border-radius: 12px;
+  background: rgba(179, 38, 54, .16);
+  color: #ffe0df;
+  font-weight: 600;
+  letter-spacing: .01em;
+  transition: background .18s ease, border-color .18s ease, color .18s ease, transform .18s ease, box-shadow .18s ease;
+}
+.logout-icon { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.sidebar-foot #logoutBtn:hover {
+  border-color: rgba(255, 171, 176, .72);
+  background: rgba(190, 48, 62, .36);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(15, 2, 5, .2);
+  transform: translateY(-1px);
+}
+.sidebar-foot #logoutBtn:focus-visible { outline: 2px solid #f1d894; outline-offset: 3px; }
+.sidebar-foot #logoutBtn:active { transform: translateY(0); box-shadow: none; }
 
 .main {
   background:

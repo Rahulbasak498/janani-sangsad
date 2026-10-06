@@ -3286,7 +3286,7 @@ body.page-leaving > *:not(.page-transition-layer) {
   }
 
   .hero-community-card {
-    top: calc(46% + 145px);
+    top: calc(46% + 132px);
     width: min(calc(100vw - 32px), 420px);
     gap: 10px;
     padding: 14px;
@@ -3800,7 +3800,7 @@ section {
   .deity-showcase { max-width: min(250px, 72vw); }
 
   .hero-community-card {
-    top: calc(46% + 145px);
+    top: calc(46% + 132px);
     width: min(calc(100vw - 32px), 420px);
   }
 
