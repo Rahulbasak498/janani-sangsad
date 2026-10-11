@@ -2,14 +2,17 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    function isAdmin() {
+      return request.auth != null && request.auth.token.admin == true;
+    }
+
     // ---- শুভেচ্ছা বোর্ড (wishes) ----
-    // সবাই প্রকাশিত বার্তা পড়তে ও নতুন বার্তা প্রকাশ করতে পারে; শুধু লগইন করা অ্যাডমিন edit/delete করতে পারে।
     match /wishes/{wishId} {
-      allow read: if true;
+      allow read: if isAdmin() || resource.data.approved == true;
 
       allow create: if request.resource.data.keys().hasOnly(['name', 'loc', 'msg', 'approved', 'createdAt'])
                     && wishId.matches('^[A-Za-z0-9_-]{1,128}$')
-                    && request.resource.data.approved == true
+                    && request.resource.data.approved == false
                     && request.resource.data.name is string
                     && request.resource.data.name.size() > 0
                     && request.resource.data.name.size() <= 60
@@ -20,7 +23,7 @@ service cloud.firestore {
                     && request.resource.data.msg.size() <= 300
                     && request.resource.data.createdAt == request.time;
 
-      allow update, delete: if request.auth != null;
+      allow update, delete: if isAdmin();
     }
 
     // ---- বাকি সব কালেকশন: সবাই পড়তে পারে, শুধু লগইন করা অ্যাডমিন লিখতে পারে ----
@@ -30,12 +33,17 @@ service cloud.firestore {
                     && request.resource.data.token.size() > 100
                     && request.resource.data.token.size() <= 4096
                     && request.resource.data.createdAt == request.time;
-      allow read, update, delete: if request.auth != null;
+      allow read, update, delete: if isAdmin();
     }
 
     match /{collection}/{docId} {
-      allow read: if collection != 'wishes' && collection != 'notificationSubscriptions';
-      allow write: if request.auth != null && collection != 'wishes' && collection != 'notificationSubscriptions';
+      allow read: if isAdmin() || collection in [
+        'siteSettings', 'notices', 'schedule', 'members', 'ticker',
+        'gallery', 'affiliates', 'events', 'about', 'pageHeadings'
+      ];
+      allow write: if isAdmin()
+                   && collection != 'wishes'
+                   && collection != 'notificationSubscriptions';
     }
   }
 }

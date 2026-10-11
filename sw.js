@@ -1,4 +1,4 @@
-const CACHE_NAME = 'janani-sangsad-v20';
+const CACHE_NAME = 'janani-sangsad-v28';
 const APP_SHELL = [
   './index.html',
   './style.css',

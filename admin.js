@@ -73,49 +73,31 @@ function requestDashboardLocation() {
 
 
 // =========================================================
-// CLOUDINARY DIRECT UPLOAD
+// AUTHORIZED FIREBASE STORAGE UPLOAD
 // =========================================================
-async function uploadToCloudinary(file, onProgress) {
+async function uploadToStorage(file, onProgress) {
   if (file.size > 10 * 1024 * 1024) {
     throw new Error('ছবির সাইজ 10MB-এর কম হতে হবে।');
   }
+  if (!file.type || !file.type.startsWith('image/')) {
+    throw new Error('শুধু image file upload করা যাবে।');
+  }
+  if (typeof storage === 'undefined') throw new Error('Firebase Storage চালু নেই।');
 
-  const cloudName = (typeof CLOUDINARY_CONFIG !== 'undefined' && CLOUDINARY_CONFIG.cloudName) || 'c5ap4zda';
-  const uploadPreset = (typeof CLOUDINARY_CONFIG !== 'undefined' && CLOUDINARY_CONFIG.uploadPreset) || 'janani_upload';
-
-  const formData = new FormData();
-  formData.append('file', file);
-  formData.append('upload_preset', uploadPreset);
+  const safeName = file.name.replace(/[^a-zA-Z0-9._-]+/g, '_').slice(-80) || 'image';
+  const path = `site-uploads/${Date.now()}-${Math.random().toString(36).slice(2)}-${safeName}`;
+  const fileRef = storage.ref().child(path);
+  const uploadTask = fileRef.put(file, { contentType: file.type });
 
   return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', 'https://api.cloudinary.com/v1_1/' + cloudName + '/image/upload');
-
-    if (xhr.upload && typeof onProgress === 'function') {
-      xhr.upload.onprogress = (e) => {
-        if (e.lengthComputable) {
-          const percent = (e.loaded / e.total) * 100;
-          onProgress(percent);
-        }
-      };
-    }
-
-    xhr.onload = () => {
-      try {
-        const data = JSON.parse(xhr.responseText);
-        if (xhr.status >= 200 && xhr.status < 300 && data.secure_url) {
-          resolve(data.secure_url);
-        } else {
-          const errDetail = data.error?.message || xhr.statusText || 'Upload failed';
-          reject(new Error('ছবি আপলোড ব্যর্থ: ' + errDetail));
-        }
-      } catch (err) {
-        reject(new Error('Cloudinary সার্ভার রেসপন্স বুঝতে সমস্যা হয়েছে।'));
+    uploadTask.on('state_changed', snapshot => {
+      if (snapshot.totalBytes && typeof onProgress === 'function') {
+        onProgress((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
       }
-    };
-
-    xhr.onerror = () => reject(new Error('নেটওয়ার্ক সমস্যার কারণে ছবি আপলোড হয়নি।'));
-    xhr.send(formData);
+    }, reject, async () => {
+      try { resolve(await fileRef.getDownloadURL()); }
+      catch (error) { reject(error); }
+    });
   });
 }
 
@@ -227,12 +209,13 @@ const SCHEMAS = {
     fields: [
       { key: 'name', label: 'নাম', type: 'text', required: true },
       { key: 'loc',  label: 'এলাকা বা শহর', type: 'text' },
-      { key: 'msg',  label: 'বার্তা', type: 'textarea', required: true }
+      { key: 'msg',  label: 'বার্তা', type: 'textarea', required: true },
+      { key: 'approved', label: 'ওয়েবসাইটে প্রকাশ করবেন?', type: 'select', options: [['false', 'অপেক্ষমাণ'], ['true', 'প্রকাশিত']], default: 'false' }
     ],
     card: w => ({
       thumb: '💬',
       title: (w.name || '') + (w.loc ? ' — ' + w.loc : ''),
-      sub: w.msg || ''
+      sub: (w.approved === true || w.approved === 'true' ? 'প্রকাশিত · ' : 'অপেক্ষমাণ · ') + (w.msg || '')
     })
   },
   settings: {
@@ -430,8 +413,26 @@ const authPersistenceReady = auth
   .then(() => auth.signOut());
 
 authPersistenceReady
-  .then(() => auth.onAuthStateChanged(user => {
+  .then(() => auth.onAuthStateChanged(async user => {
     if (user && dashboardLoginAuthorized) {
+      try {
+        const token = await user.getIdTokenResult();
+        if (token.claims.admin !== true) {
+          dashboardLoginAuthorized = false;
+          await auth.signOut();
+          const errBox = document.getElementById('loginError');
+          errBox.textContent = 'এই account-এ admin permission সেট করা নেই। Project admin-এর সঙ্গে যোগাযোগ করুন।';
+          errBox.style.display = 'block';
+          return;
+        }
+      } catch (error) {
+        dashboardLoginAuthorized = false;
+        await auth.signOut();
+        const errBox = document.getElementById('loginError');
+        errBox.textContent = 'Admin permission যাচাই করা যায়নি। আবার লগইন করুন।';
+        errBox.style.display = 'block';
+        return;
+      }
       document.getElementById('loginWrap').style.display = 'none';
       document.getElementById('app').style.display = 'flex';
       document.getElementById('userEmail').textContent = user.email || '';
@@ -547,17 +548,20 @@ async function seedWebsitePujaSchedule() {
 
     const collection = db.collection('schedule');
     const snapshot = await collection.get();
+    if (!snapshot.empty) {
+      // Never replace or delete schedule data an admin has already entered.
+      await migrationRef.set({
+        completed: true,
+        skippedBecauseScheduleExists: true,
+        completedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      return;
+    }
     const batch = db.batch();
-    const keptIds = new Set();
 
     WEBSITE_PUJA_SCHEDULE.forEach((entry, index) => {
       const docId = `website-puja-2026-${String(index + 1).padStart(2, '0')}`;
-      keptIds.add(docId);
       batch.set(collection.doc(docId), { ...entry, order: index + 1 });
-    });
-
-    snapshot.docs.forEach(doc => {
-      if (!keptIds.has(doc.id)) batch.delete(doc.ref);
     });
 
     batch.set(migrationRef, { completed: true, completedAt: firebase.firestore.FieldValue.serverTimestamp() });
@@ -923,7 +927,7 @@ document.getElementById('itemForm').addEventListener('submit', async (e) => {
   const hasFilesToUpload = filesToUpload.length > 0;
   setFormBusy(form, true);
   const operation = startOperationProgress(
-    hasFilesToUpload ? 'ছবি Cloudinary-তে upload হচ্ছে…' : 'তথ্য সংরক্ষণ হচ্ছে…',
+    hasFilesToUpload ? 'ছবি নিরাপদে upload হচ্ছে…' : 'তথ্য সংরক্ষণ হচ্ছে…',
     !hasFilesToUpload
   );
 
@@ -936,6 +940,8 @@ document.getElementById('itemForm').addEventListener('submit', async (e) => {
 
     if (input.dataset.type === 'number') {
       val = Number(val) || 0;
+    } else if (key === 'approved') {
+      val = val === true || val === 'true';
     } else if (input.dataset.isList === '1') {
       val = val.split('\n').map(s => s.trim()).filter(Boolean);
     }
@@ -946,7 +952,7 @@ document.getElementById('itemForm').addEventListener('submit', async (e) => {
   try {
     for (let i = 0; i < filesToUpload.length; i++) {
       const { file, targetKey } = filesToUpload[i];
-      const uploadedUrl = await uploadToCloudinary(file, (percent) => {
+      const uploadedUrl = await uploadToStorage(file, (percent) => {
         const slice = 85 / filesToUpload.length;
         const currentProgress = (i * slice) + ((percent / 100) * slice);
         operation.set(currentProgress);

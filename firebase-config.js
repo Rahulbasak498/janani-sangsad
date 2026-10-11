@@ -19,9 +19,4 @@ const db = firebase.firestore();
 const auth = firebase.auth();
 const storage = firebase.storage();
 
-// Cloudinary config
-const CLOUDINARY_CONFIG = {
-  cloudName: "c5ap4zda",
-  uploadPreset: "janani_upload"
-};
 

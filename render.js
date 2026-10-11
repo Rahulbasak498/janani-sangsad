@@ -106,6 +106,17 @@ function isRealValue(value) {
   return !PLACEHOLDER_PATTERNS.some(re => re.test(text) || re.test(compact));
 }
 
+function isSafeUrl(value, allowedProtocols = ['http:', 'https:']) {
+  const text = String(value == null ? '' : value).trim();
+  if (!text) return false;
+  try {
+    const url = new URL(text, document.baseURI);
+    return allowedProtocols.includes(url.protocol);
+  } catch (_) {
+    return false;
+  }
+}
+
 function setHidden(id, hidden) {
   const el = document.getElementById(id);
   if (el) el.hidden = !!hidden;
@@ -117,9 +128,15 @@ function applySiteSettings(settings) {
     if (element && value !== undefined) element.textContent = value;
   };
 
-  const setAttr = (id, attr, value) => {
+  const setUrlAttr = (id, attr, value, allowedProtocols = ['http:', 'https:']) => {
     const element = document.getElementById(id);
-    if (element && value) element.setAttribute(attr, value);
+    if (!element) return false;
+    if (!isSafeUrl(value, allowedProtocols)) {
+      element.removeAttribute(attr);
+      return false;
+    }
+    element.setAttribute(attr, String(value).trim());
+    return true;
   };
 
   setText('heroTitleMain', settings.heroTitleMain);
@@ -132,7 +149,7 @@ function applySiteSettings(settings) {
   setText('footerBrandName', committeeName);
   setText('footerCreditName', committeeName);
   setText('navTagline', settings.foundingTagline);
-  setAttr('heroDeity', 'src', settings.heroImageUrl);
+  setUrlAttr('heroDeity', 'src', settings.heroImageUrl);
   // ---- Donation (rows stay hidden until real values exist) ----
   const bkashOk = isRealValue(settings.bkashNagad);
   if (bkashOk) setText('bkashNagad', settings.bkashNagad);
@@ -151,15 +168,21 @@ function applySiteSettings(settings) {
   // image/QR.jpg is the bundled DEMO placeholder — only show a QR when the
   // admin has pointed the setting at their own real image.
   const qrUrl = String(settings.donationQrUrl || '').trim();
-  const qrOk = qrUrl && !/(^|\/)QR\.jpg(\?.*)?$/i.test(qrUrl);
-  if (qrOk) setAttr('donationQr', 'src', qrUrl);
+  const qrOk = isSafeUrl(qrUrl) && !/(^|\/)QR\.jpg(\?.*)?$/i.test(qrUrl);
+  if (qrOk) setUrlAttr('donationQr', 'src', qrUrl);
+  else document.getElementById('donationQr')?.removeAttribute('src');
   setHidden('qrBox', !qrOk);
 
-  const receiptOk = isRealValue(settings.receiptUrl);
+  const receiptOk = isRealValue(settings.receiptUrl)
+    && isSafeUrl(settings.receiptUrl, ['http:', 'https:', 'mailto:']);
+  if (!receiptOk) document.getElementById('receiptUrl')?.removeAttribute('href');
   if (receiptOk) {
-    setAttr('receiptUrl', 'href', settings.receiptUrl);
-    setAttr('receiptUrl', 'target', '_blank');
-    setAttr('receiptUrl', 'rel', 'noopener noreferrer');
+    setUrlAttr('receiptUrl', 'href', settings.receiptUrl, ['http:', 'https:', 'mailto:']);
+    const receiptLink = document.getElementById('receiptUrl');
+    if (receiptLink && !String(settings.receiptUrl).trim().startsWith('mailto:')) {
+      receiptLink.setAttribute('target', '_blank');
+      receiptLink.setAttribute('rel', 'noopener noreferrer');
+    }
   }
   setHidden('receiptUrl', !receiptOk);
 
@@ -168,8 +191,14 @@ function applySiteSettings(settings) {
   setText('locationAddress', settings.locationAddress);
   setText('locationHours', settings.locationHours);
   setText('locationDirection', settings.locationDirection);
-  setAttr('mapEmbed', 'src', settings.mapEmbedUrl);
-  setAttr('mapLink', 'href', settings.mapLink);
+  // The HTML includes a working map as a fallback. Keep it when these
+  // optional settings are blank or invalid, and only replace it with HTTPS.
+  if (isSafeUrl(settings.mapEmbedUrl, ['https:'])) {
+    setUrlAttr('mapEmbed', 'src', settings.mapEmbedUrl, ['https:']);
+  }
+  if (isSafeUrl(settings.mapLink, ['https:'])) {
+    setUrlAttr('mapLink', 'href', settings.mapLink, ['https:']);
+  }
 
   // ---- Contact (cards stay hidden until real values exist) ----
   const phoneOk = isRealValue(settings.contactPhone);
@@ -181,11 +210,13 @@ function applySiteSettings(settings) {
     phoneLink.hidden = !phoneOk;
   }
 
-  const fbOk = isRealValue(settings.facebookUrl);
+  const fbOk = isRealValue(settings.facebookUrl) && isSafeUrl(settings.facebookUrl);
+  if (!fbOk) document.getElementById('facebookLink')?.removeAttribute('href');
   if (fbOk) {
-    setAttr('facebookLink', 'href', settings.facebookUrl);
-    setAttr('facebookLink', 'target', '_blank');
-    setAttr('facebookLink', 'rel', 'noopener noreferrer');
+    setUrlAttr('facebookLink', 'href', settings.facebookUrl);
+    const facebookLink = document.getElementById('facebookLink');
+    facebookLink?.setAttribute('target', '_blank');
+    facebookLink?.setAttribute('rel', 'noopener noreferrer');
     setText('facebookLabel', isRealValue(settings.facebookLabel)
       ? settings.facebookLabel
       : String(settings.facebookUrl).replace(/^https?:\/\/(www\.)?/, ''));
@@ -195,8 +226,9 @@ function applySiteSettings(settings) {
   [['footerFacebookLink', settings.facebookUrl],
    ['footerInstagramLink', settings.instagramUrl],
    ['footerYoutubeLink', settings.youtubeUrl]].forEach(([id, url]) => {
-    const ok = isRealValue(url);
-    if (ok) setAttr(id, 'href', url);
+    const ok = isRealValue(url) && isSafeUrl(url);
+    if (ok) setUrlAttr(id, 'href', url);
+    else document.getElementById(id)?.removeAttribute('href');
     setHidden(id, !ok);
   });
 
@@ -497,14 +529,15 @@ function renderAffiliates(docs) {
           style="${isJananiNatyaGoshthi ? 'width:100%;height:100%;object-fit:cover;' : 'max-width:100%;height:auto;'}"
         >
       `
-      : (a.icon || '🏛️');
+      : escapeHtml(a.icon || '🏛️');
 
 
-    const linkHtml = a.link
+    const safeAffiliateLink = isSafeUrl(a.link, ['http:', 'https:']);
+    const linkHtml = safeAffiliateLink
       ? `
         <a
           class="aff-link"
-          href="${escapeAttr(a.link)}"
+          href="${escapeAttr(String(a.link).trim())}"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -564,7 +597,7 @@ function renderEvents(docs) {
     card.className = 'ev-card';
 
     card.innerHTML = `
-      <div class="ev-icon">${ev.icon || '🎉'}</div>
+      <div class="ev-icon">${escapeHtml(ev.icon || '🎉')}</div>
       <h3>${escapeHtml(ev.title || '')}</h3>
       <p>${escapeHtml(ev.desc || '')}</p>
     `;
