@@ -799,118 +799,6 @@ section .eyebrow {
   box-shadow: 0 0 10px #22C55E;
 }
 
-/* Countdown Card Wrapper */
-.countdown-card-wrapper {
-  background: rgba(36, 4, 9, 0.75);
-  border: 1px solid var(--gold-border);
-  backdrop-filter: blur(16px) saturate(150%);
-  -webkit-backdrop-filter: blur(16px) saturate(150%);
-  border-radius: var(--radius-lg);
-  padding: 18px 22px;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4), 0 0 20px rgba(212, 175, 55, 0.12);
-  margin-bottom: 26px;
-  width: 100%;
-  max-width: 520px;
-}
-
-.countdown-top-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 14px;
-  padding-bottom: 10px;
-  border-bottom: 1px dashed rgba(212, 175, 55, 0.3);
-}
-
-.countdown-heading-text {
-  font-family: var(--font-sans);
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: var(--gold-200);
-}
-
-.countdown-card-wrapper #pujaTopPill {
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 8px;
-  flex-wrap: wrap;
-  text-align: right;
-}
-
-.countdown-card-wrapper #heroDaysLeft {
-  color: var(--gold-200);
-  font-size: 0.82rem;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-.countdown-card-wrapper #heroDaysLabel {
-  color: rgba(255, 255, 255, 0.72);
-  font-size: 0.72rem;
-  white-space: nowrap;
-}
-
-.countdown-pill {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  background: transparent;
-  border: none;
-  padding: 0;
-  margin: 0;
-  box-shadow: none;
-}
-
-.countdown-pill .box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(20, 2, 6, 0.72) 100%);
-  border: 1px solid rgba(212, 175, 55, 0.32);
-  border-radius: var(--radius-sm);
-  padding: 10px 14px;
-  flex: 1;
-  box-shadow: inset 0 1px 2px rgba(255, 235, 160, 0.2), 0 4px 14px rgba(0, 0, 0, 0.35);
-  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-}
-
-.countdown-pill .box:hover {
-  transform: translateY(-2px);
-  border-color: var(--gold-400);
-  box-shadow: inset 0 1px 2px rgba(255, 235, 160, 0.3), 0 6px 18px rgba(212, 175, 55, 0.25);
-}
-
-.countdown-pill .num {
-  font-family: var(--font-sans);
-  font-size: clamp(1.6rem, 2.8vw, 2.1rem);
-  font-weight: 700;
-  line-height: 1.1;
-  background: var(--gold-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 2px 6px rgba(212, 175, 55, 0.4));
-}
-
-.countdown-pill .lbl {
-  font-family: var(--font-sans);
-  font-size: 0.74rem;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.85);
-  margin-top: 2px;
-  letter-spacing: 0.03em;
-}
-
-.countdown-pill .cd-sep {
-  font-family: var(--font-sans);
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--gold-400);
-  opacity: 0.7;
-}
-
 /* Hero CTA Buttons */
 .hero-ctas {
   display: flex;
@@ -3326,32 +3214,6 @@ body.page-leaving > *:not(.page-transition-layer) {
     font-size: 1.75rem;
   }
 
-  /* Countdown boxes tighter on mobile */
-  .countdown-card-wrapper {
-    padding: 14px 12px;
-  }
-
-  .countdown-pill {
-    gap: 4px;
-  }
-
-  .countdown-pill .box {
-    padding: 8px 6px;
-    min-width: 0;
-  }
-
-  .countdown-pill .num {
-    font-size: 1.45rem;
-  }
-
-  .countdown-pill .lbl {
-    font-size: 0.68rem;
-  }
-
-  .countdown-pill .cd-sep {
-    font-size: 1.1rem;
-  }
-
   .about-stats {
     grid-template-columns: 1fr;
   }
@@ -3594,14 +3456,25 @@ section {
   outline-offset: 3px;
 }
 
+.hero-status-row {
+  width: 100%;
+  justify-content: flex-start;
+  margin-bottom: 1.15rem;
+}
+
 .live-puja-badge {
   position: relative;
-  gap: .7rem;
-  padding: .62rem 1.15rem .62rem .72rem;
-  border: 1px solid rgba(243, 222, 142, .52);
-  border-radius: 999px;
-  background: linear-gradient(115deg, rgba(42, 4, 10, .78), rgba(122, 15, 33, .58) 58%, rgba(212, 175, 55, .16));
-  box-shadow: 0 8px 24px rgba(10, 0, 2, .24), inset 0 1px rgba(255,255,255,.13), 0 0 24px rgba(212,175,55,.12);
+  display: inline-flex;
+  align-items: center;
+  gap: .75rem;
+  width: fit-content;
+  max-width: min(100%, 460px);
+  min-width: 0;
+  padding: .72rem 1rem .72rem .78rem;
+  border: 1px solid rgba(243, 222, 142, .54);
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(42, 4, 10, .94), rgba(89, 11, 25, .88) 70%, rgba(145, 85, 20, .28));
+  box-shadow: 0 12px 28px rgba(10, 0, 2, .28), inset 0 1px rgba(255,255,255,.14), 0 0 22px rgba(212,175,55,.12);
   backdrop-filter: blur(14px) saturate(145%);
   -webkit-backdrop-filter: blur(14px) saturate(145%);
 }
@@ -3642,23 +3515,46 @@ section {
 }
 
 .lpb-text {
-  display: inline-flex;
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
   align-items: center;
-  flex-wrap: wrap;
-  column-gap: .55rem;
-  row-gap: .3rem;
+  gap: .3rem .65rem;
+  min-width: 0;
   color: #fff4cf;
   font-size: .9rem;
   font-weight: 600;
-  letter-spacing: .015em;
-  line-height: 1.45;
+  letter-spacing: .01em;
+  line-height: 1.4;
   text-shadow: 0 1px 8px rgba(0,0,0,.3);
   white-space: normal;
 }
 
+.lpb-text .lps-label {
+  grid-column: 1;
+  grid-row: 1;
+  padding: .16rem .55rem;
+  border: 1px solid rgba(243,222,142,.3);
+  border-radius: 999px;
+  background: rgba(255,244,207,.09);
+  color: #ffe8a0;
+  font-size: .72rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.lpb-text .lps-name {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
 .lpb-text .lps-date {
   display: inline-flex;
+  grid-column: 2;
+  grid-row: 2;
   align-items: center;
+  justify-self: start;
   padding: .16rem .62rem;
   border: 1px solid rgba(243,222,142,.3);
   border-radius: 999px;
@@ -3669,13 +3565,18 @@ section {
 }
 
 @media (max-width: 600px) {
+  .hero-status-row { justify-content: center; margin-bottom: .9rem; }
+
   .live-puja-badge {
-    max-width: min(100%, 360px);
-    padding: .55rem .9rem .55rem .62rem;
+    width: min(100%, 360px);
+    max-width: 100%;
+    padding: .62rem .78rem .62rem .66rem;
     gap: .58rem;
+    border-radius: 16px;
   }
 
-  .lpb-text { font-size: .82rem; }
+  .lpb-text { font-size: .82rem; gap: .28rem .5rem; }
+  .lpb-text .lps-date { grid-column: 2; justify-self: start; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -3777,6 +3678,7 @@ section {
 
 .hero-community-primary:hover { background: var(--gold-300); }
 
+
 @media (max-width: 600px) {
   .hero-community-actions { gap: 7px; }
   .hero-community-link { padding-inline: 12px; font-size: .78rem; }
@@ -3797,11 +3699,25 @@ section {
 
   .hero-om-badge { transform: translateY(6px); }
 
-  .deity-showcase { max-width: min(250px, 72vw); }
+  /* Keep the live festival status and community card in normal flow on phones. */
+  .hero-right-col {
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .deity-showcase {
+    max-width: min(250px, 72vw);
+    margin-bottom: 0;
+  }
 
   .hero-community-card {
-    top: calc(46% + 132px);
+    position: relative;
+    top: auto;
+    left: auto;
     width: min(calc(100vw - 32px), 420px);
+    margin: 0 auto;
+    transform: none;
   }
 
   .deity-img-frame {
@@ -3830,7 +3746,6 @@ section {
   }
 
   .deity-pedestal { margin-top: 0; }
-  .hero-community-card { margin-top: 8px; }
 }
 
 /* Donation section refinement */

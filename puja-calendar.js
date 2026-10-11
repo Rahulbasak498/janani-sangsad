@@ -60,7 +60,13 @@
   }
 
   function todayKeyDhaka(now) {
-    return new Intl.DateTimeFormat('en-CA', { timeZone: TZ }).format(now);
+    var parts = new Intl.DateTimeFormat('en-US', {
+      timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit'
+    }).formatToParts(now).reduce(function (acc, part) {
+      acc[part.type] = part.value;
+      return acc;
+    }, {});
+    return parts.year + '-' + parts.month + '-' + parts.day;
   }
 
   function formatBnDate(isoDate) {
@@ -70,121 +76,45 @@
     return toBn(parts.day) + ' ' + BN_MONTH[parseInt(parts.month, 10) - 1] + ' ' + toBn(parts.year);
   }
 
-  function findEvent(id) {
-    return PUJA_CALENDAR.find(function (e) { return e.id === id; });
-  }
-
-  // মহাষষ্ঠী থেকে বিজয়া দশমীর দিন শেষ পর্যন্ত — এটাই "দুর্গাপূজা"-র আসল সময়সীমা
-  function durgaPujaWindow() {
-    var shashthi = findEvent('shashthi');
-    var dashami = findEvent('dashami');
-    var start = new Date(shashthi.date).getTime();
-    var end = new Date(dashami.date).getTime() + (24 * 60 * 60 * 1000) - 1000; // দশমীর দিনের একদম শেষ মুহূর্ত পর্যন্ত
-    return { start: start, end: end };
-  }
-
-  var currentTargetTime = null;
-
   function render() {
     var liveTextEl = document.getElementById('livePujaText');
     var liveIconEl = document.getElementById('livePujaIcon');
     var liveStatusEl = document.getElementById('livePujaStatus');
     var liveBadgeEl = document.getElementById('livePujaBadge');
-    var pillDaysEl = document.getElementById('heroDaysLeft');
-    var pillLabelEl = document.getElementById('heroDaysLabel');
-    var countdownHeadingEl = document.getElementById('countdownHeading');
-    var countdownCardEl = document.querySelector('.countdown-card-wrapper');
-    var countdownEl = document.getElementById('countdown');
 
-    var now = new Date();
-    var nowMs = now.getTime();
-    var todayKey = todayKeyDhaka(now);
+    var todayKey = todayKeyDhaka(new Date());
+    var todayEvents = PUJA_CALENDAR.filter(function (event) {
+      return event.date.slice(0, 10) === todayKey;
+    });
+    var nextEvent = PUJA_CALENDAR.find(function (event) {
+      return event.date.slice(0, 10) > todayKey;
+    });
+    var isPujaToday = todayEvents.length > 0;
 
-    var todayEvent = PUJA_CALENDAR.find(function (e) { return e.date.slice(0, 10) === todayKey; });
-    var nextEvent = PUJA_CALENDAR.find(function (e) { return new Date(e.date).getTime() > nowMs; });
-
-    // ---- হিরো সেকশনের বড় লাইভ স্ট্যাটাস লাইন (আজকে ঠিক কোন পূজা — পুরো পঞ্জিকা ধরে) ----
     if (liveTextEl) {
-      if (todayEvent) {
-        if (liveIconEl) liveIconEl.textContent = todayEvent.emoji;
+      if (isPujaToday) {
+        var names = todayEvents.map(function (event) { return event.name; });
+        if (liveIconEl) liveIconEl.textContent = todayEvents[0].emoji;
         liveTextEl.innerHTML =
-          '<span class="lps-label">আজ</span>' +
-          '<span class="lps-name">' + todayEvent.name + ' চলছে</span>';
-      }
-    }
-    if (liveBadgeEl) liveBadgeEl.style.display = todayEvent ? '' : 'none';
-    if (liveStatusEl) {
-      liveStatusEl.classList.toggle('is-today', !!todayEvent);
-    }
-
-    // ---- পরবর্তী পঞ্জিকা-অনুষ্ঠানের রিয়েল কাউন্টডাউন ----
-    var win = durgaPujaWindow();
-    var durgaOngoing = (nowMs >= win.start && nowMs <= win.end);
-    // পূজার সময় লাইভ ব্যাজ আজকের অনুষ্ঠান দেখায়। অন্য সময়ে ক্যালেন্ডারের
-    // পরের অনুষ্ঠান দেখাই, তাই মহালয়া আগে এবং তার পরে ষষ্ঠী/পরের পূজা আসে।
-    var countdownTarget = durgaOngoing ? null : nextEvent;
-
-    if (pillDaysEl && pillLabelEl) {
-      if (durgaOngoing) {
-        var activePujaName = (todayEvent && todayEvent.name) || 'দুর্গাপূজা';
-        pillDaysEl.textContent = 'আজ';
-        pillLabelEl.textContent = activePujaName;
-      } else if (countdownTarget) {
-        if (countdownHeadingEl) countdownHeadingEl.textContent = countdownTarget.name + 'র ক্ষণগণনা';
-        pillDaysEl.textContent = countdownTarget.name;
-        pillLabelEl.textContent = formatBnDate(countdownTarget.date);
+          '<span class="lps-label">\u0986\u099C</span>' +
+          '<span class="lps-name">' + names.join(' \u0993 ') + ' \u099A\u09B2\u099B\u09C7</span>';
+      } else if (nextEvent) {
+        if (liveIconEl) liveIconEl.textContent = nextEvent.emoji;
+        liveTextEl.innerHTML =
+          '<span class="lps-label">\u09AA\u09B0\u09AC\u09B0\u09CD\u09A4\u09C0 \u09AA\u09C2\u099C\u09BE</span>' +
+          '<span class="lps-name">' + nextEvent.name + '</span>' +
+          '<span class="lps-date">' + formatBnDate(nextEvent.date) + '</span>';
       } else {
-        if (countdownHeadingEl) countdownHeadingEl.textContent = 'পরবর্তী পূজা';
-        pillDaysEl.textContent = nextEvent ? nextEvent.name : '—';
-        pillLabelEl.textContent = nextEvent ? formatBnDate(nextEvent.date) : 'পঞ্জিকা শীঘ্রই আপডেট হবে';
+        if (liveIconEl) liveIconEl.textContent = '\uD83E\uDE94';
+        liveTextEl.textContent = '\u09AA\u09C2\u099C\u09BE\u09B0 \u09B8\u09C2\u099A\u09BF \u09B6\u09C0\u0998\u09CD\u09B0\u0987 \u0986\u09AA\u09A1\u09C7\u099F \u09B9\u09AC\u09C7';
       }
     }
-
-    if (durgaOngoing) {
-      // The livePujaBadge owns today's status while the puja is underway.
-      currentTargetTime = null;
-      if (countdownCardEl) countdownCardEl.style.display = 'none';
-      if (countdownEl) countdownEl.style.display = 'none';
-    } else if (countdownTarget) {
-      if (countdownCardEl) countdownCardEl.style.display = '';
-      currentTargetTime = new Date(countdownTarget.date).getTime();
-      if (countdownEl) countdownEl.style.display = '';
-      tickCountdown();
-    } else {
-      if (countdownCardEl) countdownCardEl.style.display = '';
-      currentTargetTime = null;
-      if (countdownEl) countdownEl.style.display = 'none';
-    }
-  }
-
-  function tickCountdown() {
-    if (currentTargetTime === null) return;
-
-    var diff = currentTargetTime - Date.now();
-    if (diff < 0) {
-      render();
-      return;
-    }
-
-    var days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    var hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    var mins = Math.floor((diff / (1000 * 60)) % 60);
-    var secs = Math.floor((diff / 1000) % 60);
-
-    var daysEl = document.getElementById('cd-days');
-    var hoursEl = document.getElementById('cd-hours');
-    var minsEl = document.getElementById('cd-mins');
-    var secsEl = document.getElementById('cd-secs');
-
-    if (daysEl) daysEl.textContent = toBn(pad2(days));
-    if (hoursEl) hoursEl.textContent = toBn(pad2(hours));
-    if (minsEl) minsEl.textContent = toBn(pad2(mins));
-    if (secsEl) secsEl.textContent = toBn(pad2(secs));
+    if (liveBadgeEl) liveBadgeEl.style.display = '';
+    if (liveStatusEl) liveStatusEl.classList.toggle('is-today', isPujaToday);
   }
 
   document.addEventListener('DOMContentLoaded', function () {
     render();
-    setInterval(tickCountdown, 1000);
     // মধ্যরাত পেরিয়ে দিন পাল্টালে "আজকের পূজা" ঠিকভাবে ধরার জন্য প্রতি মিনিটে পুনরায় হিসাব
     setInterval(render, 60 * 1000);
   });
