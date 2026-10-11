@@ -171,9 +171,9 @@ textarea { resize: vertical; min-height: 80px; }
   font-weight: 600;
   cursor: pointer;
   font-family: inherit;
-  transition: transform .12s ease, box-shadow .15s ease, background .15s ease, color .15s ease;
+  transition: transform .18s cubic-bezier(.2,.8,.2,1), box-shadow .18s ease, background .18s ease, color .18s ease;
 }
-.btn:active { transform: translateY(1px); }
+.btn:active { transform: scale(.985); }
 
 .btn-primary {
   background: linear-gradient(135deg, var(--vermilion), var(--maroon));
@@ -929,9 +929,23 @@ a:focus-visible {
   .panel { padding: 20px 14px 42px; }
 }
 
-:where(a, button, [role="button"]) {
+:where(a[href], button:not(:disabled), [role="button"], input[type="button"]:not(:disabled), input[type="submit"]:not(:disabled)) {
   touch-action: manipulation;
   -webkit-tap-highlight-color: rgba(212,175,55,.16);
+}
+
+:where(a[href], button:not(:disabled), [role="button"], input[type="button"]:not(:disabled), input[type="submit"]:not(:disabled)) {
+  transition-property: opacity, transform;
+  transition-duration: .16s;
+  transition-timing-function: cubic-bezier(.2,.8,.2,1);
+}
+
+:where(a[href], button:not(:disabled), [role="button"], input[type="button"]:not(:disabled), input[type="submit"]:not(:disabled)):active {
+  opacity: .84;
+}
+
+:where(button:not(:disabled), [role="button"], input[type="button"]:not(:disabled), input[type="submit"]:not(:disabled)):active {
+  transform: scale(.985);
 }
 
 .tabs { scroll-behavior: smooth; overscroll-behavior-x: contain; }
