@@ -570,8 +570,7 @@ function initWishesWall() {
     statusEl.innerHTML =
       '<span class="ws-icon">🌸</span>' +
       '<strong>আপনার শুভেচ্ছা বার্তা জমা হয়েছে!</strong>' +
-      '<span class="ws-sub">ধন্যবাদ 🙏 মা দুর্গা আপনার ও আপনার পরিবারের মঙ্গল করুন।<br>' +
-      'অনুমোদনের পর বার্তাটি শুভেচ্ছা বোর্ডে প্রকাশিত হবে।</span>';
+      '<span class="ws-sub">আপনার শুভেচ্ছা বার্তা বোর্ডে প্রকাশিত হয়েছে।</span>';
     successMessageTimer = setTimeout(() => {
       if (!statusEl.classList.contains('wish-success')) return;
       statusEl.classList.add('is-leaving');
@@ -606,7 +605,7 @@ function initWishesWall() {
     list.forEach(w => feed.appendChild(renderWishItem(w)));
   }
 
-  // ---- Submit: queue the wish for admin approval ----
+  // ---- Submit: publish the wish immediately ----
   form.addEventListener('submit', async e => {
     e.preventDefault();
 
@@ -648,7 +647,7 @@ function initWishesWall() {
     try {
       await db.collection('wishes').add({
         name, loc, msg,
-        approved: false,
+        approved: true,
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       });
       try { localStorage.setItem(COOLDOWN_KEY, String(Date.now())); } catch (err) {}
@@ -681,10 +680,10 @@ function initWishesWall() {
     }
   });
 
-  // ---- Feed: only admin-approved wishes are public ----
+  // ---- Feed: all submitted wishes are public immediately ----
   try {
     if (typeof db === 'undefined') throw new Error('db missing');
-    db.collection('wishes').where('approved', '==', true).limit(50).onSnapshot(snap => {
+    db.collection('wishes').orderBy('createdAt', 'desc').limit(50).onSnapshot(snap => {
       const wishes = snap.docs
         .map(doc => doc.data())
         .sort((a, b) => {

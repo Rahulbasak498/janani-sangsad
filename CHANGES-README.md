@@ -105,3 +105,10 @@
   — এগুলো আগের মতোই হাতে admin থেকে যোগ করতে হবে, কারণ এগুলো তালিকা
   (list) — একবারে seed করলে delete করার পরেও ফিরে আসার ঝুঁকি থাকে,
   তাই ইচ্ছাকৃতভাবে auto-seed রাখা হয়নি।
+## Full site audit - security, admin, and responsive updates
+
+- Visitor wishes appear on the public board immediately after submission; authenticated dashboard users can edit and delete them.
+- Firestore and Storage writes require a signed-in Firebase account; public wish submissions are validated and published immediately.
+- Admin image uploads retain the existing Cloudinary unsigned upload preset and 10 MB size limit.
+- Schedule migration no longer replaces an existing schedule collection.
+- Publish both `firestore.rules` and `storage.rules`, sign in with an existing Firebase Authentication account and refresh the site/service-worker cache after deployment.

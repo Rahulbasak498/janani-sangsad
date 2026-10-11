@@ -24,43 +24,10 @@ admin panel চালু হয়ে যাবে, যেখান থেকে
 3. Location হিসেবে যেকোনো কাছের region বেছে নিন (যেমন `asia-south1`)
 4. **Start in production mode** সিলেক্ট করে Create করুন
 
-এরপর **Rules** ট্যাবে গিয়ে এই repo-র **`firestore.rules`** ফাইলের পুরো লেখা বসিয়ে **Publish** করুন —
-(সবাই ডেটা পড়তে পারবে, শুধু লগইন করা admin লিখতে পারবে। ব্যতিক্রম: শুভেচ্ছা বোর্ড — ভিজিটর নতুন বার্তা *পাঠাতে* পারবে কিন্তু সেটা
-নতুন শুভেচ্ছা সঙ্গে সঙ্গে ওয়েবসাইটে প্রকাশিত হবে; অ্যাডমিন শুধু সম্পাদনা বা মুছতে পারবেন):
-
-```
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-
-    // ---- শুভেচ্ছা বোর্ড (wishes) ----
-    // সবাই নতুন বার্তা প্রকাশ ও প্রকাশিত বার্তা পড়তে পারে; শুধু লগইন করা অ্যাডমিন edit/delete করতে পারে।
-    match /wishes/{wishId} {
-      allow read: if true;
-
-      allow create: if request.resource.data.keys().hasOnly(['name', 'loc', 'msg', 'approved', 'createdAt'])
-                    && request.resource.data.approved == true
-                    && request.resource.data.name is string
-                    && request.resource.data.name.size() > 0
-                    && request.resource.data.name.size() <= 60
-                    && request.resource.data.loc is string
-                    && request.resource.data.loc.size() <= 60
-                    && request.resource.data.msg is string
-                    && request.resource.data.msg.size() > 0
-                    && request.resource.data.msg.size() <= 300
-                    && request.resource.data.createdAt == request.time;
-
-      allow update, delete: if request.auth != null;
-    }
-
-    // ---- বাকি সব কালেকশন: সবাই পড়তে পারে, শুধু লগইন করা অ্যাডমিন লিখতে পারে ----
-    match /{collection}/{docId} {
-      allow read: if collection != 'wishes';
-      allow write: if request.auth != null && collection != 'wishes';
-    }
-  }
-}
-```
+Apply the complete `firestore.rules` file in **Firestore Rules**, then Publish it.
+Visitor wishes appear on the public board as soon as they are submitted.
+Apply the complete `storage.rules` file in **Storage Rules**, then Publish it.
+Use the email/password account already created in Firebase Authentication. Dashboard access requires a signed-in account; no custom claim setup is needed.
 
 ---
 

@@ -4702,6 +4702,15 @@ section:nth-of-type(even) { background-color: #f3ead9; }
   box-shadow: 0 28px 65px rgba(20,2,6,.25);
 }
 
+/* Keep donation headings readable over the deep maroon section background. */
+section.donation .section-title { color: #fff8e8; }
+section.donation .section-sub { color: #f6e9d2; }
+section.donation .eyebrow {
+  color: #ffe29a;
+  background: rgba(255, 226, 154, .12);
+  border-color: rgba(255, 226, 154, .48);
+}
+
 .wishes-layout { gap: 24px; }
 .wish-form-card, .wishes-feed-card { border-radius: 20px; }
 
@@ -5391,4 +5400,149 @@ section:not(.hero) .section-sub { max-width: 58ch; color: #75645a; }
 }
 @media (prefers-reduced-motion: reduce) {
   .hero-deity { animation: none; }
+}
+/* Compact vertical schedule rows; the existing ০১–০৬ day labels are the only numbering. */
+.timeline { padding: 3px 10px; }
+.tl-card { grid-template-columns: 30px minmax(0,1fr); gap: 1px 8px; padding: 6px 2px; }
+.tl-day { width: 28px; height: 28px; }
+.tl-card h3 { font-size: .86rem; line-height: 1.25; }
+.tl-card ul { margin-top: 4px; }
+.tl-card ul .tl-event-item { gap: 6px; padding: 4px 2px; font-size: .78rem; line-height: 1.35; }
+.tl-event-time, .tl-card ul .tl-note-item { font-size: .7rem; }
+@media (max-width: 600px) {
+  .timeline { padding: 2px 7px; }
+  .tl-card { grid-template-columns: 27px minmax(0,1fr); gap: 1px 6px; padding: 5px 1px; }
+  .tl-day { width: 25px; height: 25px; font-size: .72rem; }
+  .tl-card h3 { font-size: .8rem; }
+  .tl-card ul .tl-event-item { grid-template-columns: 62px minmax(0,1fr); gap: 5px; padding: 3px 1px; font-size: .73rem; }
+  .tl-event-time, .tl-card ul .tl-note-item { font-size: .66rem; }
+}
+/* Puja schedule: compact, non-clickable day cards in serial order. */
+.timeline {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+  padding: 8px;
+  overflow: visible;
+}
+.tl-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  padding: 9px 8px;
+  border: 1px solid rgba(126,82,19,.13);
+  border-radius: 12px;
+  background: rgba(255,255,255,.62);
+  box-shadow: 0 2px 8px rgba(63,35,14,.045);
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.tl-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(126,82,19,.32);
+  box-shadow: 0 7px 15px rgba(63,35,14,.1);
+}
+.tl-card + .tl-card { border-top: 1px solid rgba(126,82,19,.13); }
+.tl-card::before { display: none; }
+.tl-day { width: 25px; height: 25px; margin: 0 0 5px; font-size: .7rem; }
+.tl-date {
+  width: 100%;
+  margin: 0 0 3px;
+  overflow-wrap: anywhere;
+  font-size: .63rem;
+  line-height: 1.3;
+}
+.tl-card h3 {
+  width: 100%;
+  margin: 0 0 4px;
+  text-align: left;
+  font-size: .74rem;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+.tl-card ul { width: 100%; min-width: 0; margin: 0; padding: 0; }
+.tl-card ul .tl-event-item,
+.tl-card ul .tl-event-item-wide {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1px;
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(126,82,19,.09);
+  font-size: .66rem;
+  line-height: 1.3;
+}
+.tl-card ul .tl-event-item > span:last-child { white-space: normal; overflow-wrap: anywhere; }
+.tl-event-time { font-size: .61rem; white-space: normal; }
+.tl-card ul .tl-note-item { margin: 4px 0 0; font-size: .61rem; line-height: 1.3; }
+@media (max-width: 900px) {
+  .timeline { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; }
+}
+@media (max-width: 600px) {
+  .timeline { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; padding: 6px; }
+  .tl-card { padding: 8px 7px; }
+  .tl-date { font-size: .6rem; }
+  .tl-card h3 { font-size: .7rem; }
+  .tl-card ul .tl-event-item,
+  .tl-card ul .tl-event-item-wide { font-size: .62rem; }
+  .tl-event-time, .tl-card ul .tl-note-item { font-size: .58rem; }
+}
+@media (max-width: 360px) {
+  .timeline { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* Consistent type scale for the Puja schedule. */
+.timeline .tl-day { font-size: 12px; }
+.timeline .tl-date { font-size: 12px; line-height: 1.35; }
+.timeline .tl-card h3 { font-size: 14px; line-height: 1.35; }
+.timeline .tl-card ul .tl-event-item,
+.timeline .tl-card ul .tl-note-item { font-size: 12px; line-height: 1.4; }
+.timeline .tl-card ul .tl-event-time { font-size: 12px; }
+@media (max-width: 600px) {
+  .timeline { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .timeline .tl-card {
+    display: grid;
+    grid-template-columns: 27px minmax(0, 1fr);
+    align-items: start;
+    gap: 2px 8px;
+    padding: 8px;
+  }
+  .timeline .tl-day { grid-column: 1; grid-row: 1 / span 2; width: 25px; height: 25px; margin: 0; }
+  .timeline .tl-date { grid-column: 2; grid-row: 1; margin: 0; font-size: 12px; }
+  .timeline .tl-card h3 { grid-column: 2; grid-row: 2; margin: 1px 0 0; font-size: 15px; }
+  .timeline .tl-card ul { grid-column: 1 / -1; margin-top: 4px; }
+  .timeline .tl-card ul .tl-event-item,
+  .timeline .tl-card ul .tl-note-item { font-size: 13px; }
+  .timeline .tl-card ul .tl-event-time { font-size: 12px; }
+}
+/* Desktop Puja schedule type matched to the site's body and card scale. */
+@media (min-width: 601px) {
+  .timeline .tl-date { font-size: 13px; }
+  .timeline .tl-card h3 { font-size: 16px; }
+  .timeline .tl-card ul .tl-event-item,
+  .timeline .tl-card ul .tl-note-item { font-size: 13px; }
+  .timeline .tl-card ul .tl-event-time { font-size: 12px; }
+}
+/* Slightly larger Puja schedule data for easier reading. */
+@media (min-width: 601px) {
+  .timeline .tl-date { font-size: 14px; }
+  .timeline .tl-card h3 { font-size: 17px; }
+  .timeline .tl-card ul .tl-event-item,
+  .timeline .tl-card ul .tl-note-item { font-size: 14px; }
+  .timeline .tl-card ul .tl-event-time { font-size: 13px; }
+}
+@media (max-width: 600px) {
+  .timeline .tl-date { font-size: 13px; }
+  .timeline .tl-card h3 { font-size: 16px; }
+  .timeline .tl-card ul .tl-event-item,
+  .timeline .tl-card ul .tl-note-item { font-size: 14px; }
+  .timeline .tl-card ul .tl-event-time { font-size: 13px; }
+}
+
+/* Clear contrast for the donation section, including later page-wide overrides. */
+#donation .section-title { color: #fffaf0; text-shadow: 0 2px 12px rgba(0, 0, 0, .38); }
+#donation .section-sub { color: #fff1d8; text-shadow: 0 1px 5px rgba(0, 0, 0, .3); }
+#donation .eyebrow {
+  color: #ffe29a;
+  background: rgba(255, 226, 154, .14);
+  border-color: rgba(255, 226, 154, .58);
 }

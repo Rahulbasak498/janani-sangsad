@@ -272,7 +272,13 @@ function renderSchedule(docs) {
   wrap.innerHTML = '';
 
   // The admin dashboard and public schedule use the same Firestore collection.
-  const entries = docs.map(d => d.data());
+  const entries = docs.map(d => d.data()).sort((a, b) => {
+    const serial = value => Number(String(value || '').replace(/[?-?]/g, digit => '??????????'.indexOf(digit)));
+    const orderA = Number(a.order), orderB = Number(b.order);
+    const keyA = Number.isFinite(orderA) ? orderA : serial(a.day);
+    const keyB = Number.isFinite(orderB) ? orderB : serial(b.day);
+    return keyA - keyB;
+  });
 
   if (entries.length === 0) {
     wrap.innerHTML = '<div class="empty-note">সময়সূচি এখনো যোগ করা হয়নি।</div>';
@@ -299,11 +305,11 @@ function renderSchedule(docs) {
         ${escapeHtml(s.day || '')}
       </div>
 
-      <div class="tl-date">
+      <div class="tl-date" title="${escapeHtml(s.date || '')}">
         ${escapeHtml(s.date || '')}
       </div>
 
-      <h3>
+      <h3 title="${escapeHtml(s.title || '')}">
         ${escapeHtml(s.title || '')}
       </h3>
 

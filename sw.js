@@ -1,4 +1,4 @@
-const CACHE_NAME = 'janani-sangsad-v28';
+const CACHE_NAME = 'janani-sangsad-v39';
 const APP_SHELL = [
   './index.html',
   './style.css',
@@ -10,7 +10,6 @@ const APP_SHELL = [
   './manifest.json',
   './image/maa-durga.png',
   './image/Puja%20Logo.png',
-  './image/জননী_নাট্যগোষ্ঠী.jpg'
 ];
 
 self.addEventListener('install', event => {
