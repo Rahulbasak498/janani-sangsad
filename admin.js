@@ -355,6 +355,15 @@ const pendingListRevealEffects = new Map();
 
 // ---------------- AUTH ----------------
 let dashboardLoginAuthorized = false;
+const pujaIntro = document.getElementById('pujaIntro');
+const loginWrap = document.getElementById('loginWrap');
+const introDelay = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 250 : 3200;
+window.setTimeout(() => {
+  pujaIntro.classList.add('is-finished');
+  loginWrap.classList.add('intro-ready');
+  loginWrap.classList.remove('intro-pending');
+}, introDelay);
+
 const authPersistenceReady = auth
   .setPersistence(firebase.auth.Auth.Persistence.NONE)
   .then(() => auth.signOut());
@@ -429,6 +438,8 @@ authPersistenceReady
     if (user && dashboardLoginAuthorized) {
       document.getElementById('loginWrap').style.display = 'none';
       document.getElementById('app').style.display = 'flex';
+      document.getElementById('app').classList.remove('dashboard-enter');
+      requestAnimationFrame(() => document.getElementById('app').classList.add('dashboard-enter'));
       loadAdminProfile(user);
       Object.keys(SCHEMAS).forEach(attachListListener);
       seedWebsitePujaSchedule();
