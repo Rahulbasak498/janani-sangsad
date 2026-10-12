@@ -2,76 +2,6 @@
 // ADMIN PANEL LOGIC
 // =========================================================
 
-let dashboardTimezoneArea = '';
-let dashboardLocationRequested = false;
-
-function initDashboardLocalInfo() {
-  const greeting = document.getElementById('timeGreeting');
-  const clock = document.getElementById('dashboardClock');
-  const date = document.getElementById('dashboardDate');
-  const location = document.getElementById('dashboardLocation');
-  if (!greeting || !clock || !date || !location) return;
-
-  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  dashboardTimezoneArea = (timeZone || '').split('/').pop()?.replace(/_/g, ' ') || '';
-  location.textContent = dashboardTimezoneArea || 'আপনার স্থানীয় সময়';
-
-  const updateClock = () => {
-    const now = new Date();
-    const hour = Number(new Intl.DateTimeFormat('en-US', { hour: 'numeric', hour12: false }).format(now));
-    greeting.textContent = hour < 12 ? 'শুভ সকাল' : hour < 17 ? 'শুভ অপরাহ্ণ' : hour < 20 ? 'শুভ সন্ধ্যা' : 'শুভ রাত্রি';
-    clock.textContent = new Intl.DateTimeFormat('bn-BD', {
-      hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true
-    }).format(now);
-    date.textContent = new Intl.DateTimeFormat('bn-BD', {
-      weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
-    }).format(now);
-    date.dateTime = now.toISOString();
-  };
-  updateClock();
-  setInterval(updateClock, 1000);
-
-}
-
-initDashboardLocalInfo();
-
-function requestDashboardLocation() {
-  if (dashboardLocationRequested) return;
-  dashboardLocationRequested = true;
-  const location = document.getElementById('dashboardLocation');
-  if (!location) return;
-  if (!navigator.geolocation) {
-    location.textContent = 'এই ব্রাউজারে লোকেশন সুবিধা নেই';
-    return;
-  }
-
-  location.textContent = 'আপনার অবস্থান খোঁজা হচ্ছে…';
-  navigator.geolocation.getCurrentPosition(async ({ coords }) => {
-    try {
-      const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${coords.latitude}&lon=${coords.longitude}&zoom=14&addressdetails=1&accept-language=bn`;
-      const response = await fetch(url, { headers: { Accept: 'application/json' } });
-      if (!response.ok) throw new Error('Location lookup failed');
-      const place = await response.json();
-      const { address = {} } = place;
-      const area = address.suburb || address.city_district || address.city || address.town ||
-        address.village || address.municipality || address.county || address.state_district;
-      const region = address.state_district || address.state;
-      location.textContent = [area, region && region !== area ? region : ''].filter(Boolean).join(', ') || dashboardTimezoneArea || 'অবস্থান পাওয়া যায়নি';
-    } catch (_) {
-      location.textContent = dashboardTimezoneArea || 'এলাকার নাম পাওয়া যায়নি';
-    }
-  }, error => {
-    if (error.code === 1) {
-      location.textContent = 'লোকেশন অনুমতি দেওয়া হয়নি';
-    } else if (error.code === 3) {
-      location.textContent = 'লোকেশন পেতে সময় লাগছে';
-    } else {
-      location.textContent = dashboardTimezoneArea || 'লোকেশন পাওয়া যায়নি';
-    }
-  }, { enableHighAccuracy: false, timeout: 12000, maximumAge: 300000 });
-}
-
-
 // =========================================================
 // CLOUDINARY DIRECT UPLOAD
 // =========================================================
@@ -429,13 +359,77 @@ const authPersistenceReady = auth
   .setPersistence(firebase.auth.Auth.Persistence.NONE)
   .then(() => auth.signOut());
 
+function updateAdminDisplayName(name) {
+  const displayName = name || 'অ্যাডমিন';
+  document.getElementById('dashboardAdminName').textContent = displayName;
+  document.getElementById('profileMenuName').textContent = displayName;
+  document.getElementById('profilePopoverName').textContent = displayName;
+}
+
+async function loadAdminProfile(user) {
+  const nameInput = document.getElementById('adminProfileName');
+  const mobileInput = document.getElementById('adminProfileMobile');
+  const email = user.email || '';
+  document.getElementById('adminProfileEmail').value = email;
+  document.getElementById('profilePopoverEmail').textContent = email;
+  document.getElementById('adminProfileStatus').textContent = '';
+  updateAdminDisplayName(user.displayName || 'অ্যাডমিন');
+  nameInput.value = user.displayName || '';
+  mobileInput.value = '';
+
+  try {
+    const snapshot = await db.collection('adminProfiles').doc(user.uid).get();
+    if (!snapshot.exists) return;
+    const profile = snapshot.data() || {};
+    nameInput.value = profile.name || user.displayName || '';
+    mobileInput.value = profile.mobile || '';
+    updateAdminDisplayName(nameInput.value);
+  } catch (error) {
+    console.warn('Could not load admin profile:', error);
+    document.getElementById('adminProfileStatus').textContent = 'প্রোফাইল তথ্য লোড করা যায়নি। পরে আবার চেষ্টা করুন।';
+  }
+}
+
+document.getElementById('adminProfileForm').addEventListener('submit', async event => {
+  event.preventDefault();
+  const form = event.currentTarget;
+  if (!form.reportValidity()) return;
+  const user = auth.currentUser;
+  const name = document.getElementById('adminProfileName').value.trim();
+  const mobile = document.getElementById('adminProfileMobile').value.trim();
+  const status = document.getElementById('adminProfileStatus');
+  const saveButton = document.getElementById('saveAdminProfile');
+  if (!user) {
+    status.textContent = 'সেভ করার আগে আবার লগইন করুন।';
+    return;
+  }
+
+  saveButton.disabled = true;
+  saveButton.textContent = 'সংরক্ষণ হচ্ছে…';
+  status.textContent = '';
+  try {
+    await db.collection('adminProfiles').doc(user.uid).set({
+      name,
+      mobile,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
+    updateAdminDisplayName(name);
+    status.textContent = 'প্রোফাইল সফলভাবে আপডেট হয়েছে।';
+  } catch (error) {
+    console.error('Could not save admin profile:', error);
+    status.textContent = 'প্রোফাইল সেভ হয়নি। আবার চেষ্টা করুন।';
+  } finally {
+    saveButton.disabled = false;
+    saveButton.textContent = 'পরিবর্তন সংরক্ষণ করুন';
+  }
+});
+
 authPersistenceReady
   .then(() => auth.onAuthStateChanged(user => {
     if (user && dashboardLoginAuthorized) {
       document.getElementById('loginWrap').style.display = 'none';
       document.getElementById('app').style.display = 'flex';
-      document.getElementById('userEmail').textContent = user.email || '';
-      requestDashboardLocation();
+      loadAdminProfile(user);
       Object.keys(SCHEMAS).forEach(attachListListener);
       seedWebsitePujaSchedule();
       seedDefaultSettings();
@@ -444,7 +438,7 @@ authPersistenceReady
     } else {
       document.getElementById('loginWrap').style.display = 'flex';
       document.getElementById('app').style.display = 'none';
-      document.getElementById('userEmail').textContent = '';
+      updateAdminDisplayName('অ্যাডমিন');
     }
   }))
   .catch(error => {
@@ -495,9 +489,16 @@ document.getElementById('loginForm').addEventListener('submit', event => {
       submitLabel.textContent = 'লগইন করুন';
     });
 });
+document.getElementById('passwordToggle').addEventListener('click', event => {
+  const password = document.getElementById('loginPassword');
+  const showPassword = password.type === 'password';
+  password.type = showPassword ? 'text' : 'password';
+  event.currentTarget.textContent = showPassword ? 'লুকান' : 'দেখুন';
+  event.currentTarget.setAttribute('aria-label', showPassword ? 'পাসওয়ার্ড লুকান' : 'পাসওয়ার্ড দেখান');
+});
 document.getElementById('logoutBtn').addEventListener('click', () => {
   dashboardLoginAuthorized = false;
-  dashboardLocationRequested = false;
+  closeProfileMenu();
   auth.signOut();
 });
 // NOTE: ticker and gallery used to auto-reseed their sample content
@@ -572,13 +573,73 @@ async function seedWebsitePujaSchedule() {
 
 
 // ---------------- TABS ----------------
+function activateAdminTab(tabName) {
+  const button = document.querySelector(`.tab-btn[data-tab="${tabName}"]`);
+  const panel = document.getElementById('panel-' + tabName);
+  if (!panel) return;
+  document.querySelectorAll('.tab-btn').forEach(item => item.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(item => item.classList.remove('active'));
+  button?.classList.add('active');
+  panel.classList.add('active');
+  const main = document.querySelector('.main');
+  main.dataset.activeTab = tabName;
+  if (window.matchMedia('(max-width: 600px)').matches) main.scrollTop = 0;
+}
+
 document.querySelectorAll('.tab-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
-  });
+  btn.addEventListener('click', () => activateAdminTab(btn.dataset.tab));
+});
+
+const profileMenuToggle = document.getElementById('profileMenuToggle');
+const profilePopover = document.getElementById('profilePopover');
+// Mount the floating card at the document root so sidebar overflow/transforms
+// cannot clip it on small screens.
+document.body.appendChild(profilePopover);
+function positionProfilePopover() {
+  if (profilePopover.hidden) return;
+  const trigger = profileMenuToggle.getBoundingClientRect();
+  const viewport = window.visualViewport;
+  const viewportLeft = viewport?.offsetLeft || 0;
+  const viewportTop = viewport?.offsetTop || 0;
+  const viewportWidth = viewport?.width || window.innerWidth;
+  const viewportHeight = viewport?.height || window.innerHeight;
+  const margin = 12;
+  const gap = 8;
+  profilePopover.style.maxHeight = `${Math.max(120, viewportHeight - margin * 2)}px`;
+  const popoverWidth = profilePopover.offsetWidth;
+  const popoverHeight = profilePopover.offsetHeight;
+  const left = Math.max(viewportLeft + margin, Math.min(trigger.right - popoverWidth, viewportLeft + viewportWidth - popoverWidth - margin));
+  let top = trigger.bottom + gap;
+  if (top + popoverHeight > viewportTop + viewportHeight - margin) top = trigger.top - popoverHeight - gap;
+  top = Math.max(viewportTop + margin, Math.min(top, viewportTop + viewportHeight - popoverHeight - margin));
+  profilePopover.style.left = `${left}px`;
+  profilePopover.style.top = `${top}px`;
+}
+function closeProfileMenu() {
+  profilePopover.hidden = true;
+  profileMenuToggle.setAttribute('aria-expanded', 'false');
+}
+profileMenuToggle.addEventListener('click', () => {
+  profilePopover.hidden = !profilePopover.hidden;
+  profileMenuToggle.setAttribute('aria-expanded', String(!profilePopover.hidden));
+  if (!profilePopover.hidden) requestAnimationFrame(positionProfilePopover);
+});
+window.addEventListener('resize', positionProfilePopover);
+window.addEventListener('scroll', positionProfilePopover, true);
+window.visualViewport?.addEventListener('resize', positionProfilePopover);
+window.visualViewport?.addEventListener('scroll', positionProfilePopover);
+document.getElementById('openAdminProfile').addEventListener('click', () => {
+  activateAdminTab('adminProfile');
+  closeProfileMenu();
+});
+document.addEventListener('pointerdown', event => {
+  if (!profileMenuToggle.contains(event.target) && !profilePopover.contains(event.target)) closeProfileMenu();
+});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && !profilePopover.hidden) {
+    closeProfileMenu();
+    profileMenuToggle.focus();
+  }
 });
 
 document.querySelectorAll('[data-stat-tab]').forEach(card => {

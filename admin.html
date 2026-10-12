@@ -15,11 +15,20 @@
 
 <!-- ===================== LOGIN ===================== -->
 <div class="login-wrap" id="loginWrap">
-  <img class="admin-deity login-deity" src="image/Puja%20Logo.png" alt="" aria-hidden="true">
+  <div class="login-story" aria-hidden="true">
+    <div class="login-brand"><span class="login-brand-mark">ॐ</span><span>জননী সংসদ<small>শারদীয় দুর্গোৎসব</small></span></div>
+    <div class="login-story-copy">
+      <h2>উৎসবের আয়োজন,<br>এক জায়গায়</h2>
+      <p>জননী সংসদের ওয়েবসাইটের খবর, অনুষ্ঠান ও সদস্যদের তথ্য সহজেই পরিচালনা করুন।</p>
+    </div>
+    <img class="admin-deity login-deity" src="image/Puja%20Logo.png" alt="">
+    <span class="login-story-foot">ঐতিহ্যের বন্ধনে, একসাথে</span>
+  </div>
   <div class="login-box">
-    <div class="emoji">🕉️</div>
-    <h1>Admin Panel</h1>
-    <p class="sub">জননী সংসদ — শুধুমাত্র অনুমোদিত ব্যবহারকারীদের জন্য</p>
+    <div class="login-mobile-brand"><span class="login-brand-mark">ॐ</span><span>জননী সংসদ</span></div>
+    <span class="login-form-kicker">স্বাগতম</span>
+    <h1>অ্যাডমিন লগইন</h1>
+    <p class="sub">আপনার অ্যাকাউন্টে প্রবেশ করতে তথ্য দিন</p>
 
     <div class="error-msg" id="loginError" role="alert" aria-live="assertive"></div>
 
@@ -30,7 +39,10 @@
       </div>
       <div class="field">
         <label for="loginPassword">পাসওয়ার্ড</label>
-        <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" required>
+        <div class="password-field">
+          <input type="password" id="loginPassword" placeholder="আপনার পাসওয়ার্ড লিখুন" autocomplete="current-password" required>
+          <button class="password-toggle" id="passwordToggle" type="button" aria-controls="loginPassword" aria-label="পাসওয়ার্ড দেখান">দেখুন</button>
+        </div>
       </div>
 
       <button class="btn btn-primary login-submit" id="loginSubmit" type="submit">
@@ -39,7 +51,8 @@
       </button>
     </form>
 
-    <a class="login-back-link" href="index.html">← ওয়েবসাইটে ফিরে যান</a>
+    <a class="login-back-link" href="index.html"><span aria-hidden="true">←</span> ওয়েবসাইটে ফিরে যান</a>
+    <p class="login-security-note"><span aria-hidden="true">♢</span> নিরাপদ প্রশাসনিক প্রবেশ</p>
   </div>
 </div>
 
@@ -48,8 +61,8 @@
 
   <div class="sidebar">
     <div class="sidebar-brand">
-      🕉️ জননী সংসদ
-      <span>Admin Panel</span>
+      <span class="sidebar-brand-mark" aria-hidden="true">ॐ</span>
+      <span class="sidebar-brand-copy">জননী সংসদ<small>অ্যাডমিন ড্যাশবোর্ড</small></span>
     </div>
 
     <nav class="tabs">
@@ -69,38 +82,36 @@
     </nav>
 
     <div class="sidebar-foot">
-      <span class="user-email" id="userEmail"></span>
-      <button class="btn btn-outline btn-sm" id="logoutBtn" type="button" aria-label="অ্যাডমিন প্যানেল থেকে লগ-আউট করুন">
-        <svg class="logout-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M10 17l5-5-5-5M15 12H3m9-7h5a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-5"/></svg>
-        <span>লগ-আউট</span>
-      </button>
+      <div class="profile-menu-wrap" id="profileMenuWrap">
+        <button class="profile-menu-toggle" id="profileMenuToggle" type="button" aria-label="অ্যাডমিন প্রোফাইল মেনু খুলুন" aria-haspopup="dialog" aria-expanded="false" aria-controls="profilePopover">
+          <img src="image/Puja%20Logo.png" alt="" aria-hidden="true">
+          <span class="profile-menu-toggle-copy"><strong id="profileMenuName">অ্যাডমিন</strong><small>অ্যাডমিন প্রোফাইল</small></span>
+        </button>
+        <section class="profile-popover" id="profilePopover" role="dialog" aria-label="অ্যাডমিন প্রোফাইল মেনু" hidden>
+          <div class="profile-popover-heading">
+            <img src="image/Puja%20Logo.png" alt="" aria-hidden="true">
+            <div><strong id="profilePopoverName">অ্যাডমিন</strong><small id="profilePopoverEmail"></small></div>
+          </div>
+          <button class="profile-popover-action" id="openAdminProfile" type="button"><span aria-hidden="true">⚙️</span>প্রোফাইল সেটিংস</button>
+          <button class="profile-popover-action profile-popover-logout" id="logoutBtn" type="button" aria-label="অ্যাডমিন প্যানেল থেকে লগ-আউট করুন">
+            <svg class="logout-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M10 17l5-5-5-5M15 12H3m9-7h5a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-5"/></svg>
+            <span>লগ-আউট</span>
+          </button>
+        </section>
+      </div>
     </div>
   </div>
 
-  <div class="main">
+  <main class="main" data-active-tab="notices" aria-label="অ্যাডমিন ড্যাশবোর্ড">
     <img class="admin-deity dashboard-deity" src="image/Puja%20Logo.png" alt="" aria-hidden="true">
 
     <section class="dashboard-overview" aria-labelledby="dashboardTitle">
       <div class="dashboard-welcome">
         <div>
           <span class="dashboard-kicker">জননী সংসদ প্রশাসন</span>
-          <h1 id="dashboardTitle">স্বাগতম Rahul Basak Santo</h1>
+          <h1 id="dashboardTitle">স্বাগতম <span id="dashboardAdminName">অ্যাডমিন</span></h1>
           <p>আপনার সাইটের নোটিশ, সময়সূচি, সদস্য ও গ্যালারি এক জায়গা থেকে পরিচালনা করুন।</p>
         </div>
-        <aside class="dashboard-local-info" aria-label="বর্তমান সময় ও অবস্থান">
-          <div class="local-info-topline">
-            <span class="local-info-dot" aria-hidden="true"></span>
-            <strong id="timeGreeting">শুভ সকাল</strong>
-          </div>
-          <span class="local-info-label">এখনকার সময়</span>
-          <time class="local-info-clock" id="dashboardClock" aria-live="off">--:--:--</time>
-          <time class="local-info-date" id="dashboardDate"></time>
-          <div class="local-info-place">
-            <span aria-hidden="true">⌖</span>
-            <small id="dashboardLocation">অবস্থান শনাক্ত হচ্ছে…</small>
-          </div>
-          <a class="local-info-attribution" href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OSM</a>
-        </aside>
       </div>
 
       <div class="dashboard-section-heading">
@@ -250,7 +261,32 @@
       <div id="list-settings"></div>
     </div>
 
-  </div>
+    <section class="panel" id="panel-adminProfile" aria-labelledby="adminProfileTitle">
+      <div class="panel-head">
+        <h2 id="adminProfileTitle">অ্যাডমিন প্রোফাইল</h2>
+      </div>
+      <div class="admin-profile-card">
+        <p class="admin-profile-intro">আপনার প্রদর্শিত নাম ও যোগাযোগের মোবাইল নম্বর এখানে আপডেট করুন।</p>
+        <form id="adminProfileForm" class="admin-profile-form">
+          <div class="field">
+            <label for="adminProfileEmail">লগইন ইমেইল</label>
+            <input id="adminProfileEmail" name="email" type="email" autocomplete="email" readonly aria-readonly="true">
+          </div>
+          <div class="field">
+            <label for="adminProfileName">অ্যাডমিনের নাম</label>
+            <input id="adminProfileName" name="name" type="text" maxlength="60" autocomplete="name" placeholder="আপনার নাম" required>
+          </div>
+          <div class="field">
+            <label for="adminProfileMobile">মোবাইল নম্বর</label>
+            <input id="adminProfileMobile" name="mobile" type="tel" inputmode="tel" maxlength="20" autocomplete="tel" pattern="[+0-9][0-9 +()-]{6,19}" placeholder="01XXXXXXXXX" required>
+          </div>
+          <p class="admin-profile-status" id="adminProfileStatus" role="status" aria-live="polite"></p>
+          <button class="btn btn-primary" id="saveAdminProfile" type="submit">পরিবর্তন সংরক্ষণ করুন</button>
+        </form>
+      </div>
+    </section>
+
+  </main>
 
 </div>
 
@@ -295,7 +331,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
 <script src="firebase-config.js"></script>
-<script src="admin.js?v=16"></script>
+<script src="admin.js?v=18"></script>
 
 </body>
 </html>
