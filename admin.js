@@ -411,6 +411,109 @@ document.getElementById('adminProfileForm').addEventListener('submit', async eve
   }
 });
 
+function showForgotPasswordView(show) {
+  const loginElements = [
+    document.getElementById('loginKicker'),
+    document.getElementById('loginTitle'),
+    document.getElementById('loginSubtitle'),
+    document.getElementById('loginError'),
+    document.getElementById('loginForm')
+  ];
+  loginElements.forEach(element => { element.hidden = show; });
+  document.getElementById('forgotPasswordView').hidden = !show;
+  document.getElementById('loginResetStatus').textContent = '';
+  if (show) document.getElementById('resetEmail').focus();
+  else document.getElementById('loginEmail').focus();
+}
+
+document.getElementById('forgotPasswordBtn').addEventListener('click', () => showForgotPasswordView(true));
+document.getElementById('backToLoginBtn').addEventListener('click', () => showForgotPasswordView(false));
+
+document.getElementById('resetPasswordForm').addEventListener('submit', async event => {
+  event.preventDefault();
+  const form = event.currentTarget;
+  if (!form.reportValidity()) return;
+  const email = document.getElementById('resetEmail').value.trim().toLowerCase();
+  const status = document.getElementById('loginResetStatus');
+  const button = document.getElementById('sendResetEmailBtn');
+  status.textContent = '';
+  if (email !== ADMIN_EMAIL.toLowerCase()) {
+    status.textContent = 'এই ইমেইলটি আমাদের Admin সিস্টেমে নেই।';
+    status.classList.add('login-reset-status-error');
+    return;
+  }
+  status.classList.remove('login-reset-status-error');
+  button.disabled = true;
+  button.textContent = 'পাঠানো হচ্ছে…';
+  try {
+    await authPersistenceReady;
+    auth.languageCode = 'en';
+    // This site has one explicitly authorized admin account. Never send
+    // recovery links for other Firebase users.
+    await auth.sendPasswordResetEmail(email);
+    status.textContent = 'Reset link এই ইমেইলে পাঠানো হয়েছে। Inbox বা Spam ফোল্ডার দেখুন।';
+    status.classList.remove('login-reset-status-error');
+  } catch (error) {
+    console.error('Could not send admin password reset email:', error);
+    status.classList.add('login-reset-status-error');
+    const messages = {
+      'auth/user-not-found': 'এই ইমেইলে আমাদের Firebase Admin account নেই।',
+      'auth/too-many-requests': 'অনেকবার চেষ্টা হয়েছে। কিছুক্ষণ পরে আবার চেষ্টা করুন।',
+      'auth/network-request-failed': 'ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।'
+    };
+    status.textContent = messages[error.code] || 'Reset email পাঠানো যায়নি। Firebase Authentication-এর email সেটিংস পরীক্ষা করে আবার চেষ্টা করুন।';
+  } finally {
+    button.disabled = false;
+    button.textContent = 'Reset link পাঠান';
+  }
+});
+
+document.getElementById('adminPasswordForm').addEventListener('submit', async event => {
+  event.preventDefault();
+  const form = event.currentTarget;
+  if (!form.reportValidity()) return;
+  const user = auth.currentUser;
+  const current = document.getElementById('currentAdminPassword').value;
+  const next = document.getElementById('newAdminPassword').value;
+  const confirm = document.getElementById('confirmAdminPassword').value;
+  const status = document.getElementById('adminPasswordStatus');
+  const button = document.getElementById('saveAdminPassword');
+  status.textContent = '';
+  if (!user || (user.email || '').toLowerCase() !== ADMIN_EMAIL) {
+    status.textContent = 'পাসওয়ার্ড বদলানোর আগে admin হিসেবে আবার লগইন করুন।';
+    return;
+  }
+  if (next !== confirm) {
+    status.textContent = 'নতুন পাসওয়ার্ড দুটি মিলছে না।';
+    return;
+  }
+  if (current === next) {
+    status.textContent = 'নতুন পাসওয়ার্ডটি বর্তমান পাসওয়ার্ড থেকে আলাদা দিন।';
+    return;
+  }
+  button.disabled = true;
+  button.textContent = 'আপডেট হচ্ছে…';
+  try {
+    const credential = firebase.auth.EmailAuthProvider.credential(user.email, current);
+    await user.reauthenticateWithCredential(credential);
+    await user.updatePassword(next);
+    form.reset();
+    status.textContent = 'পাসওয়ার্ড সফলভাবে পরিবর্তন হয়েছে।';
+  } catch (error) {
+    console.error('Could not change admin password:', error);
+    const messages = {
+      'auth/wrong-password': 'বর্তমান পাসওয়ার্ডটি সঠিক নয়।',
+      'auth/invalid-credential': 'বর্তমান পাসওয়ার্ডটি সঠিক নয়।',
+      'auth/weak-password': 'নতুন পাসওয়ার্ডটি আরও শক্তিশালী দিন (কমপক্ষে ৬ অক্ষর)।',
+      'auth/requires-recent-login': 'নিরাপত্তার জন্য আবার লগইন করে চেষ্টা করুন।'
+    };
+    status.textContent = messages[error.code] || 'পাসওয়ার্ড পরিবর্তন করা যায়নি। আবার চেষ্টা করুন।';
+  } finally {
+    button.disabled = false;
+    button.textContent = 'পাসওয়ার্ড পরিবর্তন করুন';
+  }
+});
+
 authPersistenceReady
   .then(() => auth.onAuthStateChanged(user => {
     if (user && dashboardLoginAuthorized) {

@@ -25,9 +25,9 @@
   </div>
   <div class="login-box">
     <div class="login-mobile-brand"><span class="login-brand-mark">ॐ</span><span>জননী সংসদ</span></div>
-    <span class="login-form-kicker">স্বাগতম</span>
-    <h1>অ্যাডমিন লগইন</h1>
-    <p class="sub">আপনার অ্যাকাউন্টে প্রবেশ করতে তথ্য দিন</p>
+    <span class="login-form-kicker" id="loginKicker">স্বাগতম</span>
+    <h1 id="loginTitle">অ্যাডমিন লগইন</h1>
+    <p class="sub" id="loginSubtitle">আপনার অ্যাকাউন্টে প্রবেশ করতে তথ্য দিন</p>
 
     <div class="error-msg" id="loginError" role="alert" aria-live="assertive"></div>
 
@@ -43,12 +43,27 @@
           <button class="password-toggle" id="passwordToggle" type="button" aria-controls="loginPassword" aria-label="পাসওয়ার্ড দেখান">দেখুন</button>
         </div>
       </div>
+      <button class="login-forgot-password" id="forgotPasswordBtn" type="button">পাসওয়ার্ড ভুলে গেছেন?</button>
 
       <button class="btn btn-primary login-submit" id="loginSubmit" type="submit">
         <span class="login-submit-label">লগইন করুন</span>
         <span class="login-spinner" aria-hidden="true"></span>
       </button>
     </form>
+    <section id="forgotPasswordView" class="forgot-password-view" hidden aria-labelledby="forgotPasswordTitle">
+      <span class="login-form-kicker">ACCOUNT RECOVERY</span>
+      <h1 id="forgotPasswordTitle">পাসওয়ার্ড রিসেট</h1>
+      <p class="sub">পাসওয়ার্ড পরিবর্তন করতে আপনার বৈধ ইমেইল লিখুন।</p>
+      <form id="resetPasswordForm" autocomplete="on">
+        <div class="field">
+          <label for="resetEmail">ইমেইল</label>
+          <input type="email" id="resetEmail" placeholder="আপনার admin ইমেইল" autocomplete="email" required>
+        </div>
+        <button class="btn btn-primary login-submit" id="sendResetEmailBtn" type="submit">Reset link পাঠান</button>
+      </form>
+      <p class="login-reset-status" id="loginResetStatus" role="status" aria-live="polite"></p>
+      <button class="forgot-back-button" id="backToLoginBtn" type="button">← লগইনে ফিরে যান</button>
+    </section>
 
     <a class="login-back-link" href="index.html"><span aria-hidden="true">←</span> ওয়েবসাইটে ফিরে যান</a>
     <p class="login-security-note"><span aria-hidden="true">♢</span> নিরাপদ প্রশাসনিক প্রবেশ</p>
@@ -282,6 +297,17 @@
           <p class="admin-profile-status" id="adminProfileStatus" role="status" aria-live="polite"></p>
           <button class="btn btn-primary" id="saveAdminProfile" type="submit">পরিবর্তন সংরক্ষণ করুন</button>
         </form>
+        <div class="admin-password-section">
+          <h3>পাসওয়ার্ড পরিবর্তন</h3>
+          <p class="admin-profile-intro">নিরাপত্তার জন্য বর্তমান পাসওয়ার্ড দিয়ে যাচাই করুন।</p>
+          <form id="adminPasswordForm" class="admin-profile-form">
+            <div class="field"><label for="currentAdminPassword">বর্তমান পাসওয়ার্ড</label><input id="currentAdminPassword" type="password" autocomplete="current-password" required></div>
+            <div class="field"><label for="newAdminPassword">নতুন পাসওয়ার্ড</label><input id="newAdminPassword" type="password" autocomplete="new-password" minlength="6" required></div>
+            <div class="field"><label for="confirmAdminPassword">নতুন পাসওয়ার্ড আবার লিখুন</label><input id="confirmAdminPassword" type="password" autocomplete="new-password" minlength="6" required></div>
+            <p class="admin-profile-status" id="adminPasswordStatus" role="status" aria-live="polite"></p>
+            <button class="btn btn-primary" id="saveAdminPassword" type="submit">পাসওয়ার্ড পরিবর্তন করুন</button>
+          </form>
+        </div>
       </div>
     </section>
 
@@ -330,7 +356,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
 <script src="firebase-config.js"></script>
-<script src="admin.js?v=18"></script>
+<script src="admin.js?v=23"></script>
 
 </body>
 </html>

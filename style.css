@@ -4346,6 +4346,19 @@ body.modal-open { overflow: hidden; }
   }
 }
 
+/* Shared motion polish for navigation and controls across every page. */
+html { scroll-behavior: smooth; }
+body { -webkit-overflow-scrolling: touch; }
+:where(a[href], button:not(:disabled), [role="button"], input[type="button"]:not(:disabled), input[type="submit"]:not(:disabled)) {
+  transition: color .18s ease, background-color .18s ease, border-color .18s ease,
+    box-shadow .18s ease, opacity .16s ease, transform .16s cubic-bezier(.2,.8,.2,1);
+}
+:where(section[id], main[id], [data-section]) { scroll-margin-top: 88px; }
+@media (max-width: 860px) {
+  .nav-links { will-change: transform; }
+  :where(section[id], main[id], [data-section]) { scroll-margin-top: 72px; }
+}
+
 @media (hover: none) {
   .btn:hover,
   .hero-community-link:hover,
@@ -5007,6 +5020,25 @@ footer {
 }
 .nav-dropdown-menu a:hover { color: #ffe6a2; background: rgba(255,246,220,.09); }
 
+/* Admin login entry in the main navigation. */
+.nav-links > .nav-login-link {
+  min-height: 40px;
+  margin-left: 0;
+  padding: 8px 12px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  background: transparent;
+  color: rgba(255,250,240,.9);
+  font-weight: 600;
+}
+.nav-links > .nav-login-link:hover,
+.nav-links > .nav-login-link:focus-visible {
+  border-color: rgba(243,222,142,.32);
+  background: rgba(255,246,220,.09);
+  color: #ffe6a2;
+}
+.nav-links > .nav-login-link::after { display: none; }
+
 @media (max-width: 860px) {
   .nav-links {
     width: min(86vw, 360px);
@@ -5249,6 +5281,15 @@ footer {
     border-radius: 13px;
     background: rgba(255,246,220,.035);
     font-size: .98rem;
+  }
+  .nav-links > .nav-login-link {
+    justify-content: flex-start;
+    min-height: 46px;
+    margin: 0;
+    padding: 10px 13px;
+    border: 1px solid rgba(255,246,220,.07);
+    border-radius: 13px;
+    background: rgba(255,246,220,.035);
   }
   .nav-links > a:hover, .nav-links > a:focus-visible,
   .nav-dropdown.open > .nav-dropdown-btn { padding-left: 13px; }
@@ -5634,4 +5675,18 @@ section:not(.hero) .section-sub { max-width: 58ch; color: #75645a; }
   .schedule .tl-card h3 { font-size: .94rem; }
   .schedule .tl-card ul { font-size: .88rem; line-height: 1.6; }
   .schedule .tl-event-time { font-size: .76rem; }
+}
+
+/* Keep the mobile navigation drawer scrollable on short screens. */
+@media (max-width: 860px) {
+  .nav-links {
+    height: 100vh;
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+  }
 }
