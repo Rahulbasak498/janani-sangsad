@@ -1,4 +1,4 @@
-const CACHE_NAME = 'janani-sangsad-v39';
+const CACHE_NAME = 'janani-sangsad-v42';
 const APP_SHELL = [
   './index.html',
   './style.css',
@@ -47,6 +47,37 @@ self.addEventListener('fetch', event => {
           return cached || network;
         })
       )
+    );
+    return;
+  }
+
+  // Subpages extract their section markup from index.html. That file is part
+  // of the app shell, so serve the cached copy immediately and refresh it for
+  // the next visit instead of blocking every subpage on another HTML request.
+  if (request.destination === '' && new URL(request.url).pathname.endsWith('/index.html')) {
+    event.respondWith(
+      caches.open(CACHE_NAME).then(async cache => {
+        const cached = await cache.match(request);
+        const refresh = fetch(request).then(response => {
+          if (response && response.ok) cache.put(request, response.clone());
+          return response;
+        });
+        return cached || refresh.catch(() => caches.match(request));
+      })
+    );
+    return;
+  }
+
+  if (['script', 'style', 'font'].includes(request.destination)) {
+    event.respondWith(
+      caches.open(CACHE_NAME).then(async cache => {
+        const cached = await cache.match(request);
+        const refresh = fetch(request).then(response => {
+          if (response && response.ok) cache.put(request, response.clone());
+          return response;
+        });
+        return cached || refresh.catch(() => caches.match(request));
+      })
     );
     return;
   }

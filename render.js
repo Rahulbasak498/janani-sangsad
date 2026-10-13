@@ -272,12 +272,17 @@ function renderSchedule(docs) {
   wrap.innerHTML = '';
 
   // The admin dashboard and public schedule use the same Firestore collection.
-  const entries = docs.map(d => d.data()).sort((a, b) => {
-    const serial = value => Number(String(value || '').replace(/[?-?]/g, digit => '??????????'.indexOf(digit)));
-    const orderA = Number(a.order), orderB = Number(b.order);
-    const keyA = Number.isFinite(orderA) ? orderA : serial(a.day);
-    const keyB = Number.isFinite(orderB) ? orderB : serial(b.day);
-    return keyA - keyB;
+  const dayOrder = ['মহালয়া', 'মহাপঞ্চমী', 'ষষ্ঠী', 'সপ্তমী', 'অষ্টমী', 'নবমী', 'দশমী'];
+  const entries = docs.map((doc, index) => ({ ...doc.data(), __sourceIndex: index })).sort((a, b) => {
+    const orderA = Number(a.order) || 0;
+    const orderB = Number(b.order) || 0;
+    if (orderA > 0 && orderB > 0 && orderA !== orderB) return orderA - orderB;
+    const dayA = dayOrder.findIndex(day => String(a.day || '').includes(day));
+    const dayB = dayOrder.findIndex(day => String(b.day || '').includes(day));
+    if (dayA >= 0 && dayB >= 0 && dayA !== dayB) return dayA - dayB;
+    if ((dayA >= 0) !== (dayB >= 0)) return dayA >= 0 ? -1 : 1;
+    if (orderA !== orderB) return orderA - orderB;
+    return a.__sourceIndex - b.__sourceIndex;
   });
 
   if (entries.length === 0) {
@@ -738,6 +743,7 @@ setTimeout(() => LOADING_CONTAINERS.forEach(showLoadError), 12000);
 // =========================================================
 
 async function loadPublicData() {
+  const hasTarget = id => document.getElementById(id) !== null;
 
   // ---------- SITE SETTINGS ----------
   db.collection('siteSettings').limit(1).onSnapshot(
@@ -753,7 +759,7 @@ async function loadPublicData() {
 
 
   // ---------- NOTICES ----------
-  try {
+  if (hasTarget('noticeList')) try {
     db.collection('notices').onSnapshot(
       snap => renderNotices(sortByOrder(snap.docs)),
       e => { console.warn('Notices listener failed:', e); showLoadError('noticeList'); }
@@ -764,35 +770,35 @@ async function loadPublicData() {
 
 
   // ---------- SCHEDULE ----------
-  db.collection('schedule').onSnapshot(
+  if (hasTarget('timeline')) db.collection('schedule').onSnapshot(
     snap => renderSchedule(sortByOrder(snap.docs)),
     e => { console.warn('Schedule listener failed:', e); showLoadError('timeline'); }
   );
 
 
   // ---------- COMMITTEE MEMBERS ----------
-  db.collection('members').where('group', '==', 'committee').onSnapshot(
+  if (hasTarget('membersGrid')) db.collection('members').where('group', '==', 'committee').onSnapshot(
     snap => renderMembers('membersGrid', sortByOrder(snap.docs)),
     e => { console.warn('Committee members listener failed:', e); showLoadError('membersGrid'); }
   );
 
 
   // ---------- ADVISORS ----------
-  db.collection('members').where('group', '==', 'advisor').onSnapshot(
+  if (hasTarget('advisorsGrid')) db.collection('members').where('group', '==', 'advisor').onSnapshot(
     snap => renderMembers('advisorsGrid', sortByOrder(snap.docs)),
     e => { console.warn('Advisor listener failed:', e); showLoadError('advisorsGrid'); }
   );
 
 
   // ---------- TICKER ----------
-  db.collection('ticker').onSnapshot(
+  if (hasTarget('tickerTrack')) db.collection('ticker').onSnapshot(
     snap => renderTicker(sortByOrder(snap.docs)),
     e => console.warn('Ticker listener failed. Static ticker kept:', e)
   );
 
 
   // ---------- GENERAL MEMBERS ----------
-  db.collection('members').where('group', '==', 'general').onSnapshot(
+  if (hasTarget('generalMembersGrid')) db.collection('members').where('group', '==', 'general').onSnapshot(
     snap => renderMembers('generalMembersGrid', sortByOrder(snap.docs)),
     e => { console.warn('General members listener failed:', e); showLoadError('generalMembersGrid'); }
   );
@@ -809,28 +815,28 @@ async function loadPublicData() {
   //
   // =======================================================
 
-  db.collection('gallery').onSnapshot(
+  if (hasTarget('masonryGrid')) db.collection('gallery').onSnapshot(
     snap => renderGallery(sortByOrder(snap.docs)),
     e => { console.warn('Gallery listener failed:', e); showLoadError('masonryGrid'); }
   );
 
 
   // ---------- AFFILIATES ----------
-  db.collection('affiliates').onSnapshot(
+  if (hasTarget('affiliatesGrid')) db.collection('affiliates').onSnapshot(
     snap => renderAffiliates(sortByOrder(snap.docs)),
     e => console.warn('Affiliates listener failed:', e)
   );
 
 
   // ---------- EVENTS ----------
-  db.collection('events').onSnapshot(
+  if (hasTarget('eventsGrid')) db.collection('events').onSnapshot(
     snap => renderEvents(sortByOrder(snap.docs)),
     e => { console.warn('Events listener failed:', e); showLoadError('eventsGrid'); }
   );
 
 
   // ---------- ABOUT ----------
-  db.collection('about').limit(1).onSnapshot(
+  if (hasTarget('aboutText')) db.collection('about').limit(1).onSnapshot(
     snap => renderAbout(snap.empty ? {} : snap.docs[0].data()),
     e => console.warn('About listener failed:', e)
   );

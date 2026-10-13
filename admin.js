@@ -9,41 +9,26 @@ async function uploadToCloudinary(file, onProgress) {
   if (file.size > 10 * 1024 * 1024) {
     throw new Error('ছবির সাইজ 10MB-এর কম হতে হবে।');
   }
-
-  const cloudName = (typeof CLOUDINARY_CONFIG !== 'undefined' && CLOUDINARY_CONFIG.cloudName) || 'c5ap4zda';
-  const uploadPreset = (typeof CLOUDINARY_CONFIG !== 'undefined' && CLOUDINARY_CONFIG.uploadPreset) || 'janani_upload';
-
+  const cloudName = CLOUDINARY_CONFIG.cloudName;
+  const uploadPreset = CLOUDINARY_CONFIG.uploadPreset;
   const formData = new FormData();
   formData.append('file', file);
   formData.append('upload_preset', uploadPreset);
-
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', 'https://api.cloudinary.com/v1_1/' + cloudName + '/image/upload');
-
+    xhr.open('POST', `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`);
     if (xhr.upload && typeof onProgress === 'function') {
-      xhr.upload.onprogress = (e) => {
-        if (e.lengthComputable) {
-          const percent = (e.loaded / e.total) * 100;
-          onProgress(percent);
-        }
-      };
+      xhr.upload.onprogress = event => {
+        if (event.lengthComputable) onProgress((event.loaded / event.total) * 100);
+      }
     }
-
     xhr.onload = () => {
       try {
         const data = JSON.parse(xhr.responseText);
-        if (xhr.status >= 200 && xhr.status < 300 && data.secure_url) {
-          resolve(data.secure_url);
-        } else {
-          const errDetail = data.error?.message || xhr.statusText || 'Upload failed';
-          reject(new Error('ছবি আপলোড ব্যর্থ: ' + errDetail));
-        }
-      } catch (err) {
-        reject(new Error('Cloudinary সার্ভার রেসপন্স বুঝতে সমস্যা হয়েছে।'));
-      }
+        if (xhr.status >= 200 && xhr.status < 300 && data.secure_url) resolve(data.secure_url);
+        else reject(new Error('ছবি আপলোড ব্যর্থ: ' + (data.error?.message || xhr.statusText || 'Upload failed')));
+      } catch (error) { reject(new Error('Cloudinary সার্ভার রেসপন্স বুঝতে সমস্যা হয়েছে।')); }
     };
-
     xhr.onerror = () => reject(new Error('নেটওয়ার্ক সমস্যার কারণে ছবি আপলোড হয়নি।'));
     xhr.send(formData);
   });
@@ -355,14 +340,7 @@ const pendingListRevealEffects = new Map();
 
 // ---------------- AUTH ----------------
 let dashboardLoginAuthorized = false;
-const pujaIntro = document.getElementById('pujaIntro');
-const loginWrap = document.getElementById('loginWrap');
-const introDelay = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 250 : 3200;
-window.setTimeout(() => {
-  pujaIntro.classList.add('is-finished');
-  loginWrap.classList.add('intro-ready');
-  loginWrap.classList.remove('intro-pending');
-}, introDelay);
+const ADMIN_EMAIL = 'rahulbasak498@gmail.com';
 
 const authPersistenceReady = auth
   .setPersistence(firebase.auth.Auth.Persistence.NONE)
@@ -438,8 +416,6 @@ authPersistenceReady
     if (user && dashboardLoginAuthorized) {
       document.getElementById('loginWrap').style.display = 'none';
       document.getElementById('app').style.display = 'flex';
-      document.getElementById('app').classList.remove('dashboard-enter');
-      requestAnimationFrame(() => document.getElementById('app').classList.add('dashboard-enter'));
       loadAdminProfile(user);
       Object.keys(SCHEMAS).forEach(attachListListener);
       seedWebsitePujaSchedule();
@@ -477,6 +453,11 @@ document.getElementById('loginForm').addEventListener('submit', event => {
     errBox.style.display = 'block';
     return;
   }
+  if (email.toLowerCase() !== ADMIN_EMAIL) {
+    errBox.textContent = 'ইমেইল সঠিক নয়। আবার চেষ্টা করুন।';
+    errBox.style.display = 'block';
+    return;
+  }
   form.dataset.submitting = 'true';
   submitBtn.disabled = true;
   submitBtn.setAttribute('aria-busy', 'true');
@@ -486,10 +467,32 @@ document.getElementById('loginForm').addEventListener('submit', event => {
   dashboardLoginAuthorized = true;
   authPersistenceReady
     .then(() => auth.signInWithEmailAndPassword(email, pass))
+    .then(async credential => {
+      if ((credential.user.email || '').toLowerCase() !== ADMIN_EMAIL) {
+        dashboardLoginAuthorized = false;
+        await auth.signOut();
+        const error = new Error('এই অ্যাকাউন্টের admin access নেই।');
+        error.code = 'auth/admin-only';
+        throw error;
+      }
+    })
     .catch(err => {
       dashboardLoginAuthorized = false;
       console.error('FIREBASE LOGIN ERROR:', err);
-      errBox.textContent = 'Login failed: ' + (err.code || '') + ' — ' + (err.message || 'Please try again.');
+      const loginMessages = {
+        'auth/admin-only': err.message,
+        'auth/invalid-email': 'ইমেইল ঠিকানার ফরম্যাটটি সঠিক নয়।',
+        'auth/invalid-credential': 'পাসওয়ার্ড সঠিক নয়। আবার চেষ্টা করুন।',
+        'auth/wrong-password': 'পাসওয়ার্ড সঠিক নয়। আবার চেষ্টা করুন।',
+        'auth/user-not-found': 'এই ইমেইলে কোনো অ্যাকাউন্ট পাওয়া যায়নি।',
+        'auth/user-disabled': 'এই অ্যাকাউন্টটি বন্ধ আছে। Admin-এর সঙ্গে যোগাযোগ করুন।',
+        'auth/too-many-requests': 'অনেকবার ভুল চেষ্টা হয়েছে। কিছুক্ষণ পরে আবার চেষ্টা করুন।',
+        'auth/network-request-failed': 'ইন্টারনেট সংযোগে সমস্যা হয়েছে। সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।',
+        'auth/operation-not-allowed': 'ইমেইল ও পাসওয়ার্ড দিয়ে লগইন চালু নেই। Firebase Authentication সেটিংস দেখুন।',
+        'auth/weak-password': 'পাসওয়ার্ডটি খুব দুর্বল।'
+      };
+      errBox.textContent = loginMessages[err.code]
+        || 'লগইন করা যায়নি। ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।';
       errBox.style.display = 'block';
       return auth.signOut();
     })
@@ -1054,6 +1057,11 @@ document.getElementById('itemForm').addEventListener('submit', async (e) => {
   if (type === 'wishes' && !id) {
     payload.approved = true;
     payload.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+  }
+  if (type === 'schedule' && (!id || payload.order <= 0)) {
+    const current = await collRef(type).get();
+    const nextOrder = current.docs.reduce((max, doc) => Math.max(max, Number(doc.data().order) || 0), 0) + 1;
+    if (!id || payload.order <= 0) payload.order = nextOrder;
   }
 
     // Hold live Firestore updates until the success popup has been shown.

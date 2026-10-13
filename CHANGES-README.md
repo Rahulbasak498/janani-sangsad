@@ -19,7 +19,6 @@
 - **"লোড হচ্ছে..." আটকে থাকা** বন্ধ: ডেটা না এলে "আবার চেষ্টা করুন" বার্তা।
 - **অঙ্গসংগঠন** খালি থাকলে হোমপেজে পুরো সেকশন লুকায় (আলাদা পেজে দেখায়)।
 - **Countdown-এর** স্থির ডিফল্ট ("০৭ দিন") সরিয়ে `--`; আসল সংখ্যা puja-calendar.js থেকে আসে (আগের মতোই)।
-- **শেয়ার প্রিভিউ:** `og:image`/`canonical` এখন পূর্ণ URL, নতুন `image/og-share.jpg` (১২০০×৬৩০); সব সাবপেজে favicon/description।
 - **ছবি ছোট করা:** `maa-durga.png` ১.৪MB→১১০KB, `মণ্ডপ সজ্জা.jpg` ২.৩MB→৪২০KB (একই নাম/পথ)।
 - **Service worker:** cache v2 (পুরনো ভারী ছবি/DEMO QR মুছবে), ছবি এখন stale-while-revalidate।
 
@@ -108,7 +107,10 @@
 ## Full site audit - security, admin, and responsive updates
 
 - Visitor wishes appear on the public board immediately after submission; authenticated dashboard users can edit and delete them.
-- Firestore and Storage writes require a signed-in Firebase account; public wish submissions are validated and published immediately.
-- Admin image uploads retain the existing Cloudinary unsigned upload preset and 10 MB size limit.
+- Only the configured admin email can write to Firestore or Storage; public wish submissions are validated and published immediately.
+- Admin image uploads use the existing Cloudinary unsigned preset and 10 MB client-side size limit.
 - Schedule migration no longer replaces an existing schedule collection.
-- Publish both `firestore.rules` and `storage.rules`, sign in with an existing Firebase Authentication account and refresh the site/service-worker cache after deployment.
+- Publish `firestore.rules`, sign in with the configured Firebase Authentication admin account and refresh the site/service-worker cache after deployment. The current image upload flow uses Cloudinary, not Firebase Storage.
+
+- Social previews now use the existing image/Puja Logo.png; the missing image/og-share.jpg URL has been removed from page metadata.
+- Admin image uploads remain on Cloudinary with the existing `janani_upload` preset.

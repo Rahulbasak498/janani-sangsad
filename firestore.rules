@@ -1,8 +1,9 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    function isSignedIn() {
-      return request.auth != null;
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email in ['rahulbasak498@gmail.com', 'Rahulbasak498@gmail.com'];
     }
 
     // Visitor wishes are public as soon as they are submitted.
@@ -20,24 +21,26 @@ service cloud.firestore {
                     && request.resource.data.msg.size() > 0
                     && request.resource.data.msg.size() <= 300
                     && request.resource.data.createdAt == request.time;
-      allow update, delete: if isSignedIn();
+      allow update, delete: if isAdmin();
     }
 
     match /notificationSubscriptions/{subscriptionId} {
-      allow create: if request.resource.data.keys().hasOnly(['token', 'createdAt'])
+      allow create, update: if request.resource.data.keys().hasOnly(['token', 'createdAt'])
                     && request.resource.data.token is string
                     && request.resource.data.token.size() > 100
                     && request.resource.data.token.size() <= 4096
-                    && request.resource.data.createdAt == request.time;
-      allow read, update, delete: if isSignedIn();
+                    && request.resource.data.createdAt == request.time
+                    && (!exists(/databases/$(database)/documents/notificationSubscriptions/$(subscriptionId))
+                      || resource.data.token == request.resource.data.token);
+      allow read, delete: if isAdmin();
     }
 
     match /{collection}/{docId} {
-      allow read: if isSignedIn() || collection in [
+      allow read: if isAdmin() || collection in [
         'siteSettings', 'notices', 'schedule', 'members', 'ticker',
         'gallery', 'affiliates', 'events', 'about', 'pageHeadings'
       ];
-      allow write: if isSignedIn()
+      allow write: if isAdmin()
                    && collection != 'wishes'
                    && collection != 'notificationSubscriptions';
     }

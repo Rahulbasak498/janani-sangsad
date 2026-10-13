@@ -47,6 +47,13 @@ async function loadSectionPage() {
       .filter(Boolean);
     if (!sections.length) throw new Error('Section unavailable');
     target.replaceChildren(...sections.map(section => document.importNode(section, true)));
+    const pageHeading = target.querySelector('.section-title');
+    if (pageHeading && pageHeading.tagName !== 'H1') {
+      const heading = document.createElement('h1');
+      for (const attribute of pageHeading.attributes) heading.setAttribute(attribute.name, attribute.value);
+      heading.innerHTML = pageHeading.innerHTML;
+      pageHeading.replaceWith(heading);
+    }
     // Sections that the homepage hides while empty (e.g. অঙ্গসংগঠন) still get their own page.
     target.querySelectorAll('section[hidden]').forEach(section => { section.hidden = false; });
 
@@ -74,8 +81,6 @@ async function loadSectionPage() {
 
     await loadScript('https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js');
     await loadScript('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js');
-    await loadScript('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js');
-    await loadScript('https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js');
     await loadScript('firebase-config.js');
     await loadScript('render.js?v=5');
     await loadScript('script.js');

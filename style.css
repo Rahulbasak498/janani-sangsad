@@ -1843,6 +1843,7 @@ section .eyebrow {
   gap: 16px;
 }
 
+
 .notice-item {
   background: var(--gold-100);
   border-radius: var(--radius-md);
@@ -5538,6 +5539,51 @@ section:not(.hero) .section-sub { max-width: 58ch; color: #75645a; }
   .timeline .tl-card ul .tl-event-time { font-size: 13px; }
 }
 
+/* Shared responsive finishing rules for the home page and every section page. */
+@media (max-width: 860px) {
+  .nav { padding-top: max(8px, env(safe-area-inset-top)); }
+  .nav .container { gap: 10px; }
+  .brand { min-width: 0; gap: 10px; }
+  .brand-name { min-width: 0; }
+  .nav-links {
+    height: 100vh;
+    height: 100dvh;
+    padding-top: max(76px, calc(env(safe-area-inset-top) + 64px));
+    padding-bottom: max(24px, env(safe-area-inset-bottom));
+  }
+}
+
+@media (max-width: 600px) {
+  .hero { min-height: 100vh; min-height: 100svh; }
+  .subpage-main { padding-top: 64px; }
+  .subpage-main > section { min-height: calc(100vh - 64px); min-height: calc(100svh - 64px); }
+  .section-title, .section-sub { overflow-wrap: anywhere; }
+  .members-grid, .affiliates-grid, .contact-grid,
+  .events-grid, .timeline, .about-grid, .loc-grid, .wishes-layout {
+    min-width: 0;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .mem-card, .aff-card, .contact-card, .ev-card, .tl-card,
+  .notice-item, .loc-info, .donate-card, .wish-form-card, .wishes-feed-card {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .mem-card .role { max-width: 100%; white-space: normal; }
+  .donate-card { width: 100%; }
+  .donate-info p { min-width: 0; flex-wrap: wrap; overflow-wrap: anywhere; }
+  .scroll-top-btn {
+    right: max(14px, env(safe-area-inset-right));
+    bottom: max(14px, env(safe-area-inset-bottom));
+    width: 44px;
+    height: 44px;
+  }
+  footer { padding-bottom: max(24px, env(safe-area-inset-bottom)); }
+}
+
+@media (min-width: 390px) and (max-width: 600px) {
+  .members-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
 /* Clear contrast for the donation section, including later page-wide overrides. */
 #donation .section-title { color: #fffaf0; text-shadow: 0 2px 12px rgba(0, 0, 0, .38); }
 #donation .section-sub { color: #fff1d8; text-shadow: 0 1px 5px rgba(0, 0, 0, .3); }
@@ -5545,4 +5591,47 @@ section:not(.hero) .section-sub { max-width: 58ch; color: #75645a; }
   color: #ffe29a;
   background: rgba(255, 226, 154, .14);
   border-color: rgba(255, 226, 154, .58);
+}
+
+/* Refined typography for Puja schedule details; preserve the existing layout. */
+.schedule .tl-day { font-family: var(--font-sans); font-weight: 700; }
+.schedule .tl-date { font-family: var(--font-sans); font-size: .78rem; font-weight: 600; color: var(--ink-muted); }
+.schedule .tl-card h3 { font-family: var(--font-sans); font-size: .96rem; font-weight: 700; line-height: 1.5; color: var(--maroon-950); }
+.schedule .tl-card ul { font-size: .86rem; line-height: 1.6; color: var(--ink); }
+.schedule .tl-event-time { font-family: var(--font-sans); font-size: .74rem; font-weight: 700; color: var(--maroon-700); }
+.schedule .tl-card {
+  padding: 9px 16px;
+  border-color: rgba(133,18,37,.2);
+  border-left: 3px solid var(--maroon-700);
+  border-top: 2px solid var(--gold-500);
+  border-radius: 15px;
+  background: linear-gradient(110deg, rgba(133,18,37,.055), var(--sand-card) 48%);
+  box-shadow: var(--shadow-sm), inset 0 1px rgba(255,255,255,.9);
+}
+.schedule .tl-day {
+  border-color: var(--gold-300);
+  background: linear-gradient(145deg, var(--maroon-light), var(--maroon-800));
+  box-shadow: 0 0 0 3px rgba(212,175,55,.2), 0 4px 10px rgba(62,6,16,.18);
+}
+.schedule .tl-date {
+  padding: 4px 9px;
+  border-color: rgba(184,139,34,.34);
+  background: rgba(212,175,55,.13);
+  color: var(--maroon-700);
+}
+.schedule .tl-card ul .tl-note-item {
+  border-left-color: var(--maroon-600);
+  background: rgba(133,18,37,.055);
+  color: var(--ink-muted);
+}
+@media (min-width: 1025px) {
+  .schedule > .container { max-width: 1480px; }
+}
+@media (max-width: 600px) {
+  .schedule .tl-card { padding: 8px 14px; }
+  .schedule .tl-day { margin: 0; }
+  .schedule .tl-date { font-size: .8rem; }
+  .schedule .tl-card h3 { font-size: .94rem; }
+  .schedule .tl-card ul { font-size: .88rem; line-height: 1.6; }
+  .schedule .tl-event-time { font-size: .76rem; }
 }

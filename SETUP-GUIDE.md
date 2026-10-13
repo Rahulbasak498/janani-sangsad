@@ -26,8 +26,7 @@ admin panel চালু হয়ে যাবে, যেখান থেকে
 
 Apply the complete `firestore.rules` file in **Firestore Rules**, then Publish it.
 Visitor wishes appear on the public board as soon as they are submitted.
-Apply the complete `storage.rules` file in **Storage Rules**, then Publish it.
-Use the email/password account already created in Firebase Authentication. Dashboard access requires a signed-in account; no custom claim setup is needed.
+Only the Firebase Authentication account with the configured admin email in `firestore.rules` can edit site content. Admin image uploads continue to use the configured Cloudinary unsigned preset; Firebase Storage setup is not needed for uploads.
 
 ---
 
