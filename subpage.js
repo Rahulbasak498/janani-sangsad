@@ -1,18 +1,18 @@
 const navigationMarkup = `
   <nav class="nav scrolled" id="nav">
     <div class="container">
-      <a class="brand" href="index.html">
+      <a class="brand" href="index.html" aria-label="জননী সংসদ হোম পেজ">
         <div class="brand-mark">🕉️</div>
         <div class="brand-name"><span id="navBrandName">জননী সংসদ</span><small><span id="navTagline">প্রতিষ্ঠা ১৯৭৪</span></small></div>
       </a>
-      <button class="nav-burger" id="navBurger" aria-label="মেনু খুলুন" type="button"><span></span><span></span><span></span></button>
+      <button class="nav-burger" id="navBurger" aria-label="মেনু খুলুন" aria-controls="navLinks" aria-expanded="false" type="button"><span></span><span></span><span></span></button>
       <div class="nav-links" id="navLinks">
         <a href="about.html">আমাদের সম্পর্কে</a>
         <a href="schedule.html">সময়সূচি</a>
         <a href="events.html">অনুষ্ঠান</a>
         <a href="gallery.html">গ্যালারি</a>
         <div class="nav-dropdown">
-          <button class="nav-dropdown-btn" type="button">সদস্য <span class="caret">▾</span></button>
+          <button class="nav-dropdown-btn" type="button" aria-expanded="false">সদস্য <span class="caret">▾</span></button>
           <div class="nav-dropdown-menu">
             <a href="members.html">কার্যকরী সদস্যবৃন্দ</a>
             <a href="advisors.html">উপদেষ্টা</a>
@@ -23,6 +23,7 @@ const navigationMarkup = `
         <a href="donation.html">অনুদান</a>
         <a href="notice.html">নোটিশ</a>
         <a href="contact.html">যোগাযোগ</a>
+        <a class="nav-login-link" href="admin.html">লগইন</a>
       </div>
     </div>
   </nav>`;
