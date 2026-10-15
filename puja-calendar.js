@@ -35,9 +35,8 @@
 
   var PUJA_CALENDAR = [
     { id: 'mahalaya',    name: 'মহালয়া',        emoji: '🪔', date: '2026-10-10T00:00:00+06:00' },
-    { id: 'panchami',    name: 'মহাপঞ্চমী',      emoji: '🌸', date: '2026-10-16T00:00:00+06:00' },
     { id: 'shashthi',    name: 'মহাষষ্ঠী',       emoji: '🛕', date: '2026-10-16T00:00:00+06:00' },
-    { id: 'saptami',     name: 'মহাসপ্তমী',      emoji: '🛕', date: '2026-10-18T00:00:00+06:00' },
+    { id: 'saptami',     name: 'মহাসপ্তমী',      emoji: '🛕', date: '2026-10-17T00:00:00+06:00', endDate: '2026-10-18' },
     { id: 'ashtami',     name: 'মহাষ্টমী',       emoji: '🙏', date: '2026-10-19T00:00:00+06:00' },
     { id: 'nabami',      name: 'মহানবমী',        emoji: '🔥', date: '2026-10-20T00:00:00+06:00' },
     { id: 'dashami',     name: 'বিজয়া দশমী',     emoji: '🚩', date: '2026-10-21T00:00:00+06:00' },
@@ -84,7 +83,9 @@
 
     var todayKey = todayKeyDhaka(new Date());
     var todayEvents = PUJA_CALENDAR.filter(function (event) {
-      return event.date.slice(0, 10) === todayKey;
+      var startDate = event.date.slice(0, 10);
+      var endDate = event.endDate || startDate;
+      return startDate <= todayKey && todayKey <= endDate;
     });
     var nextEvent = PUJA_CALENDAR.find(function (event) {
       return event.date.slice(0, 10) > todayKey;
